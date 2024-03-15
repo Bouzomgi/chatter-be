@@ -38,5 +38,5 @@ jobs:
       - name: Run Tests and Code Coverage
         run: npm test
 
-      - name: Set status
-        run: echo "::set-output name=status::success"
+      - name: Set success
+      run: echo "status=success" >> $GITHUB_OUTPUT
