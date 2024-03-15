@@ -132,3 +132,5 @@ db
 # Typescript distribution
 dist
 node_modules
+
+.vscode/
