@@ -38,5 +38,7 @@ jobs:
       - name: Run Tests and Code Coverage
         run: npm test
 
+      - name: Set success
+
       - name: Set status
-        run: echo "::set-output name=status::success"
+        run: echo "status=$([ "${{ job.status }}" == "success" ] && echo "CI-${GITHUB_RUN_ID}-success" || echo "CI-${GITHUB_RUN_ID}-failure")" >> $GITHUB_ENV
