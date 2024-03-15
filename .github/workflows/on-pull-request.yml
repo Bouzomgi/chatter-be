@@ -40,4 +40,3 @@ jobs:
 
       - name: Set status
         run: echo "status=$([ "${{ job.status }}" == "success" ] && echo "CI-${GITHUB_RUN_ID}-success" || echo "CI-${GITHUB_RUN_ID}-failure")" >> $GITHUB_ENV
-
