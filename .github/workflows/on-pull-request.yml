@@ -39,4 +39,9 @@ jobs:
         run: npm test
 
       - name: Set success
-      run: echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: Set status
+        if: steps.wait.outcome == 'success'
+        run: echo "status=success" >> $GITHUB_OUTPUT
+        else if: steps.wait.outcome == 'failure'
+        run: echo "status=failure" >> $GITHUB_OUTPUT
