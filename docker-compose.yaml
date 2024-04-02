@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: chatter
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - '127.0.0.1:4566:4566'
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+    volumes:
+      - ./localstack/scripts/ready:/etc/localstack/init/ready.d
+      - ./localstack/content:/content
+      - ./volume:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -134,3 +134,6 @@ dist
 node_modules
 
 .vscode/
+
+# LocalStack Volume
+volume/
