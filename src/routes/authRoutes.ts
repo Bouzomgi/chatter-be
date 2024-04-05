@@ -104,7 +104,7 @@ router.post('/login', async (req, res) => {
     }
 
     // CREATE AND ASSIGN A TOKEN
-    const token = jwt.sign(
+    const token = await jwt.sign(
       {
         userId: existingUser!.id
       },
