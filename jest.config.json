@@ -3,6 +3,9 @@
   "testEnvironment": "node",
   "verbose": true,
   "testMatch": ["**/test/*.test.ts?(x)"],
+  "clearMocks": true,
+  "preset": "ts-jest",
+  "setupFilesAfterEnv": ["<rootDir>/test/singleton.ts"],
   "collectCoverage": true,
   "coverageReporters": ["html", "text-summary"],
   "coverageThreshold": {

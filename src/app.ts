@@ -14,8 +14,8 @@ app.use('/authed', verifyToken, settingsRoutes)
 app.use('/authed', verifyToken, chatRoutes)
 
 // ROUTES
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/health', (req, res) => {
+  res.send('Up and running!')
 })
 
 export default app

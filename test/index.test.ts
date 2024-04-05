@@ -2,12 +2,15 @@ import request from 'supertest'
 import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
 import { Server } from 'http'
+import env from '../src/config'
 
-describe('GET /backend/', () => {
+describe('GET /health', () => {
   let server: Server | null = null
 
   beforeEach(() => {
-    server = app.listen(3000, () => console.log('Listening on port 3000'))
+    server = app.listen(env.PORT, () =>
+      console.log(`Listening on port ${env.PORT}`)
+    )
   })
 
   afterAll(async () => {
@@ -17,9 +20,9 @@ describe('GET /backend/', () => {
   })
 
   it('should return a healthcheck response', async () => {
-    const res = await request(app).get('/')
+    const res = await request(app).get('/health')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
-    expect(res.text).toBe('Hello World!')
+    expect(res.text).toBe('Up and running!')
   })
 })

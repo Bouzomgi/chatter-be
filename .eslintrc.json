@@ -16,6 +16,14 @@
   },
   "plugins": ["@typescript-eslint", "jest"],
   "ignorePatterns": ["dist/*"],
+  "overrides": [
+    {
+      "files": ["tests/**/*"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
   "rules": {
     /* PROBLEMS */
     "array-callback-return": 2,
