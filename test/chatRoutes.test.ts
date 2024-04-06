@@ -163,6 +163,12 @@ describe('GET /messages/:threadId', () => {
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
+
+  it('should fail if request is invalid', async () => {
+    const res = await request(app).get('/authed/messages/1a')
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
+  })
 })
 
 describe('POST /message', () => {
@@ -229,6 +235,12 @@ describe('POST /message', () => {
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
+
+  it('should fail if request is invalid', async () => {
+    const res = await request(app).post('/authed/message').send({})
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
+  })
 })
 
 describe('DELETE /readThread/:threadId', () => {
@@ -276,5 +288,11 @@ describe('DELETE /readThread/:threadId', () => {
     const res = await request(app).delete('/authed/readThread/1')
 
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
+  })
+
+  it('should fail if request is invalid', async () => {
+    const res = await request(app).delete('/authed/readThread/1a')
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 })

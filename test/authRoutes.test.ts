@@ -30,10 +30,6 @@ describe('POST /register', () => {
     password: 'abc123'
   }
 
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   it('should register a user successfully', async () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
 
@@ -42,7 +38,7 @@ describe('POST /register', () => {
     expect(res.statusCode).toBe(StatusCodes.OK)
   })
 
-  it('should fail registering when email already exists', async () => {
+  it('should fail when email already exists', async () => {
     prismaMock.user.findFirst.mockResolvedValue(mockedUserDbRes)
 
     const res = await request(app).post('/register').send(reqBody)
@@ -50,7 +46,7 @@ describe('POST /register', () => {
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
 
-  it('should fail registering when username already exists', async () => {
+  it('should fail when username already exists', async () => {
     prismaMock.user.findFirst.mockResolvedValueOnce(null)
     prismaMock.user.findFirst.mockResolvedValueOnce(mockedUserDbRes)
 
@@ -59,11 +55,17 @@ describe('POST /register', () => {
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
 
-  it('should fail registering when getDefaultAvatars fails', async () => {
+  it('should fail when getDefaultAvatars fails', async () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
     ;(getDefaultAvatars as jest.Mock).mockResolvedValue(undefined)
 
     const res = await request(app).post('/register').send(reqBody)
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
+  })
+
+  it('should fail if request is invalid', async () => {
+    const res = await request(app).post('/register').send({})
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
@@ -111,5 +113,11 @@ describe('POST /login', () => {
     const res = await request(app).post('/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
+  })
+
+  it('should fail if request is invalid', async () => {
+    const res = await request(app).post('/login').send({})
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 })

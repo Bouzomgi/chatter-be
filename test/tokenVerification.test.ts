@@ -7,10 +7,6 @@ jest.mock('jsonwebtoken')
 ;(jwt.verify as jest.Mock).mockResolvedValue({ userId: '1' } as JwtPayload)
 
 describe('verifyToken', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   it('should successfully verify a valid authorization token', async () => {
     const req = {
       headers: {
