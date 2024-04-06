@@ -5,11 +5,9 @@ import bcrypt from 'bcrypt'
 import { getDefaultAvatars } from '../storage/s3Accessors'
 import jwt from 'jsonwebtoken'
 import env from '../config'
-// import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
 
-// TODO: validation with zod
 router.post('/register', async (req, res) => {
   try {
     const email = req.body.email.toLowerCase()
@@ -70,14 +68,13 @@ router.post('/register', async (req, res) => {
     return res
       .status(StatusCodes.OK)
       .json({ message: 'Successfully created user' })
-  } catch (error) {
+  } catch {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: 'Could not register' })
   }
 })
 
-// TODO: validation with zod
 router.post('/login', async (req, res) => {
   try {
     const username = req.body.username.toLowerCase()
@@ -122,8 +119,7 @@ router.post('/login', async (req, res) => {
       .json({
         message: 'Logged in'
       })
-  } catch (error) {
-    console.log(error)
+  } catch {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: 'Could not login' })

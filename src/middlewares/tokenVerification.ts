@@ -12,16 +12,14 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(' ')[1]
-  if (!token)
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' })
-
   try {
+    const token = req.headers.authorization?.split(' ')[1]
+    if (!token) throw new Error('Cannot find auth header')
+
     const decoded = await jwt.verify(token, env.TOKEN_SECRET)
     ;(req as AuthedRequest).userId = (decoded as JwtPayload).userId
-
     return next()
-  } catch (err) {
+  } catch {
     return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' })
   }
 }

@@ -1,7 +1,7 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../database'
-import { AuthedRequest } from '../middlewares/verifyToken'
+import { AuthedRequest } from '../middlewares/tokenVerification'
 
 const router = express.Router()
 

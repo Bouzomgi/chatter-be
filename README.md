@@ -16,13 +16,15 @@ To run
 
 To do
 
-- finish routes
-  - get messages
-  - send a message
-  - "read" a message
-- set up swagger
-- validations using zod
-- maybe use AWS cognito
+Immediate
+  - finish BE tests
+    - get them working in CICD
+  - I would like to set up zod or express validator
+  - Write some integration tests?
+  - Pop over to the FE and tie it together!
+Later
+  - set up swagger
+  - maybe use AWS cognito
 
 In the FE, need to make an axios interceptor that moves the JWT cookie to a header in the auth
 

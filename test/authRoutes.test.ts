@@ -1,10 +1,9 @@
 import request from 'supertest'
 import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
-import env from '../src/config'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { prismaMock } from './singleton'
+import { prismaMock } from './utils/singleton'
 import { getDefaultAvatars } from '../src/storage/s3Accessors'
 
 jest.mock('bcrypt')
@@ -13,25 +12,18 @@ jest.mock('jsonwebtoken')
 jest.mock('../src/storage/s3Accessors', () => ({
   getDefaultAvatars: jest.fn()
 }))
-
-const server = app.listen(env.PORT, () =>
-  console.log(`Listening on port ${env.PORT}`)
-)
-
-afterAll(async () => {
-  if (server) {
-    await server.close()
-  }
-})
+;(bcrypt.genSalt as jest.Mock).mockResolvedValue('mocked-salt')
+;(bcrypt.hash as jest.Mock).mockResolvedValue('mocked-hash')
+;(getDefaultAvatars as jest.Mock).mockResolvedValue('mocked-avatars')
 
 describe('POST /register', () => {
-  const sampleBody = {
+  const reqBody = {
     email: 'a@gmail.com',
     username: 'Adam',
     password: 'abc123'
   }
 
-  const sampleUser = {
+  const mockedUserDbRes = {
     id: 1,
     email: 'a@gmail.com',
     username: 'Adam',
@@ -39,32 +31,30 @@ describe('POST /register', () => {
   }
 
   beforeEach(() => {
-    ;(bcrypt.genSalt as jest.Mock).mockResolvedValue('mocked-salt')
-    ;(bcrypt.hash as jest.Mock).mockResolvedValue('mocked-hash')
-    ;(getDefaultAvatars as jest.Mock).mockResolvedValue('mocked-avatars')
+    jest.clearAllMocks()
   })
 
   it('should register a user successfully', async () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
 
-    const res = await request(app).post('/register').send(sampleBody)
+    const res = await request(app).post('/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })
 
   it('should fail registering when email already exists', async () => {
-    prismaMock.user.findFirst.mockResolvedValue(sampleUser)
+    prismaMock.user.findFirst.mockResolvedValue(mockedUserDbRes)
 
-    const res = await request(app).post('/register').send(sampleBody)
+    const res = await request(app).post('/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
 
   it('should fail registering when username already exists', async () => {
     prismaMock.user.findFirst.mockResolvedValueOnce(null)
-    prismaMock.user.findFirst.mockResolvedValueOnce(sampleUser)
+    prismaMock.user.findFirst.mockResolvedValueOnce(mockedUserDbRes)
 
-    const res = await request(app).post('/register').send(sampleBody)
+    const res = await request(app).post('/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
@@ -73,19 +63,19 @@ describe('POST /register', () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
     ;(getDefaultAvatars as jest.Mock).mockResolvedValue(undefined)
 
-    const res = await request(app).post('/register').send(sampleBody)
+    const res = await request(app).post('/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 })
 
 describe('POST /login', () => {
-  const sampleBody = {
+  const reqBody = {
     username: 'Adam',
     password: 'abc123'
   }
 
-  const sampleUser = {
+  const mockedUserDbRes = {
     id: 1,
     email: 'a@gmail.com',
     username: 'Adam',
@@ -95,11 +85,11 @@ describe('POST /login', () => {
   beforeEach(() => {
     ;(bcrypt.compare as jest.Mock).mockResolvedValue(true)
     ;(jwt.sign as jest.Mock).mockResolvedValue('mocked-jwt')
-    prismaMock.user.findUnique.mockResolvedValue(sampleUser)
+    prismaMock.user.findUnique.mockResolvedValue(mockedUserDbRes)
   })
 
   it('should login a user successfully', async () => {
-    const res = await request(app).post('/login').send(sampleBody)
+    const res = await request(app).post('/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.headers['set-cookie'][0]).toMatch(
@@ -110,7 +100,7 @@ describe('POST /login', () => {
   it('should fail if username already exists', async () => {
     prismaMock.user.findUnique.mockResolvedValue(null)
 
-    const res = await request(app).post('/login').send(sampleBody)
+    const res = await request(app).post('/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
   })
@@ -118,7 +108,7 @@ describe('POST /login', () => {
   it('should fail if password is invalid', async () => {
     ;(bcrypt.compare as jest.Mock).mockResolvedValue(false)
 
-    const res = await request(app).post('/login').send(sampleBody)
+    const res = await request(app).post('/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })

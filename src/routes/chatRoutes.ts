@@ -1,15 +1,15 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../database'
-import { AuthedRequest } from '../middlewares/verifyToken'
+import { AuthedRequest } from '../middlewares/tokenVerification'
+import { Prisma } from '@prisma/client'
 
 const router = express.Router()
 
-// TODO: validation with zod
-router.get('/getChatHeads', async (req, res) => {
+router.get('/chatheads', async (req, res) => {
   try {
     const authedReq = req as AuthedRequest
-    // get all last messages, usernames, avatars, timestamps, unreads in the right order
+    // get all last messages with corresponding usernames, avatars, timestamps, unreads
 
     const threads = await prisma.thread.findMany({
       where: {
@@ -67,7 +67,7 @@ interface GetMessageRequest extends AuthedRequest {
   }
 }
 
-router.get('/getMessages/:threadId', async (req, res) => {
+router.get('/messages/:threadId', async (req, res) => {
   try {
     const authedReq = req as GetMessageRequest
     const threadId = parseInt(authedReq.params.threadId)
@@ -104,16 +104,15 @@ router.get('/getMessages/:threadId', async (req, res) => {
       }
     })
 
-    return res.status(StatusCodes.OK).json(threadMessages?.messages)
-  } catch (error) {
-    console.log(error)
+    return res.status(StatusCodes.OK).json(threadMessages!.messages)
+  } catch {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: 'Could not get messages' })
   }
 })
 
-router.post('/postMessage', async (req, res) => {
+router.post('/message', async (req, res) => {
   try {
     const authedReq = req as AuthedRequest
 
@@ -187,21 +186,21 @@ router.delete('/readThread/:threadId', async (req, res) => {
         .json({ error: 'Unauthorized' })
     }
 
-    const unseenThreads = await prisma.unseen.delete({
+    await prisma.unseen.delete({
       where: { id: threadId }
     })
 
-    if (!unseenThreads) {
+    return res.status(StatusCodes.GONE).json({ error: 'Thread has been read' })
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ error: 'Thread was not found' })
+    } else {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Could not read message' })
     }
-
-    return res.status(StatusCodes.GONE).json({ error: 'Thread has been read' })
-  } catch {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Could not read message' })
   }
 })
 

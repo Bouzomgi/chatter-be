@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
-    "test": "npx jest --silent --setupFiles dotenv/config --detectOpenHandles",
+    "test": "npx jest --setupFiles dotenv/config --detectOpenHandles",
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts . && npx prettier --write . && npx prisma format",
     "check-lint": "npx eslint --ext .ts . && npx prettier --check .",

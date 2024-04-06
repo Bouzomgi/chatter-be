@@ -1,5 +1,5 @@
 import express from 'express'
-import { verifyToken } from './middlewares/verifyToken'
+import { verifyToken } from './middlewares/tokenVerification'
 import authRoutes from './routes/authRoutes'
 import settingsRoutes from './routes/settingsRoutes'
 import chatRoutes from './routes/chatRoutes'

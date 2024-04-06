@@ -1,11 +1,10 @@
 import env from '../config'
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3' // ES Modules import
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3'
 
 let client: S3Client | null = null
 
 function getS3Client() {
   if (client === null) {
-    console.log('S3 Client is being instantiated!')
     client = new S3Client({
       region: env.AWS_DEFAULT_REGION,
       endpoint: env.AWS_S3_ENDPOINT,
@@ -28,5 +27,5 @@ export async function getDefaultAvatars() {
   const client = getS3Client()
   const command = new ListObjectsV2Command(input)
   const listOutput = await client.send(command)
-  return listOutput.Contents?.map((elem) => elem.Key!)
+  return listOutput.Contents!.map((elem) => elem.Key!)
 }
