@@ -43,7 +43,7 @@ describe('GET /chatheads', () => {
             {
               id: 2,
               content: 'dolor sit',
-              createdAt: new Date('2022-01-01T00:00:00'),
+              createdAt: new Date('2022-01-01T00:00:00.000Z'),
               fromUser: 1,
               conversationId: 2
             }
@@ -74,7 +74,7 @@ describe('GET /chatheads', () => {
         threadId: 2,
         messageId: 2,
         content: 'dolor sit',
-        createdAt: '2022-01-01T05:00:00.000Z',
+        createdAt: '2022-01-01T00:00:00.000Z',
         fromUser: 1,
         conversationId: 2
       },
@@ -130,7 +130,7 @@ describe('GET /messages/:threadId', () => {
           id: 1,
           conversationId: 1,
           fromUser: 1,
-          createdAt: new Date('2022-01-01T00:00:00'),
+          createdAt: new Date('2022-01-01T00:00:00.000Z'),
           content: 'lorem ipsem'
         }
       ]
@@ -145,7 +145,7 @@ describe('GET /messages/:threadId', () => {
         id: 1,
         conversationId: 1,
         fromUser: 1,
-        createdAt: '2022-01-01T05:00:00.000Z',
+        createdAt: '2022-01-01T00:00:00.000Z',
         content: 'lorem ipsem'
       }
     ]
@@ -183,7 +183,7 @@ describe('POST /message', () => {
       id: 1,
       conversationId: 1,
       fromUser: 1,
-      createdAt: new Date('2022-01-01T00:00:00'),
+      createdAt: new Date('2022-01-01T00:00:00.000Z'),
       content: 'lorem ipsem'
     })
 
@@ -212,7 +212,7 @@ describe('POST /message', () => {
       id: 1,
       conversationId: 1,
       fromUser: 1,
-      createdAt: new Date('2022-01-01T00:00:00'),
+      createdAt: new Date('2022-01-01T00:00:00.000Z'),
       content: 'lorem ipsem'
     })
 
