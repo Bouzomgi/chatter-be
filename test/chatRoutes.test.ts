@@ -82,7 +82,7 @@ describe('GET /chatheads', () => {
         threadId: 1,
         messageId: 1,
         content: 'lorem ipsum',
-        createdAt: '2022-01-02T05:00:00.000Z',
+        createdAt: '2022-01-02T00:00:00.000Z',
         fromUser: 1,
         conversationId: 1
       },
@@ -90,7 +90,7 @@ describe('GET /chatheads', () => {
         threadId: 3,
         messageId: 3,
         content: 'amet consectetur',
-        createdAt: '2022-01-03T05:00:00.000Z',
+        createdAt: '2022-01-03T00:00:00.000Z',
         fromUser: 1,
         conversationId: 3
       }
