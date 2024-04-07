@@ -15,7 +15,15 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "jest"],
-  "ignorePatterns": ["dist/*"],
+  "ignorePatterns": ["dist/*", "coverage/"],
+  "overrides": [
+    {
+      "files": ["tests/**/*"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
   "rules": {
     /* PROBLEMS */
     "array-callback-return": 2,
@@ -35,7 +43,6 @@
     "no-array-constructor": 2,
     "no-eval": 2,
     "no-lonely-if": 2,
-    "no-magic-numbers": 1,
     "no-return-await": 2,
     "no-useless-return": 2,
     "no-var": 2,

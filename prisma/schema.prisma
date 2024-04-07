@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  email    String    @unique
+  password String
+  messages Message[]
+  threads  Thread[]
+  profile  Profile?
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int    @unique
+  avatar String
+}
+
+model Conversation {
+  id       Int       @id @default(autoincrement())
+  threads  Thread[]
+  messages Message[]
+}
+
+model Thread {
+  id             Int          @id @default(autoincrement())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  User           User         @relation(fields: [member], references: [id])
+  member         Int
+  unseen         Unseen?
+
+  @@unique([conversationId, member])
+  @@index([conversationId, member])
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  User           User         @relation(fields: [fromUser], references: [id])
+  fromUser       Int
+  createdAt      DateTime     @default(now())
+  content        String
+  unseen         Unseen[]
+}
+
+model Unseen {
+  id        Int     @id @default(autoincrement())
+  thread    Thread  @relation(fields: [threadId], references: [id])
+  threadId  Int
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId Int
+
+  @@unique([threadId])
+}
