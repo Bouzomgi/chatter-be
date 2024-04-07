@@ -3,8 +3,9 @@ import { StatusCodes } from 'http-status-codes'
 import { Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
-jest.mock('jsonwebtoken')
-;(jwt.verify as jest.Mock).mockResolvedValue({ userId: '1' } as JwtPayload)
+jest.mock('jsonwebtoken', () => ({
+  verify: jest.fn(() => ({ userId: '1' }) as JwtPayload)
+}))
 
 describe('verifyToken', () => {
   it('should successfully verify a valid authorization token', async () => {

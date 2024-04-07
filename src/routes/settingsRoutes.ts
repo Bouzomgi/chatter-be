@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import prisma from './../database'
 import { AuthedRequest } from '../middlewares/tokenVerification'
 import { checkSchema, validationResult } from 'express-validator'
+import { getDefaultAvatars } from '../storage/s3Accessors'
 
 const router = express.Router()
 
@@ -17,6 +18,12 @@ router.post(
       await validationResult(req).throw()
 
       const authedReq = req as AuthedRequest
+
+      const defaultAvatars = await getDefaultAvatars()
+      if (!defaultAvatars.includes(req.body.avatar)) {
+        throw new Error("suppied avatar doesn't exist")
+      }
+
       await prisma.profile.update({
         where: {
           id: authedReq.userId

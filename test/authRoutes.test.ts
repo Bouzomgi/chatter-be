@@ -2,19 +2,22 @@ import request from 'supertest'
 import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import { prismaMock } from './utils/singleton'
 import { getDefaultAvatars } from '../src/storage/s3Accessors'
 
-jest.mock('bcrypt')
-jest.mock('jsonwebtoken')
+jest.mock('bcrypt', () => ({
+  genSalt: jest.fn(() => 'mocked-salt'),
+  hash: jest.fn(() => 'mocked-hash'),
+  compare: jest.fn(() => true)
+}))
+
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn(() => 'mocked-jwt')
+}))
 
 jest.mock('../src/storage/s3Accessors', () => ({
-  getDefaultAvatars: jest.fn()
+  getDefaultAvatars: jest.fn(() => 'mocked-avatars')
 }))
-;(bcrypt.genSalt as jest.Mock).mockResolvedValue('mocked-salt')
-;(bcrypt.hash as jest.Mock).mockResolvedValue('mocked-hash')
-;(getDefaultAvatars as jest.Mock).mockResolvedValue('mocked-avatars')
 
 describe('POST /register', () => {
   const reqBody = {
@@ -85,8 +88,6 @@ describe('POST /login', () => {
   }
 
   beforeEach(() => {
-    ;(bcrypt.compare as jest.Mock).mockResolvedValue(true)
-    ;(jwt.sign as jest.Mock).mockResolvedValue('mocked-jwt')
     prismaMock.user.findUnique.mockResolvedValue(mockedUserDbRes)
   })
 
@@ -108,7 +109,7 @@ describe('POST /login', () => {
   })
 
   it('should fail if password is invalid', async () => {
-    ;(bcrypt.compare as jest.Mock).mockResolvedValue(false)
+    ;(bcrypt.compare as jest.Mock).mockResolvedValueOnce(false)
 
     const res = await request(app).post('/login').send(reqBody)
 

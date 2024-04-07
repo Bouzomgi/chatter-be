@@ -7,7 +7,6 @@ export interface AuthedRequest extends Request {
   userId: number
 }
 
-// TODO: Add validator
 export const verifyToken = async (
   req: Request,
   res: Response,

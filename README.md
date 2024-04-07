@@ -17,10 +17,8 @@ To run
 To do
 
 Immediate
-  - add express validator
-    - add both validation and santitization
-  - finish BE tests
-    - get them working in CICD (will need to add env!)
+  - add validator for tokenVerification, fix settingsRoute
+  - get tests working in CICD (will need to add env!)
   - write some integration tests
   - Pop over to the FE and tie it together!
 Later
