@@ -15,6 +15,7 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "jest"],
+  "ignorePatterns": ["dist/*", "coverage/"],
   "overrides": [
     {
       "files": ["tests/**/*"],
