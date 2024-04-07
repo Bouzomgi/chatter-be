@@ -7,8 +7,8 @@
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
     "test": "npx jest --setupFiles dotenv/config --detectOpenHandles",
     "clean": "npx tsc --build --clean",
-    "lint": "npx eslint --fix --ext .ts . && npx prettier --write . && npx prisma format",
-    "check-lint": "npx eslint --ext .ts . && npx prettier --check .",
+    "lint": "npx eslint --fix --ext src/ test/ && npx prettier --write . && npx prisma format",
+    "check-lint": "npx eslint --ext src/ test && npx prettier --check .",
     "gen-schema": "npx prisma generate"
   },
   "author": "",
