@@ -14,7 +14,7 @@ app.use('/authed', verifyToken, settingsRoutes)
 app.use('/authed', verifyToken, chatRoutes)
 
 // ROUTES
-app.get('/health', (req, res) => {
+app.get('/health', (_, res) => {
   res.send('Up and running!')
 })
 

@@ -2,7 +2,7 @@
   "transform": { "^.+\\.ts?$": "ts-jest" },
   "testEnvironment": "node",
   "verbose": true,
-  "testMatch": ["**/test/*.test.ts?(x)"],
+  "testMatch": ["<rootDir>/test/**/*.test.ts"],
   "clearMocks": true,
   "preset": "ts-jest",
   "collectCoverage": true,
@@ -15,6 +15,6 @@
       "statements": 95
     }
   },
-  "setupFilesAfterEnv": ["<rootDir>/test/utils/singleton.ts"],
-  "setupFiles": ["<rootDir>/test/utils/setup.ts"]
+  "setupFilesAfterEnv": ["<rootDir>/test/unit/utils/singleton.ts"],
+  "setupFiles": ["<rootDir>/test/setup.ts"]
 }

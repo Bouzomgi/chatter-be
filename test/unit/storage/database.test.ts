@@ -1,6 +1,6 @@
 import * as awsSdkClientS3 from '@aws-sdk/client-s3'
 import { ListObjectsV2CommandOutput, S3Client } from '@aws-sdk/client-s3'
-import { getDefaultAvatars } from '../src/storage/s3Accessors'
+import { getDefaultAvatars } from '../../../src/storage/s3Accessors'
 
 const s3ClientSpy = jest.spyOn(awsSdkClientS3, 'S3Client')
 
@@ -8,6 +8,11 @@ jest.mock('@aws-sdk/client-s3', () => ({
   S3Client: jest.fn(),
   ListObjectsV2Command: jest.fn()
 }))
+
+beforeEach(() => {
+  jest.resetModules() // Reset module registry to avoid interference between tests
+  jest.clearAllMocks() // Clear all mocks
+})
 
 S3Client.prototype.send = jest.fn().mockResolvedValue({
   Contents: [

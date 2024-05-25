@@ -40,9 +40,10 @@ model Thread {
   id             Int          @id @default(autoincrement())
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   conversationId Int
-  User           User         @relation(fields: [member], references: [id])
+  user           User         @relation(fields: [member], references: [id])
   member         Int
-  unseen         Unseen?
+  message        Message?     @relation(fields: [unseen], references: [id])
+  unseen         Int?
 
   @@unique([conversationId, member])
   @@index([conversationId, member])
@@ -52,19 +53,9 @@ model Message {
   id             Int          @id @default(autoincrement())
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   conversationId Int
-  User           User         @relation(fields: [fromUser], references: [id])
+  user           User         @relation(fields: [fromUser], references: [id])
   fromUser       Int
   createdAt      DateTime     @default(now())
   content        String
-  unseen         Unseen[]
-}
-
-model Unseen {
-  id        Int     @id @default(autoincrement())
-  thread    Thread  @relation(fields: [threadId], references: [id])
-  threadId  Int
-  message   Message @relation(fields: [messageId], references: [id])
-  messageId Int
-
-  @@unique([threadId])
+  thread         Thread[]
 }

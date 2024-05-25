@@ -1,5 +1,5 @@
-import app from '../../src/app'
-import env from '../../src/config'
+import app from './app'
+import env from './config'
 
 const server = app.listen(env.PORT, () =>
   console.log(`Listening on port ${env.PORT}`)

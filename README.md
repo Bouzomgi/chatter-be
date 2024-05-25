@@ -16,11 +16,12 @@ To run
 
 To do
 
+https://github.com/eoin-obrien/prisma-extension-kysely
+
 Immediate
-  - add validator for tokenVerification, fix settingsRoute
-  - get tests working in CICD (will need to add env!)
   - write some integration tests
   - Pop over to the FE and tie it together!
+
 Later
   - set up swagger
   - maybe use AWS cognito

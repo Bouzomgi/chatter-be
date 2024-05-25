@@ -1,6 +1,11 @@
 import request from 'supertest'
-import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
+import app from '../../src/app'
+
+beforeEach(() => {
+  jest.resetModules() // Reset module registry to avoid interference between tests
+  jest.clearAllMocks() // Clear all mocks
+})
 
 describe('GET /health', () => {
   it('should return a healthcheck response', async () => {
