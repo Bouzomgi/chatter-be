@@ -14,9 +14,7 @@ To run
 - Create the DB tables using `prisma db push`
 - Run the backend using `npm start`
 
-To do
-
-https://github.com/eoin-obrien/prisma-extension-kysely
+To Do
 
 Immediate
   - write some integration tests
@@ -29,5 +27,3 @@ Later
 ! I can use the integration tests both locally and on AWS !
 
 In the FE, need to make an axios interceptor that moves the JWT cookie to a header in the auth
-
-Add Swagger, zod validations
