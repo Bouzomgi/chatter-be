@@ -1,9 +1,9 @@
 import request from 'supertest'
-import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
 import bcrypt from 'bcrypt'
-import { prismaMock } from './utils/singleton'
-import { getDefaultAvatars } from '../src/storage/s3Accessors'
+import app from '../../../src/app'
+import { prismaMock } from '../utils/singleton'
+import { getDefaultAvatars } from '../../../src/storage/s3Accessors'
 
 jest.mock('bcrypt', () => ({
   genSalt: jest.fn(() => 'mocked-salt'),
@@ -15,9 +15,14 @@ jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(() => 'mocked-jwt')
 }))
 
-jest.mock('../src/storage/s3Accessors', () => ({
+jest.mock('../../../src/storage/s3Accessors', () => ({
   getDefaultAvatars: jest.fn(() => 'mocked-avatars')
 }))
+
+beforeEach(() => {
+  jest.resetModules() // Reset module registry to avoid interference between tests
+  jest.clearAllMocks() // Clear all mocks
+})
 
 describe('POST /register', () => {
   const reqBody = {

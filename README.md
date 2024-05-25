@@ -14,13 +14,12 @@ To run
 - Create the DB tables using `prisma db push`
 - Run the backend using `npm start`
 
-To do
+To Do
 
 Immediate
-  - add validator for tokenVerification, fix settingsRoute
-  - get tests working in CICD (will need to add env!)
   - write some integration tests
   - Pop over to the FE and tie it together!
+
 Later
   - set up swagger
   - maybe use AWS cognito
@@ -28,5 +27,3 @@ Later
 ! I can use the integration tests both locally and on AWS !
 
 In the FE, need to make an axios interceptor that moves the JWT cookie to a header in the auth
-
-Add Swagger, zod validations

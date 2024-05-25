@@ -1,4 +1,4 @@
-import { verifyToken } from '../src/middlewares/tokenVerification'
+import { verifyToken } from '../../../src/middlewares/tokenVerification'
 import { StatusCodes } from 'http-status-codes'
 import { Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'

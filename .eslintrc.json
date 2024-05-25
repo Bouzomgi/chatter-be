@@ -14,8 +14,14 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "jest"],
-  "ignorePatterns": ["dist/*", "coverage/"],
+  "plugins": [
+    "@typescript-eslint",
+    "jest"
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "coverage/"
+  ],
   "overrides": [
     {
       "files": ["tests/**/*"],
@@ -25,7 +31,6 @@
     }
   ],
   "rules": {
-    /* PROBLEMS */
     "array-callback-return": 2,
     "no-await-in-loop": 2,
     "no-duplicate-imports": 2,
@@ -33,13 +38,10 @@
     "no-template-curly-in-string": 2,
     "no-unmodified-loop-condition": 2,
     "no-unreachable-loop": 2,
-
-    /* STYLE */
     "arrow-body-style": [2, "as-needed"],
     "camelcase": 2,
     "consistent-return": 2,
     "func-style": [2, "declaration", { "allowArrowFunctions": true }],
-    "max-lines": 1,
     "no-array-constructor": 2,
     "no-eval": 2,
     "no-lonely-if": 2,

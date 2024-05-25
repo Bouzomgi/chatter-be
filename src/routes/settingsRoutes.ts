@@ -8,6 +8,7 @@ import { getDefaultAvatars } from '../storage/s3Accessors'
 const router = express.Router()
 
 // TODO: make sure that the avatar is actually an avatar... not just like, random code
+// I think i can make a call to the BE, find all avatars, and store this so i dont keep making this req
 router.post(
   '/setAvatar',
   checkSchema({

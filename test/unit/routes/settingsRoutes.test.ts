@@ -1,21 +1,26 @@
 import request from 'supertest'
-import app from '../src/app'
 import { StatusCodes } from 'http-status-codes'
-import { prismaMock } from './utils/singleton'
-import { AuthedRequest } from './middlewares/tokenVerification'
-import { getDefaultAvatars } from '../src/storage/s3Accessors'
+import app from '../../../src/app'
+import { prismaMock } from '../utils/singleton'
+import { AuthedRequest } from '../../../src/middlewares/tokenVerification'
+import { getDefaultAvatars } from '../../../src/storage/s3Accessors'
 
 // Mocking the verifyToken middleware to call next immediately
-jest.mock('../src/middlewares/tokenVerification', () => ({
+jest.mock('../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, res, next) => {
     ;(req as AuthedRequest).userId = 1
     return next()
   })
 }))
 
-jest.mock('../src/storage/s3Accessors', () => ({
+jest.mock('../../../src/storage/s3Accessors', () => ({
   getDefaultAvatars: jest.fn(() => 'mocked-avatar')
 }))
+
+beforeEach(() => {
+  jest.resetModules() // Reset module registry to avoid interference between tests
+  jest.clearAllMocks() // Clear all mocks
+})
 
 describe('POST /setAvatar', () => {
   const sampleReq = { avatar: 'mocked-avatar' }
