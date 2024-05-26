@@ -9,7 +9,8 @@
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
-    "gen-schema": "npx prisma generate"
+    "gen-db-schema": "npx prisma generate",
+    "gen-openapi-types": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/generatedSchema.ts"
   },
   "author": "",
   "license": "ISC",
@@ -49,6 +50,9 @@
     "envalid": "^8.0.0",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
-    "jsonwebtoken": "^9.0.2"
+    "i": "^0.3.7",
+    "jsonwebtoken": "^9.0.2",
+    "npm": "^10.8.0",
+    "openapi-typescript": "^6.7.6"
   }
 }

@@ -3,6 +3,7 @@ import { verifyToken } from './middlewares/tokenVerification'
 import authRoutes from './routes/authRoutes'
 import settingsRoutes from './routes/settingsRoutes'
 import chatRoutes from './routes/chatRoutes'
+import { StatusCodes } from 'http-status-codes'
 
 const app = express()
 
@@ -15,7 +16,7 @@ app.use('/authed', verifyToken, chatRoutes)
 
 // ROUTES
 app.get('/health', (_, res) => {
-  res.send('Up and running!')
+  res.status(StatusCodes.OK).json({ error: 'Up and running!' })
 })
 
 export default app
