@@ -86,7 +86,7 @@ router.post(
       })
 
       return res
-        .status(StatusCodes.CREATED)
+        .status(StatusCodes.OK)
         .json({ message: 'Successfully created user' })
     } catch {
       return res

@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { AuthedRequest } from '../../../middlewares/tokenVerification'
+import { AuthedRequest } from '../../../../src/middlewares/tokenVerification'
 import { prismaMock } from '../../utils/singleton'
 
 // Mocking the verifyToken middleware to call next immediately
@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('PATCH /readThread/:threadId', () => {
+describe('DELETE /readThread/:threadId', () => {
   it('should successfully read a thread given a valid threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,
@@ -33,21 +33,34 @@ describe('PATCH /readThread/:threadId', () => {
       unseen: null
     })
 
-    const res = await request(app).patch('/authed/readThread/1')
+    const res = await request(app).delete('/authed/readThread/1')
 
-    expect(res.statusCode).toBe(StatusCodes.OK)
+    expect(res.statusCode).toBe(StatusCodes.GONE)
   })
 
   it('should fail if user does not have access to the given threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce(null)
 
-    const res = await request(app).patch('/authed/readThread/1')
+    const res = await request(app).delete('/authed/readThread/1')
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
 
+  it('should fail if the given threadId does not have unseens', async () => {
+    prismaMock.thread.findUnique.mockResolvedValueOnce({
+      id: 1,
+      conversationId: 1,
+      member: 1,
+      unseen: null
+    })
+
+    const res = await request(app).delete('/authed/readThread/1')
+
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
+  })
+
   it('should fail if request is invalid', async () => {
-    const res = await request(app).patch('/authed/readThread/1a')
+    const res = await request(app).delete('/authed/readThread/1a')
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
