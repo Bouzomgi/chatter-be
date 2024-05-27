@@ -22,7 +22,9 @@ router.post(
 
       const defaultAvatars = await getDefaultAvatars()
       if (!defaultAvatars.includes(req.body.avatar)) {
-        throw new Error("suppied avatar doesn't exist")
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: 'Could not find avatar' })
       }
 
       await prisma.profile.update({
