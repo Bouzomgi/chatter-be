@@ -37,7 +37,7 @@ router.patch(
 
       if (thread === null) {
         return res
-          .status(StatusCodes.NOT_FOUND)
+          .status(StatusCodes.UNAUTHORIZED)
           .json({ error: 'Thread was not found' })
       }
 
