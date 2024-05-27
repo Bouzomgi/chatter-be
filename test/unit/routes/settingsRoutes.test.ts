@@ -52,7 +52,7 @@ describe('POST /setAvatar', () => {
 
     const res = await request(app).post('/authed/setAvatar').send(sampleReq)
 
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 
   it('should fail if request is invalid', async () => {

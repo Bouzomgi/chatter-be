@@ -12,5 +12,6 @@ describe('GET /health', () => {
     const res = await request(app).get('/health')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
+    expect(res.text).toBe('Up and running!')
   })
 })
