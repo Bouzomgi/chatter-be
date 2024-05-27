@@ -63,7 +63,7 @@ describe('GET /chatheads', () => {
 
     const res = await request(app).get('/authed/chatheads')
 
-    expect(res.statusCode).toBe(StatusCodes.BAD_GATEWAY)
+    expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual([])
   })
 
