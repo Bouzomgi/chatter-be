@@ -43,7 +43,7 @@ describe('POST /register', () => {
 
     const res = await request(app).post('/register').send(reqBody)
 
-    expect(res.statusCode).toBe(StatusCodes.OK)
+    expect(res.statusCode).toBe(StatusCodes.CREATED)
   })
 
   it('should fail when email already exists', async () => {

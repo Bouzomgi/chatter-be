@@ -1,18 +1,18 @@
 import express, { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import prisma from './../../database'
+import prisma from '../../database'
 import { AuthedRequest } from '../../middlewares/tokenVerification'
 import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
 
-interface DeleteReadThreadRequest extends AuthedRequest {
+interface PatchReadThreadRequest extends AuthedRequest {
   params: {
     threadId: string
   }
 }
 
-router.delete(
+router.patch(
   '/readThread/:threadId',
   checkSchema({
     threadId: {
@@ -24,7 +24,7 @@ router.delete(
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as DeleteReadThreadRequest
+      const authedReq = req as PatchReadThreadRequest
       const threadId = parseInt(authedReq.params.threadId)
 
       // make sure user is authorized to their unseen message
@@ -38,12 +38,6 @@ router.delete(
       if (thread === null) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
-          .json({ error: 'Unauthorized' })
-      }
-
-      if (thread.unseen === null) {
-        return res
-          .status(StatusCodes.NOT_FOUND)
           .json({ error: 'Thread was not found' })
       }
 
@@ -56,13 +50,11 @@ router.delete(
         }
       })
 
-      return res
-        .status(StatusCodes.GONE)
-        .json({ error: 'Thread has been read' })
+      return res.status(StatusCodes.OK).json({ error: 'Read thread' })
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Could not read message' })
+        .json({ error: 'Could not read thread' })
     }
   }
 )
