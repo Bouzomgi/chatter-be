@@ -91,7 +91,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
-                
+
+  /authed/avatar:
+    get:
+      tags: 
+        - settings
+      summary: Get default avatars and the user's current avatar
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Default avatars and current avatar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  defaultAvatars:
+                    type: array
+                    items: string
+                    example: ['default-avatar-1', 'default-avatar-2']
+                  currentAvatar:
+                    type: string
+                    example: 'default-avatar-1'
+                required:
+                  - defaultAvatars
+                  - currentAvatar
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse400"   
+
   /authed/setAvatar:
     post:
       tags: 
