@@ -12,25 +12,25 @@ jest.mock('@aws-sdk/client-s3', () => ({
 beforeEach(() => {
   jest.resetModules() // Reset module registry to avoid interference between tests
   jest.clearAllMocks() // Clear all mocks
-})
 
-S3Client.prototype.send = jest.fn().mockResolvedValue({
-  Contents: [
-    {
-      Key: 'example.jpg',
-      Size: 1024,
-      LastModified: new Date('2024-04-24T12:00:00Z')
-    },
-    {
-      Key: 'example2.jpg',
-      Size: 2048,
-      LastModified: new Date('2024-04-24T12:00:00Z')
-    }
-  ],
-  NextContinuationToken: 'token123',
-  IsTruncated: true,
-  $metadata: {}
-} as ListObjectsV2CommandOutput)
+  S3Client.prototype.send = jest.fn().mockResolvedValue({
+    Contents: [
+      {
+        Key: 'example.jpg',
+        Size: 1024,
+        LastModified: new Date('2024-04-24T12:00:00Z')
+      },
+      {
+        Key: 'example2.jpg',
+        Size: 2048,
+        LastModified: new Date('2024-04-24T12:00:00Z')
+      }
+    ],
+    NextContinuationToken: 'token123',
+    IsTruncated: true,
+    $metadata: {}
+  } as ListObjectsV2CommandOutput)
+})
 
 describe('getDefaultAvatars', () => {
   it('should create an S3 client on first call', async () => {
@@ -45,5 +45,11 @@ describe('getDefaultAvatars', () => {
     await getDefaultAvatars()
 
     expect(s3ClientSpy).not.toHaveBeenCalled()
+  })
+
+  it('should fail if client call fails', () => {
+    S3Client.prototype.send = jest.fn().mockRejectedValueOnce(undefined)
+
+    expect(getDefaultAvatars()).rejects.toThrow()
   })
 })

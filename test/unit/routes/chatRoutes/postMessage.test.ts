@@ -15,9 +15,7 @@ jest.mock('../../../../src/middlewares/tokenVerification', () => ({
 beforeEach(() => {
   jest.resetModules() // Reset module registry to avoid interference between tests
   jest.clearAllMocks() // Clear all mocks
-})
 
-beforeEach(() => {
   prismaMock.$transaction.mockImplementation((callback) => callback(prismaMock))
 })
 
@@ -147,7 +145,7 @@ describe('POST /message', () => {
   })
 
   it("should fail if user is not part of the request's members", async () => {
-    const reqBody = { members: [1, 2, 3], content: 'lorem ipsem' }
+    const reqBody = { members: [2, 3], content: 'lorem ipsem' }
 
     const res = await request(app).post('/authed/message').send(reqBody)
 

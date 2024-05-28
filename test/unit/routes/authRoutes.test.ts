@@ -16,12 +16,13 @@ jest.mock('jsonwebtoken', () => ({
 }))
 
 jest.mock('../../../src/storage/s3Accessors', () => ({
-  getDefaultAvatars: jest.fn(() => 'mocked-avatars')
+  getDefaultAvatars: jest.fn()
 }))
 
 beforeEach(() => {
   jest.resetModules() // Reset module registry to avoid interference between tests
   jest.clearAllMocks() // Clear all mocks
+  ;(getDefaultAvatars as jest.Mock).mockResolvedValue(['mocked-avatar'])
 })
 
 describe('POST /register', () => {
@@ -65,7 +66,7 @@ describe('POST /register', () => {
 
   it('should fail when getDefaultAvatars fails', async () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
-    ;(getDefaultAvatars as jest.Mock).mockResolvedValue(undefined)
+    ;(getDefaultAvatars as jest.Mock).mockRejectedValueOnce(undefined)
 
     const res = await request(app).post('/register').send(reqBody)
 

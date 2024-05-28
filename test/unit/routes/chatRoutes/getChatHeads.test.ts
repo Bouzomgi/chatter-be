@@ -50,7 +50,7 @@ describe('GET /chatheads', () => {
       }
     ]
 
-    ;(pullChatHeads as jest.Mock).mockImplementation(() => mockedChatHeadDbRes)
+    ;(pullChatHeads as jest.Mock).mockResolvedValueOnce(mockedChatHeadDbRes)
 
     const res = await request(app).get('/authed/chatheads')
 
@@ -59,11 +59,19 @@ describe('GET /chatheads', () => {
   })
 
   it('should successfully return nothing if user is not part of any conversations', async () => {
-    ;(pullChatHeads as jest.Mock).mockImplementation(() => '')
+    ;(pullChatHeads as jest.Mock).mockResolvedValueOnce('')
 
     const res = await request(app).get('/authed/chatheads')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual([])
+  })
+
+  it('should fail if pullChatHeads fails', async () => {
+    ;(pullChatHeads as jest.Mock).mockRejectedValueOnce(undefined)
+
+    const res = await request(app).get('/authed/chatheads')
+
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 })
