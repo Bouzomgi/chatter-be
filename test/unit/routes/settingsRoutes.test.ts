@@ -23,7 +23,7 @@ beforeEach(() => {
   ;(getDefaultAvatars as jest.Mock).mockResolvedValue(['mocked-avatar'])
 })
 
-describe('POST /avatar', () => {
+describe('POST /setAvatar', () => {
   const sampleReq = { avatar: 'mocked-avatar' }
 
   it("should change a user's avatar successfully", async () => {
@@ -31,7 +31,7 @@ describe('POST /avatar', () => {
 
     prismaMock.profile.update.mockResolvedValueOnce(sampleProfile)
 
-    const res = await request(app).post('/authed/avatar').send(sampleReq)
+    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })
@@ -39,7 +39,7 @@ describe('POST /avatar', () => {
   it("should fail if a user's profile cannot be updated", async () => {
     prismaMock.profile.update.mockRejectedValue(undefined)
 
-    const res = await request(app).post('/authed/avatar').send(sampleReq)
+    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
@@ -47,13 +47,13 @@ describe('POST /avatar', () => {
   it('should fail if supplied avatar does not exist', async () => {
     const sampleReq = { avatar: 'unknown-avatar' }
 
-    const res = await request(app).post('/authed/avatar').send(sampleReq)
+    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
   })
 
   it('should fail if request is invalid', async () => {
-    const res = await request(app).post('/authed/avatar').send({})
+    const res = await request(app).post('/authed/setAvatar').send({})
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
