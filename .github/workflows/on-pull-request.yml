@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-tests:
+  on-pr:
     environment: test
     env:
       PORT: 3000
