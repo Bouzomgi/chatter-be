@@ -3,6 +3,9 @@
   "testEnvironment": "node",
   "verbose": true,
   "testMatch": ["<rootDir>/test/**/*.test.ts"],
+  "coveragePathIgnorePatterns": [
+    "<rootDir>/src/queries/*"
+  ],
   "clearMocks": true,
   "preset": "ts-jest",
   "collectCoverage": true,

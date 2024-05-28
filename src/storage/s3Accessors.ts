@@ -24,8 +24,12 @@ export async function getDefaultAvatars() {
     Prefix: 'avatars/default/'
   }
 
-  const client = getS3Client()
-  const command = new ListObjectsV2Command(input)
-  const listOutput = await client.send(command)
-  return listOutput.Contents!.map((elem) => elem.Key!)
+  try {
+    const client = getS3Client()
+    const command = new ListObjectsV2Command(input)
+    const listOutput = await client.send(command)
+    return listOutput.Contents!.map((elem) => elem.Key!)
+  } catch {
+    throw new Error('failed to get default avatars')
+  }
 }

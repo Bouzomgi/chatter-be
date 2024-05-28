@@ -64,10 +64,6 @@ router.post(
 
       const defaultAvatars = await getDefaultAvatars()
 
-      if (defaultAvatars == undefined) {
-        throw new Error('S3 bucket avatars do not exist')
-      }
-
       const randomIndex = Math.floor(Math.random() * defaultAvatars.length)
       const randomAvatar = defaultAvatars[randomIndex]
 
