@@ -4,12 +4,15 @@ info:
   version: 1.0.0
   description: This is a simple CRUD API application made with Express and documented with Swagger
 tags: 
+  - name: general
   - name: authentication
   - name: settings
   - name: chat
 paths:
   /health:
     get:
+      tags: 
+        - general
       summary: Health check
       responses:
         "200":
