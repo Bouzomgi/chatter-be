@@ -4,7 +4,8 @@
   "verbose": true,
   "testMatch": ["<rootDir>/test/**/*.test.ts"],
   "coveragePathIgnorePatterns": [
-    "<rootDir>/src/queries/*"
+    "<rootDir>/src/queries/*",
+    "<rootDir>/src/api/*"
   ],
   "clearMocks": true,
   "preset": "ts-jest",
