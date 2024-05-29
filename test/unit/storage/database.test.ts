@@ -48,7 +48,7 @@ describe('getAvatarUrl', () => {
     expect(avatarObject).toEqual(expectedAvatarObject)
   })
 
-  it('should throw if cannot get signed url', async () => {
+  it('should throw if cannot get signed url', () => {
     ;(getSignedUrl as jest.Mock).mockRejectedValueOnce(undefined)
 
     const avatarObjectPromise = getAvatarUrl('example-avatar-1')
