@@ -95,7 +95,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
 
-  /authed/avatar:
+  /authed/avatars:
     get:
       tags: 
         - settings
@@ -243,6 +243,13 @@ paths:
                           type: string
                         content: 
                           type: string
+                      required:
+                        - id
+                        - conversationId
+                        - fromUser
+                        - createdAt
+                        - content
+
         "400":
           description: Bad Request
           content:
@@ -257,7 +264,7 @@ paths:
                 $ref: "#/components/schemas/InvalidResponse401"
 
   /authed/readThread/{threadId}:
-    get:
+    patch:
       tags: 
         - chat
       summary: Mark a specified thread as read
@@ -323,7 +330,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/InvalidResponse401"
 
-  /authed/postMessage:
+  /authed/message:
     post:
       tags: 
         - chat
@@ -361,23 +368,23 @@ components:
       type: object
       additionalProperties: false
       properties:
-        error:
+        message:
           type: string
-          description: Error text.
+          description: Message text.
           example: Successful request
       required:
-        - error
+        - message
         
     SuccessfulResponse201:
       type: object
       additionalProperties: false
       properties:
-        error:
+        message:
           type: string
-          description: Error text.
+          description: Message text.
           example: Created successfully
       required:
-        - error
+        - message
         
     InvalidResponse400:
       type: object

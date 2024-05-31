@@ -1,7 +1,11 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
-import { AuthedRequest } from '../../middlewares/tokenVerification'
+import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
@@ -21,11 +25,14 @@ router.post(
     },
     'content': { in: ['body'], notEmpty: true }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/authed/message', 'post'>,
+    res: PathMethodResponse<'/authed/message'>
+  ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as AuthedRequest
+      const authedReq = req as AuthedRequest<'/authed/message', 'post'>
       const { content } = authedReq.body
 
       const members: Array<number> = authedReq.body.members

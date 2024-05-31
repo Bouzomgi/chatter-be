@@ -3,7 +3,7 @@ import env from '../config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 
-export interface AuthedRequest extends Request {
+interface AuthedRequest extends Request {
   userId: number
 }
 

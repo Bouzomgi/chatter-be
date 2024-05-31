@@ -1,40 +1,15 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
-import prisma from './../database'
-import { AuthedRequest } from '../middlewares/tokenVerification'
+import prisma from '../../database'
+import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
-import { getDefaultAvatars } from '../storage/s3Accessors'
+import { getDefaultAvatars } from '../../storage/s3Accessors'
 
 const router = express.Router()
-
-router.get('/avatars', async (req: Request, res: Response) => {
-  try {
-    const authedReq = req as AuthedRequest
-
-    const defaultAvatars = await getDefaultAvatars()
-
-    const userProfile = await prisma.profile.findUnique({
-      where: {
-        userId: authedReq.userId
-      }
-    })
-
-    if (userProfile === null) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Could not find user profile' })
-    }
-
-    return res.status(StatusCodes.OK).json({
-      defaultAvatars,
-      currentAvatar: userProfile.avatar
-    })
-  } catch {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Could not change avatar' })
-  }
-})
 
 // TODO: make sure that the avatar is actually an avatar... not just like, random code
 // I think i can make a call to the BE, find all avatars, and store this so i dont keep making this req
@@ -43,11 +18,14 @@ router.post(
   checkSchema({
     avatar: { in: ['body'], notEmpty: true }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/authed/setAvatar', 'post'>,
+    res: PathMethodResponse<'/authed/setAvatar'>
+  ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as AuthedRequest
+      const authedReq = req as AuthedRequest<'/authed/setAvatar', 'post'>
 
       const defaultAvatars = await getDefaultAvatars()
       if (!defaultAvatars.includes(req.body.avatar)) {

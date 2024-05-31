@@ -9,7 +9,8 @@
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
-    "gen-db-schema": "npx prisma generate"
+    "gen-db-schema": "npx prisma generate",
+    "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts"
   },
   "author": "",
   "license": "ISC",
@@ -37,12 +38,13 @@
     "jest-mock-extended": "^3.0.5",
     "libpg-query": "^16.1.0",
     "nodemon": "^3.1.0",
+    "openapi-typescript": "^7.0.0-rc.0",
     "prettier": "^3.2.5",
     "prisma": "^5.14.0",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.5",
     "typescript-eslint": "^7.2.0"
   },
   "dependencies": {

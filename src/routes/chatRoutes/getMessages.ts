@@ -1,16 +1,14 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
-import { AuthedRequest } from '../../middlewares/tokenVerification'
 import { checkSchema, validationResult } from 'express-validator'
+import AuthedRequest from '../../middlewares/authedRequest'
 
 const router = express.Router()
-
-interface GetMessageRequest extends AuthedRequest {
-  params: {
-    threadId: string
-  }
-}
 
 router.get(
   '/messages/:threadId',
@@ -20,11 +18,17 @@ router.get(
       isNumeric: true
     }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/authed/messages/{threadId}', 'get'>,
+    res: PathMethodResponse<'/authed/messages/{threadId}'>
+  ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as GetMessageRequest
+      const authedReq = req as AuthedRequest<
+        '/authed/messages/{threadId}',
+        'get'
+      >
       const threadId = parseInt(authedReq.params.threadId)
 
       // make sure user is authorized to access the requested conversation
@@ -59,7 +63,7 @@ router.get(
         }
       })
 
-      return res.status(StatusCodes.OK).json(threadMessages!.messages)
+      return res.status(StatusCodes.OK).json(threadMessages.messages)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)
