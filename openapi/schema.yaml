@@ -112,7 +112,8 @@ paths:
                 properties:
                   defaultAvatars:
                     type: array
-                    items: string
+                    items: 
+                      type: string
                     example: ['default-avatar-1', 'default-avatar-2']
                   currentAvatar:
                     type: string
@@ -126,6 +127,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"   
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
 
   /authed/setAvatar:
     post:
@@ -159,6 +166,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
         "404":
           description: Not Found
           content:
@@ -186,7 +199,63 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
-    
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
+
+  /authed/messages/{threadId}:
+    get:
+      tags: 
+        - chat
+      summary: Get messages for a specified thread
+      security:
+        - jwtAuth: []
+      parameters:
+        - name: threadId
+          in: path
+          required: true
+          description: ID of the thread to get messages from
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully got messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  messages: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        id: 
+                          type: number
+                        conversationId:
+                          type: number
+                        fromUser: 
+                          type: number
+                        createdAt: 
+                          type: string
+                        content: 
+                          type: string
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse400"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
+
   /authed/readThread/{threadId}:
     get:
       tags: 
@@ -214,6 +283,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
         "404":
           description: Not Found
           content:
@@ -241,7 +316,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"
-                
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
+
   /authed/postMessage:
     post:
       tags: 
@@ -262,7 +343,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidResponse400"      
-      
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse401"
+                      
 components:
   securitySchemes:
     jwtAuth:
