@@ -1,20 +1,16 @@
 import prisma from './../database'
+import { components } from '../../openapi/schema'
 
-type ChatHead = {
-  conversationId: number
-  content: string
-  createdAt: string
-  fromUser: number
-  threadId: number
-  avatar: string
-}
+type Chathead = components['schemas']['Message']
+
+// TODO: FIX THIS!!!!!
 
 /*
   Returns the last message & corresponding data from each chat the passed in user is part of, 
   sorted by createdAt datetime
 */
 const pullChatHeads = (userId: number) =>
-  prisma.$queryRaw<ChatHead[]>`
+  prisma.$queryRaw<Chathead[]>`
     SELECT 
       "B"."conversationId", 
       "content", 
@@ -49,4 +45,4 @@ const pullChatHeads = (userId: number) =>
     ORDER BY "B"."createdAt" ASC
   `
 
-export { ChatHead, pullChatHeads }
+export default pullChatHeads

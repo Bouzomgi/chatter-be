@@ -7,6 +7,9 @@ import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import { checkSchema, validationResult } from 'express-validator'
 import AuthedRequest from '../../middlewares/authedRequest'
+import { components } from '../../../openapi/schema'
+
+type Message = components['schemas']['Message']
 
 const router = express.Router()
 
@@ -35,7 +38,7 @@ router.get(
       const thread = await prisma.thread.findUnique({
         where: {
           id: threadId,
-          member: authedReq.userId
+          memberId: authedReq.userId
         }
       })
 
@@ -63,7 +66,14 @@ router.get(
         }
       })
 
-      return res.status(StatusCodes.OK).json(threadMessages.messages)
+      const messages: Message[] = threadMessages!.messages.map((msg) => ({
+        messageId: msg.id,
+        fromUserId: msg.fromUserId,
+        createdAt: msg.createdAt.toString(),
+        content: msg.content
+      }))
+
+      return res.status(StatusCodes.OK).json(messages)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

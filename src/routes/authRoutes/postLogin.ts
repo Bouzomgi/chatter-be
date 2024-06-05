@@ -25,17 +25,22 @@ router.post(
     try {
       await validationResult(req).throw()
 
-      const existingUser = await prisma.user.findUnique({
+      const existingProfile = await prisma.profile.findUnique({
         where: {
           username: req.body.username
+        },
+        include: {
+          user: true
         }
       })
 
-      if (existingUser === null) {
+      if (existingProfile === null) {
         return res
           .status(StatusCodes.NOT_FOUND)
           .json({ error: 'Username is not recognized' })
       }
+
+      const existingUser = existingProfile.user
 
       const validPass = await bcrypt.compare(
         req.body.password,

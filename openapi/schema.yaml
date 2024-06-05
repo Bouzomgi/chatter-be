@@ -16,11 +16,8 @@ paths:
       summary: Health check
       responses:
         "200":
-          description: Successful health check
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
+          $ref: '#/components/responses/Ok'
+
   /register:
     post:
       tags: 
@@ -49,17 +46,11 @@ paths:
                 - password
       responses:
         "201":
-          description: Successfully created User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse201"
+          $ref: '#/components/responses/Created'
+
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
+          $ref: '#/components/responses/BadRequest'
+
   /login:
     post:
       tags: 
@@ -83,17 +74,16 @@ paths:
                 - password
       responses:
         "200":
-          description: Successfully logged in
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
+          $ref: '#/components/responses/Ok'
+
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
+          $ref: '#/components/responses/BadRequest'
+          
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        
+        "404":
+          $ref: '#/components/responses/NotFound'
 
   /authed/avatars:
     get:
@@ -112,27 +102,18 @@ paths:
                 properties:
                   defaultAvatars:
                     type: array
-                    items: 
-                      type: string
-                    example: ['default-avatar-1', 'default-avatar-2']
+                    items:
+                      $ref: '#/components/schemas/Avatar'
                   currentAvatar:
-                    type: string
-                    example: 'default-avatar-1'
+                      $ref: '#/components/schemas/Avatar'
                 required:
                   - defaultAvatars
                   - currentAvatar
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"   
+          $ref: '#/components/responses/BadRequest'
+ 
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+          $ref: '#/components/responses/Unauthorized'
 
   /authed/setAvatar:
     post:
@@ -148,37 +129,30 @@ paths:
             schema:
               type: object
               properties:
-                avatar:
+                members:
+                  example: [1, 2]
+                  type: array
+                  items:
+                    type: number
+                content:
                   type: string
-                  example: avatar1
+                  example: 'lorem ipsum'
               required:
-                - avatar
+                - members
+                - content
       responses:
         "200":
-          description: Successfully changed avatar
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
+          $ref: '#/components/responses/Ok'
+
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
+          $ref: '#/components/responses/BadRequest'
+
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+          $ref: '#/components/responses/Unauthorized'
+
         "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse404"
-    
+          $ref: '#/components/responses/NotFound'
+
   /authed/chatheads:
     get:
       tags: 
@@ -187,24 +161,20 @@ paths:
       security:
         - jwtAuth: []
       responses:
-        "201":
-          description: Successfully created message
+        "200":
+          description: Successfully got chat heads
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chathead'
+
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
+          $ref: '#/components/responses/BadRequest'
+
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+          $ref: '#/components/responses/Unauthorized'
 
   /authed/messages/{threadId}:
     get:
@@ -226,42 +196,58 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: 
-                  messages: 
-                    type: array
-                    items: 
-                      type: object
-                      properties:
-                        id: 
-                          type: number
-                        conversationId:
-                          type: number
-                        fromUser: 
-                          type: number
-                        createdAt: 
-                          type: string
-                        content: 
-                          type: string
-                      required:
-                        - id
-                        - conversationId
-                        - fromUser
-                        - createdAt
-                        - content
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Message'
 
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
+          $ref: '#/components/responses/BadRequest'
+
         "401":
-          description: Unauthorized
-          content:
+          $ref: '#/components/responses/Unauthorized'
+
+  
+  /authed/userHeads:
+    get:
+      tags: 
+        - chat
+      summary: Get user heads for a given user
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Successfully got user heads
+          content: 
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+                type: array
+                items:
+                  $ref: '#/components/schemas/Userhead'
+
+        "400":
+          $ref: '#/components/responses/BadRequest'
+
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+
+  /authed/message:
+    post:
+      tags: 
+        - chat
+      summary: Send a message to a specified chat thread
+      security:
+        - jwtAuth: []
+        
+      responses:
+        "200":
+          $ref: '#/components/responses/Ok'
+
+        "400":
+          $ref: '#/components/responses/BadRequest'
+      
+        "401":
+          $ref: '#/components/responses/Unauthorized'
 
   /authed/readThread/{threadId}:
     patch:
@@ -279,83 +265,16 @@ paths:
             type: string
       responses:
         "200":
-          description: Successfully read thread
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
-  
-  /authed/userHeads:
-    get:
-      tags: 
-        - chat
-      summary: Get user heads for a given user
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: Successfully got user heads
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+          $ref: '#/components/responses/Ok'
 
-  /authed/message:
-    post:
-      tags: 
-        - chat
-      summary: Send a message to a specified chat thread
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: Successfully got user heads
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessfulResponse200"
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse400"      
+          $ref: '#/components/responses/BadRequest'
+
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidResponse401"
+          $ref: '#/components/responses/Unauthorized'
+
+        "404":
+          $ref: '#/components/responses/NotFound'
                       
 components:
   securitySchemes:
@@ -363,58 +282,139 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      
   schemas:
-    SuccessfulResponse200:
+    Avatar:
       type: object
-      additionalProperties: false
       properties:
-        message:
+        name:
           type: string
-          description: Message text.
-          example: Successful request
+          example: "avatar-1"
+        url:
+          type: string
+          example: "www.avatar-1.com"
       required:
+        - name
+        - url
+
+    Chathead:
+      type: object
+      properties:
+        conversationId: 
+          type: number
+          example: 1
+        threadId:
+          type: number
+          example: 1
+        unseenMessageId: 
+          type: number
+          example: 1
+        avatar: 
+          $ref: '#/components/schemas/Avatar'
+        message: 
+          $ref: '#/components/schemas/Message'
+      required:
+        - conversationId
+        - threadId
+        - avatar
         - message
-        
-    SuccessfulResponse201:
+
+    Userhead:
       type: object
-      additionalProperties: false
       properties:
-        message:
+        userId: 
+          type: number
+          example: 1
+        avatar: 
+          $ref: '#/components/schemas/Avatar'
+        username: 
           type: string
-          description: Message text.
-          example: Created successfully
+          example: 'mike11'
       required:
-        - message
-        
-    InvalidResponse400:
+        - userId
+        - avatar
+        - username
+
+    Message:
       type: object
-      additionalProperties: false
       properties:
-        error:
+        messageId: 
+          type: number
+          example: 1
+        fromUserId: 
+          type: number
+          example: 1
+        createdAt: 
           type: string
-          description: Error text.
-          example: Incorrectly formatted request
-      required:
-        - error
-        
-    InvalidResponse401:
-      type: object
-      additionalProperties: false
-      properties:
-        error:
+          example: '2024-03-15T10:01:00Z'
+        content: 
           type: string
-          description: Error text.
-          example: Specified content was not found
+          example: 'lorem ipsum'
       required:
-        - error
-        
-    InvalidResponse404:
-      type: object
-      additionalProperties: false
-      properties:
-        error:
-          type: string
-          description: Error text.
-          example: Could not find specified resource
-      required:
-        - error
+        - messageId
+        - fromUserId
+        - createdAt
+        - content
+    
+  responses:
+    Ok:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Request was successful."
+            required: 
+              - message
+    Created:
+      description: Resource created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Resource created successfully."
+            required: 
+              - message
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid request parameters."
+            required: 
+              - error
+    Unauthorized:
+      description: Unauthorized access
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Authentication is required."
+            required: 
+              - error
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Resource not found."
+            required: 
+              - error
+

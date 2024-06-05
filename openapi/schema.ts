@@ -21,15 +21,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Successful health check */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
+                200: components["responses"]["Ok"];
             };
         };
         put?: never;
@@ -70,24 +62,8 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Successfully created User */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse201"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
+                201: components["responses"]["Created"];
+                400: components["responses"]["BadRequest"];
             };
         };
         delete?: never;
@@ -124,24 +100,10 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Successfully logged in */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
+                200: components["responses"]["Ok"];
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
             };
         };
         delete?: never;
@@ -174,34 +136,13 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            /** @example [
-                             *       "default-avatar-1",
-                             *       "default-avatar-2"
-                             *     ] */
-                            defaultAvatars: string[];
-                            /** @example default-avatar-1 */
-                            currentAvatar: string;
+                            defaultAvatars: components["schemas"]["Avatar"][];
+                            currentAvatar: components["schemas"]["Avatar"];
                         };
                     };
                 };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
             };
         };
         put?: never;
@@ -232,48 +173,21 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example avatar1 */
-                        avatar: string;
+                        /** @example [
+                         *       1,
+                         *       2
+                         *     ] */
+                        members: number[];
+                        /** @example lorem ipsum */
+                        content: string;
                     };
                 };
             };
             responses: {
-                /** @description Successfully changed avatar */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse404"];
-                    };
-                };
+                200: components["responses"]["Ok"];
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
             };
         };
         delete?: never;
@@ -299,33 +213,17 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Successfully created message */
-                201: {
+                /** @description Successfully got chat heads */
+                200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
+                        "application/json": components["schemas"]["Chathead"][];
                     };
                 };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
             };
         };
         put?: never;
@@ -362,39 +260,83 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            messages?: {
-                                id: number;
-                                conversationId: number;
-                                fromUser: number;
-                                createdAt: string;
-                                content: string;
-                            }[];
-                        };
+                        "application/json": components["schemas"]["Message"][];
                     };
                 };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
             };
         };
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/authed/userHeads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user heads for a given user */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Successfully got user heads */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Userhead"][];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/authed/message": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a message to a specified chat thread */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: components["responses"]["Ok"];
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -427,195 +369,114 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Successfully read thread */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
+                200: components["responses"]["Ok"];
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
             };
         };
-        trace?: never;
-    };
-    "/authed/userHeads": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get user heads for a given user */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got user heads */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/authed/message": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Send a message to a specified chat thread */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got user heads */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SuccessfulResponse200"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse400"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InvalidResponse401"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        SuccessfulResponse200: {
-            /**
-             * @description Message text.
-             * @example Successful request
-             */
-            message: string;
+        Avatar: {
+            /** @example avatar-1 */
+            name: string;
+            /** @example www.avatar-1.com */
+            url: string;
         };
-        SuccessfulResponse201: {
-            /**
-             * @description Message text.
-             * @example Created successfully
-             */
-            message: string;
+        Chathead: {
+            /** @example 1 */
+            conversationId: number;
+            /** @example 1 */
+            threadId: number;
+            /** @example 1 */
+            unseenMessageId?: number;
+            avatar: components["schemas"]["Avatar"];
+            message: components["schemas"]["Message"];
         };
-        InvalidResponse400: {
-            /**
-             * @description Error text.
-             * @example Incorrectly formatted request
-             */
-            error: string;
+        Userhead: {
+            /** @example 1 */
+            userId: number;
+            avatar: components["schemas"]["Avatar"];
+            /** @example mike11 */
+            username: string;
         };
-        InvalidResponse401: {
-            /**
-             * @description Error text.
-             * @example Specified content was not found
-             */
-            error: string;
-        };
-        InvalidResponse404: {
-            /**
-             * @description Error text.
-             * @example Could not find specified resource
-             */
-            error: string;
+        Message: {
+            /** @example 1 */
+            messageId: number;
+            /** @example 1 */
+            fromUserId: number;
+            /** @example 2024-03-15T10:01:00Z */
+            createdAt: string;
+            /** @example lorem ipsum */
+            content: string;
         };
     };
-    responses: never;
+    responses: {
+        /** @description Successful response */
+        Ok: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Request was successful. */
+                    message: string;
+                };
+            };
+        };
+        /** @description Resource created successfully */
+        Created: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Resource created successfully. */
+                    message: string;
+                };
+            };
+        };
+        /** @description Bad request */
+        BadRequest: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Invalid request parameters. */
+                    error: string;
+                };
+            };
+        };
+        /** @description Unauthorized access */
+        Unauthorized: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Authentication is required. */
+                    error: string;
+                };
+            };
+        };
+        /** @description Resource not found */
+        NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Resource not found. */
+                    error: string;
+                };
+            };
+        };
+    };
     parameters: never;
     requestBodies: never;
     headers: never;

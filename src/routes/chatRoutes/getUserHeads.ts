@@ -6,6 +6,9 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
+import { components } from '../../../openapi/schema'
+
+type Userhead = components['schemas']['Userhead']
 
 const router = express.Router()
 
@@ -27,7 +30,7 @@ router.get(
         include: { profile: true }
       })
 
-      const userHeads = users.map((user) => {
+      const userHeads: Userhead[] = users.map((user) => {
         const { profile, ...rest } = user
         return {
           avatar: profile!.avatar,

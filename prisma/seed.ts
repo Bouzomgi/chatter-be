@@ -5,34 +5,39 @@ async function main() {
   // Seed data for User model
   const users: Prisma.UserUncheckedCreateInput[] = [
     {
-      username: 'adam',
       email: 'adam@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
-      profile: { create: { avatar: './avatars/default/avatar1.svg' } }
+      profile: {
+        create: { username: 'adam', avatar: './avatars/default/avatar1.svg' }
+      }
     },
     {
-      username: 'britta',
       email: 'britta@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
-      profile: { create: { avatar: './avatars/default/avatar2.svg' } }
+      profile: {
+        create: { username: 'britta', avatar: './avatars/default/avatar2.svg' }
+      }
     },
     {
-      username: 'carl',
       email: 'carl@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
-      profile: { create: { avatar: './avatars/default/avatar3.svg' } }
+      profile: {
+        create: { username: 'carl', avatar: './avatars/default/avatar3.svg' }
+      }
     },
     {
-      username: 'dana',
       email: 'dana@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
-      profile: { create: { avatar: './avatars/default/avatar4.svg' } }
+      profile: {
+        create: { username: 'dana', avatar: './avatars/default/avatar4.svg' }
+      }
     },
     {
-      username: 'edward',
       email: 'edward@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
-      profile: { create: { avatar: './avatars/default/avatar5.svg' } }
+      profile: {
+        create: { username: 'edward', avatar: './avatars/default/avatar5.svg' }
+      }
     }
   ]
 
@@ -41,43 +46,43 @@ async function main() {
       messages: {
         create: [
           {
-            fromUser: 1,
+            fromUserId: 1,
             content: 'Hi Britta, how are you?',
             createdAt: '2024-03-15T10:01:00Z'
           },
           {
-            fromUser: 2,
+            fromUserId: 2,
             content: "Hey Adam, I'm good, thanks! How about you?",
             createdAt: '2024-03-16T10:00:00Z'
           },
           {
-            fromUser: 1,
+            fromUserId: 1,
             content: "I'm doing well too. Did you see the game last night?",
             createdAt: '2024-03-18T15:00:00Z'
           },
           {
-            fromUser: 2,
+            fromUserId: 2,
             content: 'Yes, the game was amazing!',
             createdAt: '2024-03-20T18:00:00Z'
           },
           {
-            fromUser: 2,
+            fromUserId: 2,
             content: 'Who do you think will win the championship?',
             createdAt: '2024-03-20T18:00:02Z'
           },
           {
-            fromUser: 1,
+            fromUserId: 1,
             content:
               'I think Team A has a good chance. They played exceptionally well in the last few games.',
             createdAt: '2024-03-20T18:00:06Z'
           },
           {
-            fromUser: 1,
+            fromUserId: 1,
             content: 'We should watch a game together sometime.',
             createdAt: '2024-03-20T22:00:06Z'
           },
           {
-            fromUser: 2,
+            fromUserId: 2,
             content: "That sounds like a plan. Let's do it!",
             createdAt: '2024-03-29T08:00:00Z'
           }
@@ -88,7 +93,7 @@ async function main() {
       messages: {
         create: [
           {
-            fromUser: 3,
+            fromUserId: 3,
             content: 'Hey Adam, how have you been?',
             createdAt: '2024-03-15T10:40:00Z'
           }
@@ -99,7 +104,7 @@ async function main() {
       messages: {
         create: [
           {
-            fromUser: 4,
+            fromUserId: 4,
             content: 'Do we still have milk?',
             createdAt: '2024-03-15T10:25:00Z'
           }
@@ -114,17 +119,17 @@ async function main() {
       threads: {
         create: [
           {
-            member: 1,
-            unseen: 1
+            memberId: 1,
+            unseenMessageId: 1
           },
-          { member: 2 }
+          { memberId: 2 }
         ]
       }
     },
     {
       id: 2,
       threads: {
-        create: [{ member: 1 }, { member: 3 }]
+        create: [{ memberId: 1 }, { memberId: 3 }]
       }
     },
     {
@@ -132,10 +137,10 @@ async function main() {
       threads: {
         create: [
           {
-            member: 1,
-            unseen: 10
+            memberId: 1,
+            unseenMessageId: 10
           },
-          { member: 4 }
+          { memberId: 4 }
         ]
       }
     }

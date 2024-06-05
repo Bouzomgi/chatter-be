@@ -51,7 +51,7 @@ router.post(
           .json({ message: 'Email is already in use' })
       }
 
-      const usernameExists = await prisma.user.findFirst({
+      const usernameExists = await prisma.profile.findFirst({
         where: {
           username: req.body.username
         }
@@ -75,11 +75,11 @@ router.post(
       // CREATE THE USER AND PROFILE
       await prisma.user.create({
         data: {
-          username: req.body.username,
           email: req.body.email,
           password: hashedPassword,
           profile: {
             create: {
+              username: req.body.username,
               avatar: randomAvatar.name
             }
           }
