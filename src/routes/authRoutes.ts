@@ -75,7 +75,7 @@ router.post(
           password: hashedPassword,
           profile: {
             create: {
-              avatar: randomAvatar
+              avatar: randomAvatar.name
             }
           }
         }
