@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
 import AuthedRequest from '../../../../src/middlewares/authedRequest'
 import { prismaMock } from '../../utils/singleton'
+import { getAvatar } from '../../../../src/storage/s3Accessors'
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
@@ -54,10 +55,20 @@ describe('GET /userHeads', () => {
     expect(res.body).toEqual(expectedBody)
   })
 
-  it('should fail if the request is invalid', async () => {
-    const reqBody = { members: ['1'], content: 'lorem ipsem' }
+  it('should fail if there is a failure', async () => {
+    const mockedUserHeadsDbRes = [
+      {
+        id: 1,
+        userId: 1,
+        username: 'adam',
+        avatar: 'my-avatar'
+      }
+    ]
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    prismaMock.profile.findMany.mockResolvedValueOnce(mockedUserHeadsDbRes)
+    ;(getAvatar as jest.Mock).mockRejectedValueOnce(undefined)
+
+    const res = await request(app).post('/authed/message').send()
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
