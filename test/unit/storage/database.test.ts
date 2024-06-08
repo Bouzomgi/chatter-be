@@ -1,8 +1,5 @@
 import { ListObjectsV2CommandOutput, S3Client } from '@aws-sdk/client-s3'
-import {
-  getAvatarUrl,
-  getDefaultAvatars
-} from '../../../src/storage/s3Accessors'
+import { getAvatar, getDefaultAvatars } from '../../../src/storage/s3Accessors'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 jest.mock('@aws-sdk/client-s3', () => ({
@@ -41,7 +38,7 @@ beforeEach(() => {
 
 describe('getAvatarUrl', () => {
   it('should successfully generate an avatar object', async () => {
-    const avatarObject = await getAvatarUrl('example-avatar-1')
+    const avatarObject = await getAvatar('example-avatar-1')
 
     const expectedAvatarObject = { name: 'example-avatar-1', url: 'mocked-url' }
 
@@ -51,7 +48,7 @@ describe('getAvatarUrl', () => {
   it('should throw if cannot get signed url', () => {
     ;(getSignedUrl as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const avatarObjectPromise = getAvatarUrl('example-avatar-1')
+    const avatarObjectPromise = getAvatar('example-avatar-1')
 
     expect(avatarObjectPromise).rejects.toThrow()
   })

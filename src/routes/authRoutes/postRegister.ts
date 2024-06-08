@@ -1,10 +1,12 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
-import prisma from './../database'
+import prisma from './../../database'
 import bcrypt from 'bcrypt'
-import { getDefaultAvatars } from '../storage/s3Accessors'
-import jwt from 'jsonwebtoken'
-import env from '../config'
+import { getDefaultAvatars } from '../../storage/s3Accessors'
 import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
@@ -30,7 +32,10 @@ router.post(
       }
     }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/register', 'post'>,
+    res: PathMethodResponse<'/register'>
+  ) => {
     try {
       await validationResult(req).throw()
 
@@ -46,7 +51,7 @@ router.post(
           .json({ message: 'Email is already in use' })
       }
 
-      const usernameExists = await prisma.user.findFirst({
+      const usernameExists = await prisma.profile.findFirst({
         where: {
           username: req.body.username
         }
@@ -70,11 +75,11 @@ router.post(
       // CREATE THE USER AND PROFILE
       await prisma.user.create({
         data: {
-          username: req.body.username,
           email: req.body.email,
           password: hashedPassword,
           profile: {
             create: {
+              username: req.body.username,
               avatar: randomAvatar.name
             }
           }
@@ -88,66 +93,6 @@ router.post(
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not register' })
-    }
-  }
-)
-
-router.post(
-  '/login',
-  checkSchema({
-    username: { in: ['body'], trim: true, notEmpty: true, toLowerCase: true },
-    password: { in: ['body'], notEmpty: true }
-  }),
-  async (req: Request, res: Response) => {
-    try {
-      await validationResult(req).throw()
-
-      const existingUser = await prisma.user.findUnique({
-        where: {
-          username: req.body.username
-        }
-      })
-
-      if (existingUser === null) {
-        return res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ error: 'Username is not recognized' })
-      }
-
-      const validPass = await bcrypt.compare(
-        req.body.password,
-        existingUser.password
-      )
-
-      if (!validPass) {
-        return res
-          .status(StatusCodes.UNAUTHORIZED)
-          .json({ error: 'Invalid password' })
-      }
-
-      // CREATE AND ASSIGN A TOKEN
-      const token = await jwt.sign(
-        {
-          userId: existingUser!.id
-        },
-        env.TOKEN_SECRET,
-        { expiresIn: '30h' }
-      )
-
-      return res
-        .status(StatusCodes.OK)
-        .cookie('auth-token', token, {
-          httpOnly: true,
-          secure: false, // switch
-          sameSite: 'none' // Allows the cookie to be sent from a different origin (cross-origin requests)
-        })
-        .json({
-          message: 'Logged in'
-        })
-    } catch {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Could not login' })
     }
   }
 )

@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { AuthedRequest } from '../../../../src/middlewares/tokenVerification'
+import AuthedRequest from '../../../../src/middlewares/authedRequest'
 import { prismaMock } from '../../utils/singleton'
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
-  verifyToken: jest.fn((req, res, next) => {
-    ;(req as AuthedRequest).userId = 1
+  verifyToken: jest.fn((req, _, next) => {
+    ;(req as AuthedRequest<'/authed/message', 'post'>).userId = 1
     return next()
   })
 }))
@@ -27,9 +27,9 @@ describe('POST /message', () => {
     prismaMock.thread.groupBy.mockResolvedValueOnce([])
 
     const mockedUserList = [
-      { id: 1, username: '', email: '', password: '' },
-      { id: 2, username: '', email: '', password: '' },
-      { id: 3, username: '', email: '', password: '' }
+      { id: 1, email: '', password: '' },
+      { id: 2, email: '', password: '' },
+      { id: 3, email: '', password: '' }
     ]
     prismaMock.user.findMany.mockResolvedValueOnce(mockedUserList)
     const findManyUserSpy = jest.spyOn(prismaMock.user, 'findMany')
@@ -40,8 +40,8 @@ describe('POST /message', () => {
     prismaMock.thread.create.mockResolvedValue({
       id: 1,
       conversationId: 1,
-      member: 1,
-      unseen: null
+      memberId: 1,
+      unseenMessageId: null
     })
     const createThreadSpy = jest.spyOn(prismaMock.thread, 'create')
 
@@ -50,23 +50,23 @@ describe('POST /message', () => {
       conversationId: 1,
       content: 'lorem ipsum',
       createdAt: new Date('2024-01-01T00:00:00Z'),
-      fromUser: 1
+      fromUserId: 1
     })
 
     prismaMock.thread.findMany.mockResolvedValueOnce([
       {
         id: 2,
         conversationId: 1,
-        member: 1,
-        unseen: null
+        memberId: 1,
+        unseenMessageId: null
       }
     ])
 
     prismaMock.thread.update.mockResolvedValue({
       id: 2,
       conversationId: 1,
-      member: 1,
-      unseen: 1
+      memberId: 1,
+      unseenMessageId: 1
     })
 
     const res = await request(app).post('/authed/message').send(reqBody)
@@ -100,23 +100,23 @@ describe('POST /message', () => {
       conversationId: 1,
       content: 'lorem ipsum',
       createdAt: new Date('2024-01-01T00:00:00Z'),
-      fromUser: 1
+      fromUserId: 1
     })
 
     prismaMock.thread.findMany.mockResolvedValueOnce([
       {
         id: 2,
         conversationId: 1,
-        member: 1,
-        unseen: null
+        memberId: 1,
+        unseenMessageId: null
       }
     ])
 
     prismaMock.thread.update.mockResolvedValueOnce({
       id: 2,
       conversationId: 1,
-      member: 1,
-      unseen: 1
+      memberId: 1,
+      unseenMessageId: 1
     })
 
     const res = await request(app).post('/authed/message').send(reqBody)

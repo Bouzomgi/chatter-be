@@ -16,7 +16,7 @@ const client = new S3Client({
 })
 
 // Takes in an avatar name
-export async function getAvatarUrl(avatar: string) {
+export async function getAvatar(avatar: string) {
   const getObjectParams = {
     Bucket: env.STORAGE_BUCKET_NAME,
     Key: avatar
@@ -44,7 +44,7 @@ export async function getDefaultAvatars() {
     const command = new ListObjectsV2Command(input)
     const listOutput = await client.send(command)
     const avatarNameList = listOutput.Contents!.map((elem) => elem.Key!)
-    const avatarList = avatarNameList.map((avatar) => getAvatarUrl(avatar))
+    const avatarList = avatarNameList.map((avatar) => getAvatar(avatar))
     return await Promise.all(avatarList)
   } catch {
     throw new Error('failed to get default avatars')

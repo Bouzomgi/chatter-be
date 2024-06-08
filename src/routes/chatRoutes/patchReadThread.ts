@@ -1,16 +1,14 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from '../../database'
-import { AuthedRequest } from '../../middlewares/tokenVerification'
+import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
-
-interface PatchReadThreadRequest extends AuthedRequest {
-  params: {
-    threadId: string
-  }
-}
 
 router.patch(
   '/readThread/:threadId',
@@ -20,18 +18,24 @@ router.patch(
       isNumeric: true
     }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/authed/readThread/{threadId}', 'patch'>,
+    res: PathMethodResponse<'/authed/readThread/{threadId}'>
+  ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as PatchReadThreadRequest
+      const authedReq = req as AuthedRequest<
+        '/authed/readThread/{threadId}',
+        'patch'
+      >
       const threadId = parseInt(authedReq.params.threadId)
 
       // make sure user is authorized to their unseen message
       const thread = await prisma.thread.findUnique({
         where: {
           id: threadId,
-          member: authedReq.userId
+          memberId: authedReq.userId
         }
       })
 
@@ -46,11 +50,11 @@ router.patch(
           id: threadId
         },
         data: {
-          unseen: null
+          unseenMessageId: null
         }
       })
 
-      return res.status(StatusCodes.OK).json({ error: 'Read thread' })
+      return res.status(StatusCodes.OK).json({ message: 'Read thread' })
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

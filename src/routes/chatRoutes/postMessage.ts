@@ -1,7 +1,11 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
-import { AuthedRequest } from '../../middlewares/tokenVerification'
+import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
@@ -21,12 +25,14 @@ router.post(
     },
     'content': { in: ['body'], notEmpty: true }
   }),
-  async (req: Request, res: Response) => {
+  async (
+    req: PathMethodRequest<'/authed/message', 'post'>,
+    res: PathMethodResponse<'/authed/message'>
+  ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as AuthedRequest
-      const { content } = authedReq.body
+      const authedReq = req as AuthedRequest<'/authed/message', 'post'>
 
       const members: Array<number> = authedReq.body.members
 
@@ -38,7 +44,7 @@ router.post(
       const conversations = await prisma.thread.groupBy({
         by: ['conversationId'],
         where: {
-          member: {
+          memberId: {
             in: members
           }
         },
@@ -68,7 +74,7 @@ router.post(
           prisma.thread.create({
             data: {
               conversationId: conversation.id,
-              member: member
+              memberId: member
             }
           })
         )
@@ -84,8 +90,8 @@ router.post(
         const message = await prisma.message.create({
           data: {
             conversationId: conversationId,
-            fromUser: authedReq.userId,
-            content: content
+            fromUserId: authedReq.userId,
+            content: authedReq.body.content
           }
         })
 
@@ -93,8 +99,8 @@ router.post(
         const otherThreads = await prisma.thread.findMany({
           where: {
             conversationId: conversationId,
-            NOT: { member: authedReq.userId },
-            unseen: null
+            NOT: { memberId: authedReq.userId },
+            unseenMessageId: null
           }
         })
 
@@ -104,7 +110,7 @@ router.post(
               id: thread.id
             },
             data: {
-              unseen: message.id
+              unseenMessageId: message.id
             }
           })
         })

@@ -1,38 +1,50 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import {
+  PathMethodRequest,
+  PathMethodResponse
+} from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
-import prisma from './../../database'
-import { AuthedRequest } from '../../middlewares/tokenVerification'
+import prisma from '../../database'
+import AuthedRequest from '../../middlewares/authedRequest'
+import { components } from '../../../openapi/schema'
+import { getAvatar } from '../../storage/s3Accessors'
+
+type Userhead = components['schemas']['Userhead']
 
 const router = express.Router()
 
-router.get('/userHeads', async (req: Request, res: Response) => {
-  try {
-    const authedReq = req as AuthedRequest
+router.get(
+  '/userHeads',
+  async (
+    req: PathMethodRequest<'/authed/userHeads', 'get'>,
+    res: PathMethodResponse<'/authed/userHeads'>
+  ) => {
+    try {
+      const authedReq = req as AuthedRequest<'/authed/chatHeads', 'get'>
 
-    const users = await prisma.user.findMany({
-      where: {
-        NOT: {
-          id: authedReq.userId
+      const profiles = await prisma.profile.findMany({
+        where: {
+          NOT: {
+            id: authedReq.userId
+          }
         }
-      },
-      include: { profile: true }
-    })
+      })
 
-    const userHeads = users.map((user) => {
-      const { profile, ...rest } = user
-      return {
-        avatar: profile!.avatar,
-        userId: rest.id,
-        username: rest.username
-      }
-    })
+      const userheadPromises = profiles.map(async (profile) => ({
+        userId: profile.userId,
+        username: profile.username,
+        avatar: await getAvatar(profile.avatar)
+      }))
 
-    return res.status(StatusCodes.OK).json(userHeads)
-  } catch {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Could not get users' })
+      const userheads: Userhead[] = await Promise.all(userheadPromises)
+
+      return res.status(StatusCodes.OK).json(userheads)
+    } catch {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Could not get users' })
+    }
   }
-})
+)
 
 export default router
