@@ -35,7 +35,7 @@ router.patch(
       const thread = await prisma.thread.findUnique({
         where: {
           id: threadId,
-          member: authedReq.userId
+          memberId: authedReq.userId
         }
       })
 
@@ -50,11 +50,11 @@ router.patch(
           id: threadId
         },
         data: {
-          unseen: null
+          unseenMessageId: null
         }
       })
 
-      return res.status(StatusCodes.OK).json({ error: 'Read thread' })
+      return res.status(StatusCodes.OK).json({ message: 'Read thread' })
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

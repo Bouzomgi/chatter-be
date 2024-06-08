@@ -4,9 +4,10 @@ import {
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
-import prisma from './../../database'
+import prisma from '../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
 import { components } from '../../../openapi/schema'
+import { getAvatar } from '../../storage/s3Accessors'
 
 type Userhead = components['schemas']['Userhead']
 
@@ -19,27 +20,25 @@ router.get(
     res: PathMethodResponse<'/authed/userHeads'>
   ) => {
     try {
-      const authedReq = req as AuthedRequest<'/authed/chatheads', 'get'>
+      const authedReq = req as AuthedRequest<'/authed/chatHeads', 'get'>
 
-      const users = await prisma.user.findMany({
+      const profiles = await prisma.profile.findMany({
         where: {
           NOT: {
             id: authedReq.userId
           }
-        },
-        include: { profile: true }
-      })
-
-      const userHeads: Userhead[] = users.map((user) => {
-        const { profile, ...rest } = user
-        return {
-          avatar: profile!.avatar,
-          userId: rest.id,
-          username: rest.username
         }
       })
 
-      return res.status(StatusCodes.OK).json(userHeads)
+      const userheadPromises = profiles.map(async (profile) => ({
+        userId: profile.userId,
+        username: profile.username,
+        avatar: await getAvatar(profile.avatar)
+      }))
+
+      const userheads: Userhead[] = await Promise.all(userheadPromises)
+
+      return res.status(StatusCodes.OK).json(userheads)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

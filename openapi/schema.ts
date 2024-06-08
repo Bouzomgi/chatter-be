@@ -137,7 +137,8 @@ export interface paths {
                     content: {
                         "application/json": {
                             defaultAvatars: components["schemas"]["Avatar"][];
-                            currentAvatar: components["schemas"]["Avatar"];
+                            /** @example avatar-1 */
+                            currentAvatar: string;
                         };
                     };
                 };
@@ -173,13 +174,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example [
-                         *       1,
-                         *       2
-                         *     ] */
-                        members: number[];
-                        /** @example lorem ipsum */
-                        content: string;
+                        /** @example avatar-1 */
+                        avatar: string;
                     };
                 };
             };
@@ -196,7 +192,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/chatheads": {
+    "/authed/chatHeads": {
         parameters: {
             query?: never;
             header?: never;
@@ -330,7 +326,19 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example [
+                         *       1,
+                         *       2
+                         *     ] */
+                        members: number[];
+                        /** @example lorem ipsum */
+                        content: string;
+                    };
+                };
+            };
             responses: {
                 200: components["responses"]["Ok"];
                 400: components["responses"]["BadRequest"];

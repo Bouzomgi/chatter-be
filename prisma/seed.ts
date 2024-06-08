@@ -43,6 +43,7 @@ async function main() {
 
   const conversations: Prisma.ConversationUncheckedCreateInput[] = [
     {
+      id: 1,
       messages: {
         create: [
           {
@@ -90,6 +91,7 @@ async function main() {
       }
     },
     {
+      id: 2,
       messages: {
         create: [
           {
@@ -101,6 +103,7 @@ async function main() {
       }
     },
     {
+      id: 3,
       messages: {
         create: [
           {

@@ -105,7 +105,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Avatar'
                   currentAvatar:
-                      $ref: '#/components/schemas/Avatar'
+                    type: string
+                    example: 'avatar-1'
                 required:
                   - defaultAvatars
                   - currentAvatar
@@ -129,17 +130,11 @@ paths:
             schema:
               type: object
               properties:
-                members:
-                  example: [1, 2]
-                  type: array
-                  items:
-                    type: number
-                content:
+                avatar:
                   type: string
-                  example: 'lorem ipsum'
+                  example: 'avatar-1'
               required:
-                - members
-                - content
+                - avatar
       responses:
         "200":
           $ref: '#/components/responses/Ok'
@@ -153,7 +148,7 @@ paths:
         "404":
           $ref: '#/components/responses/NotFound'
 
-  /authed/chatheads:
+  /authed/chatHeads:
     get:
       tags: 
         - chat
@@ -238,7 +233,26 @@ paths:
       summary: Send a message to a specified chat thread
       security:
         - jwtAuth: []
-        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                members: 
+                  type: array
+                  example: [1, 2]
+                  items:
+                    type: number
+                  minimum: 2
+                content:
+                  example: "lorem ipsum"
+                  type: string
+              required:
+                - members
+                - content
+  
       responses:
         "200":
           $ref: '#/components/responses/Ok'

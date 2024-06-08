@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { AuthedRequest } from '../../../middlewares/tokenVerification'
+import AuthedRequest from '../../../../src/middlewares/authedRequest'
 import { prismaMock } from '../../utils/singleton'
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest).userId = 1
+    ;(req as AuthedRequest<'/authed/readThread/{threadId}', 'patch'>).userId = 1
     return next()
   })
 }))
@@ -22,15 +22,15 @@ describe('PATCH /readThread/:threadId', () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,
       conversationId: 1,
-      member: 1,
-      unseen: 1
+      memberId: 1,
+      unseenMessageId: 1
     })
 
     prismaMock.thread.update.mockResolvedValueOnce({
       id: 1,
       conversationId: 1,
-      member: 1,
-      unseen: null
+      memberId: 1,
+      unseenMessageId: null
     })
 
     const res = await request(app).patch('/authed/readThread/1')

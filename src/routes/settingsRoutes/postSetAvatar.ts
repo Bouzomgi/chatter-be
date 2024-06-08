@@ -27,8 +27,11 @@ router.post(
 
       const authedReq = req as AuthedRequest<'/authed/setAvatar', 'post'>
 
-      const defaultAvatars = await getDefaultAvatars()
-      if (!defaultAvatars.includes(req.body.avatar)) {
+      const defaultAvatarNames = (await getDefaultAvatars()).map(
+        (avatar) => avatar.name
+      )
+
+      if (!defaultAvatarNames.includes(req.body.avatar)) {
         return res
           .status(StatusCodes.NOT_FOUND)
           .json({ message: 'Could not find avatar' })
@@ -42,6 +45,7 @@ router.post(
           avatar: req.body.avatar
         }
       })
+
       return res
         .status(StatusCodes.OK)
         .json({ message: 'Successfully changed avatar' })

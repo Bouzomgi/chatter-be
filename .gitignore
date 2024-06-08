@@ -137,3 +137,6 @@ node_modules
 
 # LocalStack Volume
 volume/
+
+# Mac DS Store
+.DS_Store

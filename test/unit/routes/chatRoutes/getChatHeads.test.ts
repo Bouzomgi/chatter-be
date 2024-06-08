@@ -1,19 +1,32 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { AuthedRequest } from '../../../../src/middlewares/tokenVerification'
-import { ChatHead, pullChatHeads } from '../../../../src/queries/pullChatHeads'
+import AuthedRequest from '../../../../src/middlewares/authedRequest'
+import {
+  CompleteMessage,
+  pullLatestMessages
+} from '../../../../src/queries/pullLatestMessages'
+import { components } from '../../../../openapi/schema'
+
+type Chathead = components['schemas']['Chathead']
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest).userId = 1
+    ;(req as AuthedRequest<'/authed/chatHeads', 'get'>).userId = 1
     return next()
   })
 }))
 
-jest.mock('../../../../src/queries/pullChatHeads', () => ({
-  pullChatHeads: jest.fn()
+jest.mock('../../../../src/queries/pullLatestMessages', () => ({
+  pullLatestMessages: jest.fn()
+}))
+
+jest.mock('../../../../src/storage/s3Accessors', () => ({
+  getAvatar: jest.fn().mockResolvedValue({
+    name: 'my-avatar',
+    url: 'www.my-avatar.com'
+  })
 }))
 
 beforeEach(() => {
@@ -23,43 +36,72 @@ beforeEach(() => {
 
 describe('GET /chatheads', () => {
   it('should successfully get sorted chatheads', async () => {
-    const mockedChatHeadDbRes: ChatHead[] = [
+    const mockedLatestMessages: CompleteMessage[] = [
       {
-        conversationId: 1,
-        content: 'lorem ipsum',
+        messageId: 1,
+        fromUserId: 1,
         createdAt: '2022-01-02T00:00:00.000Z',
-        fromUser: 1,
+        content: 'lorem ipsum',
+        conversationId: 1,
         threadId: 1,
         avatar: 'my-avatar'
       },
       {
-        conversationId: 2,
-        content: 'dolor sit',
+        messageId: 2,
+        fromUserId: 1,
         createdAt: '2022-01-01T00:00:00.000Z',
-        fromUser: 1,
+        content: 'dolor sit',
+        conversationId: 2,
         threadId: 2,
-        avatar: 'my-avatar'
-      },
-      {
-        conversationId: 3,
-        content: 'amet consectetur',
-        createdAt: '2022-01-03T00:00:00Z',
-        fromUser: 1,
-        threadId: 3,
-        avatar: 'my-avatar'
+        avatar: 'my-avatar',
+        unseenMessageId: 1
       }
     ]
 
-    ;(pullChatHeads as jest.Mock).mockResolvedValueOnce(mockedChatHeadDbRes)
+    ;(pullLatestMessages as jest.Mock).mockResolvedValueOnce(
+      mockedLatestMessages
+    )
+
+    const expected: Chathead[] = [
+      {
+        conversationId: 1,
+        threadId: 1,
+        message: {
+          messageId: 1,
+          fromUserId: 1,
+          content: 'lorem ipsum',
+          createdAt: '2022-01-02T00:00:00.000Z'
+        },
+        avatar: {
+          name: 'my-avatar',
+          url: 'www.my-avatar.com'
+        }
+      },
+      {
+        conversationId: 2,
+        threadId: 2,
+        message: {
+          messageId: 2,
+          fromUserId: 1,
+          content: 'dolor sit',
+          createdAt: '2022-01-01T00:00:00.000Z'
+        },
+        avatar: {
+          name: 'my-avatar',
+          url: 'www.my-avatar.com'
+        },
+        unseenMessageId: 1
+      }
+    ]
 
     const res = await request(app).get('/authed/chatheads')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
-    expect(res.body).toEqual(mockedChatHeadDbRes)
+    expect(res.body).toEqual(expected)
   })
 
   it('should successfully return nothing if user is not part of any conversations', async () => {
-    ;(pullChatHeads as jest.Mock).mockResolvedValueOnce('')
+    ;(pullLatestMessages as jest.Mock).mockResolvedValueOnce([])
 
     const res = await request(app).get('/authed/chatheads')
 
@@ -68,7 +110,7 @@ describe('GET /chatheads', () => {
   })
 
   it('should fail if pullChatHeads fails', async () => {
-    ;(pullChatHeads as jest.Mock).mockRejectedValueOnce(undefined)
+    ;(pullLatestMessages as jest.Mock).mockRejectedValueOnce(undefined)
 
     const res = await request(app).get('/authed/chatheads')
 

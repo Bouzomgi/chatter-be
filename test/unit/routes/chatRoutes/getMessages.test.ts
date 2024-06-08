@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { AuthedRequest } from '../../../../src/middlewares/tokenVerification'
+import AuthedRequest from '../../../../src/middlewares/authedRequest'
 import { prismaMock } from '../../utils/singleton'
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest).userId = 1
+    ;(req as AuthedRequest<'/authed/messages/{threadId}', 'get'>).userId = 1
     return next()
   })
 }))
@@ -22,8 +22,8 @@ describe('GET /messages/:threadId', () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,
       conversationId: 1,
-      member: 1,
-      unseen: null
+      memberId: 1,
+      unseenMessageId: null
     })
 
     const mockedThreadMessagesDbRes = {
@@ -33,8 +33,8 @@ describe('GET /messages/:threadId', () => {
         {
           id: 1,
           conversationId: 1,
-          fromUser: 1,
-          createdAt: new Date('2022-01-01T00:00:00.000Z'),
+          fromUserId: 1,
+          createdAt: '2022-01-01T00:00:00.000Z',
           content: 'lorem ipsem'
         }
       ]
@@ -46,9 +46,8 @@ describe('GET /messages/:threadId', () => {
 
     const expectedBody = [
       {
-        id: 1,
-        conversationId: 1,
-        fromUser: 1,
+        messageId: 1,
+        fromUserId: 1,
         createdAt: '2022-01-01T00:00:00.000Z',
         content: 'lorem ipsem'
       }

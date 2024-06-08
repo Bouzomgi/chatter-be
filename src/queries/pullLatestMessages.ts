@@ -1,28 +1,34 @@
-import prisma from './../database'
+import prisma from '../database'
 import { components } from '../../openapi/schema'
 
-type Chathead = components['schemas']['Message']
+type Message = components['schemas']['Message']
 
-// TODO: FIX THIS!!!!!
+export type CompleteMessage = Message & {
+  conversationId: number
+  threadId: number
+  avatar: string
+  unseenMessageId?: number
+}
 
 /*
-  Returns the last message & corresponding data from each chat the passed in user is part of, 
+  Returns the last message from each chat the passed in user is part of, 
   sorted by createdAt datetime
 */
-const pullChatHeads = (userId: number) =>
-  prisma.$queryRaw<Chathead[]>`
+export const pullLatestMessages = (userId: number) =>
+  prisma.$queryRaw<CompleteMessage[]>`
     SELECT 
-      "B"."conversationId", 
-      "content", 
+      "messageId"
+      "B"."conversationId",
+      "content",
       "B"."createdAt", 
-      "fromUser", 
-      "unseen", 
+      "fromUserId", 
+      "unseenMessageId", 
       "Thread"."id" AS "threadId", 
       "Profile"."avatar"
     FROM "Thread"
     INNER JOIN
       (  
-        SELECT "A"."conversationId", "content", "A"."createdAt", "fromUser"
+        SELECT "A"."conversationId", "content", "A"."createdAt", "fromUserId", "id" AS "messageId"
         FROM "Message"
         INNER JOIN
           (
@@ -32,17 +38,15 @@ const pullChatHeads = (userId: number) =>
             WHERE "Conversation"."id" IN (
               SELECT "conversationId"
               FROM "Thread"
-              WHERE "member" = ${userId}
+              WHERE "memberId" = ${userId}
             )
             GROUP BY "Conversation"."id"
           ) AS "A"
         ON "Message"."createdAt"="A"."createdAt"
         AND "Message"."conversationId"="A"."conversationId"
       ) AS "B"
-    ON "Thread"."member"="B"."fromUser"
+    ON "Thread"."memberId" = ${userId}
     AND "Thread"."conversationId"="B"."conversationId"
-    INNER JOIN "Profile" ON "Profile"."id"="B"."fromUser"
+    INNER JOIN "Profile" ON "Profile"."id"="B"."fromUserId"
     ORDER BY "B"."createdAt" ASC
   `
-
-export default pullChatHeads
