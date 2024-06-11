@@ -19,8 +19,8 @@ router.post(
     password: { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/register', 'post'>,
-    res: PathMethodResponse<'/register'>
+    req: PathMethodRequest<'/login', 'post'>,
+    res: PathMethodResponse<'/login'>
   ) => {
     try {
       await validationResult(req).throw()
