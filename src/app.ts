@@ -4,11 +4,14 @@ import authRoutes from './routes/authRoutes'
 import settingsRoutes from './routes/settingsRoutes'
 import chatRoutes from './routes/chatRoutes'
 import { StatusCodes } from 'http-status-codes'
+import cors from 'cors'
 
 const app = express()
 
 // MIDDLEWARES
+app.use(cors())
 app.use(express.json())
+
 app.use('/', authRoutes)
 
 app.use('/authed', verifyToken, settingsRoutes)
