@@ -51,6 +51,9 @@ paths:
         "400":
           $ref: '#/components/responses/BadRequest'
 
+        "409":
+          $ref: '#/components/responses/Conflict'
+
   /login:
     post:
       tags: 
@@ -435,4 +438,15 @@ components:
                 example: "Resource not found."
             required: 
               - error
-
+    Conflict:
+      description: Conflict with current state of the resource
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Conflict with current state of the resource."
+            required:
+              - error
