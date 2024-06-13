@@ -8,8 +8,15 @@ import cors from 'cors'
 
 const app = express()
 
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace with your client URL
+  credentials: true, // Allow credentials (cookies)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+
 // MIDDLEWARES
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.use('/', authRoutes)
