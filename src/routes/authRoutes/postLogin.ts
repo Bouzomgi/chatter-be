@@ -12,6 +12,8 @@ import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
 
+// modify to return username, userId, avatarURL
+
 router.post(
   '/login',
   checkSchema({
@@ -65,8 +67,8 @@ router.post(
       return res
         .status(StatusCodes.OK)
         .cookie('auth-token', token, {
-          httpOnly: false,
-          secure: true, // switch
+          httpOnly: true,
+          secure: false, // switch
           sameSite: 'none' // Allows the cookie to be sent from a different origin (cross-origin requests)
         })
         .json({
