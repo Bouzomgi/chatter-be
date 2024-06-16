@@ -64,7 +64,6 @@ export interface paths {
             responses: {
                 201: components["responses"]["Created"];
                 400: components["responses"]["BadRequest"];
-                409: components["responses"]["Conflict"];
             };
         };
         delete?: never;
@@ -101,7 +100,15 @@ export interface paths {
                 };
             };
             responses: {
-                200: components["responses"]["Ok"];
+                /** @description Successfully logged in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDetails"];
+                    };
+                };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
@@ -216,7 +223,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Chathead"][];
+                        "application/json": components["schemas"]["ChatHead"][];
                     };
                 };
                 400: components["responses"]["BadRequest"];
@@ -295,7 +302,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Userhead"][];
+                        "application/json": components["schemas"]["UserDetails"][];
                     };
                 };
                 400: components["responses"]["BadRequest"];
@@ -396,7 +403,7 @@ export interface components {
             /** @example www.avatar-1.com */
             url: string;
         };
-        Chathead: {
+        ChatHead: {
             /** @example 1 */
             conversationId: number;
             /** @example 1 */
@@ -406,12 +413,12 @@ export interface components {
             avatar: components["schemas"]["Avatar"];
             message: components["schemas"]["Message"];
         };
-        Userhead: {
+        UserDetails: {
             /** @example 1 */
             userId: number;
-            avatar: components["schemas"]["Avatar"];
             /** @example mike11 */
             username: string;
+            avatar: components["schemas"]["Avatar"];
         };
         Message: {
             /** @example 1 */
@@ -481,18 +488,6 @@ export interface components {
             content: {
                 "application/json": {
                     /** @example Resource not found. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Conflict with current state of the resource */
-        Conflict: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Conflict with current state of the resource. */
                     error: string;
                 };
             };

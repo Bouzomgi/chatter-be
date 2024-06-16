@@ -8,7 +8,7 @@ import {
 } from '../../../../src/queries/pullLatestMessages'
 import { components } from '../../../../openapi/schema'
 
-type Chathead = components['schemas']['Chathead']
+type Chathead = components['schemas']['ChatHead']
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({

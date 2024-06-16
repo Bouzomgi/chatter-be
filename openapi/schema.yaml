@@ -51,9 +51,6 @@ paths:
         "400":
           $ref: '#/components/responses/BadRequest'
 
-        "409":
-          $ref: '#/components/responses/Conflict'
-
   /login:
     post:
       tags: 
@@ -77,7 +74,11 @@ paths:
                 - password
       responses:
         "200":
-          $ref: '#/components/responses/Ok'
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
 
         "400":
           $ref: '#/components/responses/BadRequest'
@@ -166,7 +167,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Chathead'
+                  $ref: '#/components/schemas/ChatHead'
 
         "400":
           $ref: '#/components/responses/BadRequest'
@@ -220,7 +221,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Userhead'
+                  $ref: '#/components/schemas/UserDetails'
 
         "400":
           $ref: '#/components/responses/BadRequest'
@@ -314,7 +315,7 @@ components:
         - name
         - url
 
-    Chathead:
+    ChatHead:
       type: object
       properties:
         conversationId: 
@@ -336,21 +337,21 @@ components:
         - avatar
         - message
 
-    Userhead:
+    UserDetails:
       type: object
       properties:
         userId: 
           type: number
           example: 1
-        avatar: 
-          $ref: '#/components/schemas/Avatar'
         username: 
           type: string
           example: 'mike11'
+        avatar: 
+          $ref: '#/components/schemas/Avatar'
       required:
         - userId
-        - avatar
         - username
+        - avatar
 
     Message:
       type: object
@@ -434,15 +435,4 @@ components:
                 example: "Resource not found."
             required: 
               - error
-    Conflict:
-      description: Conflict with current state of the resource
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "Conflict with current state of the resource."
-            required:
-              - error
+
