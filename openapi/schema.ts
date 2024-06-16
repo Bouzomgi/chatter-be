@@ -64,7 +64,6 @@ export interface paths {
             responses: {
                 201: components["responses"]["Created"];
                 400: components["responses"]["BadRequest"];
-                409: components["responses"]["Conflict"];
             };
         };
         delete?: never;
@@ -489,18 +488,6 @@ export interface components {
             content: {
                 "application/json": {
                     /** @example Resource not found. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Conflict with current state of the resource */
-        Conflict: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Conflict with current state of the resource. */
                     error: string;
                 };
             };
