@@ -64,7 +64,7 @@ describe('POST /login', () => {
 
     const res = await request(app).post('/login').send(reqBody)
 
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
+    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
 
   it('should fail if password is invalid', async () => {

@@ -39,8 +39,8 @@ router.post(
 
       if (existingProfile === null) {
         return res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ error: 'Username is not recognized' })
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: 'Invalid login attempt' })
       }
 
       const existingUser = existingProfile.user
@@ -53,7 +53,7 @@ router.post(
       if (!validPass) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
-          .json({ error: 'Invalid password' })
+          .json({ error: 'Invalid login attempt' })
       }
 
       const userAvatar = await getAvatar(existingProfile.avatar)
