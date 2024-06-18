@@ -12,6 +12,12 @@ jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(() => 'mocked-jwt')
 }))
 
+jest.mock('../../../../src/storage/s3Accessors', () => ({
+  getAvatar: jest
+    .fn()
+    .mockResolvedValue({ name: 'mocked-avatar', url: 'www.mocked-avatar.com' })
+}))
+
 beforeEach(() => {
   jest.resetModules() // Reset module registry to avoid interference between tests
   jest.clearAllMocks() // Clear all mocks
@@ -46,6 +52,11 @@ describe('POST /login', () => {
     expect(res.headers['set-cookie'][0]).toMatch(
       RegExp('.*auth-token=mocked-jwt.*')
     )
+    expect(res.body).toStrictEqual({
+      userId: 1,
+      username: 'adam',
+      avatar: { name: 'mocked-avatar', url: 'www.mocked-avatar.com' }
+    })
   })
 
   it('should fail if username does not exists', async () => {

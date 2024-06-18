@@ -9,7 +9,7 @@ import AuthedRequest from '../../middlewares/authedRequest'
 import { components } from '../../../openapi/schema'
 import { getAvatar } from '../../storage/s3Accessors'
 
-type Userhead = components['schemas']['Userhead']
+type Userhead = components['schemas']['UserDetails']
 
 const router = express.Router()
 

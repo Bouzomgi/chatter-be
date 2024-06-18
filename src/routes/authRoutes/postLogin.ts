@@ -9,8 +9,11 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from '../../config'
 import { checkSchema, validationResult } from 'express-validator'
+import { getAvatar } from '../../storage/s3Accessors'
 
 const router = express.Router()
+
+// modify to return username, userId, avatarURL
 
 router.post(
   '/login',
@@ -53,6 +56,8 @@ router.post(
           .json({ error: 'Invalid password' })
       }
 
+      const userAvatar = await getAvatar(existingProfile.avatar)
+
       // CREATE AND ASSIGN A TOKEN
       const token = await jwt.sign(
         {
@@ -70,7 +75,9 @@ router.post(
           sameSite: 'none' // Allows the cookie to be sent from a different origin (cross-origin requests)
         })
         .json({
-          message: 'Logged in'
+          userId: existingUser.id,
+          username: existingProfile.username,
+          avatar: userAvatar
         })
     } catch {
       return res

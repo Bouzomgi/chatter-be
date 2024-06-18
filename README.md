@@ -26,6 +26,4 @@ Later
 
 ! I can use the integration tests both locally and on AWS !
 
-In the FE, need to make an axios interceptor that moves the JWT cookie to a header in the auth
-
 Need something that will validate the openapi schema
