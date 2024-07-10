@@ -7,7 +7,7 @@ import AuthedRequest from '../../../../src/middlewares/authedRequest'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/setAvatar', 'post'>).userId = 1
+    ;(req as AuthedRequest<'/authed/setSettings', 'post'>).userId = 1
     return next()
   })
 }))
@@ -25,7 +25,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('POST /setAvatar', () => {
+describe('POST /setSettings', () => {
   const sampleReq = { avatar: 'mocked-avatar' }
 
   it("should change a user's avatar successfully", async () => {
@@ -38,7 +38,7 @@ describe('POST /setAvatar', () => {
 
     prismaMock.profile.update.mockResolvedValueOnce(sampleProfile)
 
-    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
+    const res = await request(app).post('/authed/setSettings').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })
@@ -46,7 +46,7 @@ describe('POST /setAvatar', () => {
   it("should fail if a user's profile cannot be updated", async () => {
     prismaMock.profile.update.mockRejectedValue(undefined)
 
-    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
+    const res = await request(app).post('/authed/setSettings').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
@@ -54,13 +54,13 @@ describe('POST /setAvatar', () => {
   it('should fail if supplied avatar does not exist', async () => {
     const sampleReq = { avatar: 'unknown-avatar' }
 
-    const res = await request(app).post('/authed/setAvatar').send(sampleReq)
+    const res = await request(app).post('/authed/setSettings').send(sampleReq)
 
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND)
   })
 
   it('should fail if request is invalid', async () => {
-    const res = await request(app).post('/authed/setAvatar').send({})
+    const res = await request(app).post('/authed/setSettings').send({})
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
