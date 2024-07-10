@@ -14,37 +14,39 @@ const router = express.Router()
 // TODO: make sure that the avatar is actually an avatar... not just like, random code
 // I think i can make a call to the BE, find all avatars, and store this so i dont keep making this req
 router.post(
-  '/setAvatar',
+  '/setSettings',
   checkSchema({
     avatar: { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/authed/setAvatar', 'post'>,
-    res: PathMethodResponse<'/authed/setAvatar'>
+    req: PathMethodRequest<'/authed/setSettings', 'post'>,
+    res: PathMethodResponse<'/authed/setSettings'>
   ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as AuthedRequest<'/authed/setAvatar', 'post'>
+      const authedReq = req as AuthedRequest<'/authed/setSettings', 'post'>
 
-      const defaultAvatarNames = (await getDefaultAvatars()).map(
-        (avatar) => avatar.name
-      )
+      if (req.body.avatar) {
+        const defaultAvatarNames = (await getDefaultAvatars()).map(
+          (avatar) => avatar.name
+        )
 
-      if (!defaultAvatarNames.includes(req.body.avatar)) {
-        return res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ message: 'Could not find avatar' })
-      }
-
-      await prisma.profile.update({
-        where: {
-          id: authedReq.userId
-        },
-        data: {
-          avatar: req.body.avatar
+        if (!defaultAvatarNames.includes(req.body.avatar)) {
+          return res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ message: 'Could not find avatar' })
         }
-      })
+
+        await prisma.profile.update({
+          where: {
+            id: authedReq.userId
+          },
+          data: {
+            avatar: req.body.avatar
+          }
+        })
+      }
 
       return res
         .status(StatusCodes.OK)

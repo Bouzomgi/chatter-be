@@ -119,7 +119,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/avatars": {
+    "/authed/defaultAvatars": {
         parameters: {
             query?: never;
             header?: never;
@@ -144,8 +144,6 @@ export interface paths {
                     content: {
                         "application/json": {
                             defaultAvatars: components["schemas"]["Avatar"][];
-                            /** @example avatar-1 */
-                            currentAvatar: string;
                         };
                     };
                 };
@@ -161,7 +159,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/setAvatar": {
+    "/authed/setSettings": {
         parameters: {
             query?: never;
             header?: never;
@@ -170,7 +168,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Set an avatar for a User */
+        /** Set settings for a User */
         post: {
             parameters: {
                 query?: never;
@@ -182,7 +180,7 @@ export interface paths {
                 content: {
                     "application/json": {
                         /** @example avatar-1 */
-                        avatar: string;
+                        avatar?: string;
                     };
                 };
             };

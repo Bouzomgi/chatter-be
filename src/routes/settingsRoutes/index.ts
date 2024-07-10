@@ -1,7 +1,7 @@
 import express from 'express'
 
-import { default as getAvatars } from './getAvatars'
-import { default as postSetAvatars } from './postSetAvatar'
+import { default as getAvatars } from './getDefaultAvatars'
+import { default as postSetAvatars } from './postSetSettings'
 
 const router = express.Router()
 

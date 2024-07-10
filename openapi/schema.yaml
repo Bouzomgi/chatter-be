@@ -86,7 +86,7 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
 
-  /authed/avatars:
+  /authed/defaultAvatars:
     get:
       tags: 
         - settings
@@ -105,23 +105,19 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Avatar'
-                  currentAvatar:
-                    type: string
-                    example: 'avatar-1'
                 required:
                   - defaultAvatars
-                  - currentAvatar
         "400":
           $ref: '#/components/responses/BadRequest'
  
         "401":
           $ref: '#/components/responses/Unauthorized'
 
-  /authed/setAvatar:
+  /authed/setSettings:
     post:
       tags: 
         - settings
-      summary: Set an avatar for a User
+      summary: Set settings for a User
       security:
         - jwtAuth: []
       requestBody:
@@ -134,8 +130,6 @@ paths:
                 avatar:
                   type: string
                   example: 'avatar-1'
-              required:
-                - avatar
       responses:
         "200":
           $ref: '#/components/responses/Ok'
@@ -432,4 +426,3 @@ components:
                 example: "Resource not found."
             required: 
               - error
-
