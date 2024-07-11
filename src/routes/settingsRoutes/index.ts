@@ -1,11 +1,13 @@
 import express from 'express'
 
-import { default as getAvatars } from './getDefaultAvatars'
-import { default as postSetAvatars } from './postSetSettings'
+import { default as getAvatarsRouter } from './getDefaultAvatars'
+import { default as postLogoutRouter } from './postLogout'
+import { default as postSetAvatarsRouter } from './postSetSettings'
 
 const router = express.Router()
 
-router.use(getAvatars)
-router.use(postSetAvatars)
+router.use(getAvatarsRouter)
+router.use(postLogoutRouter)
+router.use(postSetAvatarsRouter)
 
 export default router
