@@ -13,8 +13,6 @@ import { getAvatar } from '../../storage/s3Accessors'
 
 const router = express.Router()
 
-// modify to return username, userId, avatarURL
-
 router.post(
   '/login',
   checkSchema({
@@ -72,7 +70,7 @@ router.post(
         .cookie('auth-token', token, {
           httpOnly: true,
           secure: false, // switch
-          sameSite: 'none' // Allows the cookie to be sent from a different origin (cross-origin requests)
+          sameSite: 'lax' // Allows the cookie to be sent from a different origin (cross-origin requests)
         })
         .json({
           userId: existingUser.id,
