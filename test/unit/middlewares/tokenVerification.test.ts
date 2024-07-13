@@ -1,62 +1,60 @@
 import { verifyToken } from '../../../src/middlewares/tokenVerification'
 import { StatusCodes } from 'http-status-codes'
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
+// Mock the jsonwebtoken module
 jest.mock('jsonwebtoken', () => ({
-  verify: jest.fn(() => ({ userId: '1' }) as JwtPayload)
+  verify: jest.fn()
 }))
 
 describe('verifyToken', () => {
+  // Helper function to create mock Request, Response, and NextFunction
+  const createMocks = () => {
+    const req = {} as Request
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    } as unknown as Response
+    const next = jest.fn() as NextFunction
+    return { req, res, next }
+  }
+
+  beforeEach(() => {
+    jest.resetAllMocks() // Reset mocks before each test
+  })
+
   it('should successfully verify a valid authorization token', async () => {
-    const req = {
-      headers: {
-        authorization: 'Bearer mocked-token'
-      }
-    } as Request
-    const res = {} as Response
-    const next = jest.fn()
+    const { req, res, next } = createMocks()
+    req.cookies = { 'auth-token': 'abc' }
+    ;(jwt.verify as jest.Mock).mockResolvedValueOnce({
+      userId: 1
+    } as JwtPayload)
 
     await verifyToken(req, res, next)
 
     expect(next).toHaveBeenCalled()
   })
 
-  it('should fail if an authorization token is not found', () => {
-    const req = {
-      headers: {}
-    } as Request
+  it('should fail if an authorization token is not found', async () => {
+    const { req, res, next } = createMocks()
 
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn()
-    } as unknown as Response
-
-    const next = jest.fn()
-
-    verifyToken(req, res, next)
+    await verifyToken(req, res, next)
 
     expect(res.status).toHaveBeenCalledWith(StatusCodes.UNAUTHORIZED)
+    expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' })
     expect(next).not.toHaveBeenCalled()
   })
 
-  it('should fail if the JWT cannot be validated', () => {
-    const req = {
-      headers: {}
-    } as Request
+  it('should fail if the JWT cannot be validated', async () => {
+    const { req, res, next } = createMocks()
+    req.cookies = { 'auth-token': 'abc' }
+    ;(jwt.verify as jest.Mock).mockRejectedValueOnce(new Error('invalid jwt'))
 
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn()
-    } as unknown as Response
-
-    ;(jwt.verify as jest.Mock).mockResolvedValue('invalid jwt')
-
-    const next = jest.fn()
-
-    verifyToken(req, res, next)
+    await verifyToken(req, res, next)
 
     expect(res.status).toHaveBeenCalledWith(StatusCodes.UNAUTHORIZED)
+    expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' })
     expect(next).not.toHaveBeenCalled()
   })
 })

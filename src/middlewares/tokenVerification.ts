@@ -13,8 +13,7 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1]
-    if (!token) throw new Error('Cannot find auth header')
+    const token = req.cookies['auth-token']
 
     const decoded = await jwt.verify(token, env.TOKEN_SECRET)
     ;(req as AuthedRequest).userId = (decoded as JwtPayload).userId
