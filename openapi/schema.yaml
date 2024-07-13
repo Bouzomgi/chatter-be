@@ -85,6 +85,17 @@ paths:
           
         "401":
           $ref: '#/components/responses/Unauthorized'
+          
+  /logout:
+    post:
+      tags:
+        - authentication
+      summary: Logout the current User
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          $ref: '#/components/responses/Ok'
 
   /authed/defaultAvatars:
     get:
@@ -112,17 +123,6 @@ paths:
  
         "401":
           $ref: '#/components/responses/Unauthorized'
-
-  /authed/logout:
-    post:
-      tags:
-        - settings
-      summary: Logout the current User
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          $ref: '#/components/responses/Ok'
 
   /authed/setSettings:
     post:

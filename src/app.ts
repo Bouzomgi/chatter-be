@@ -5,12 +5,14 @@ import settingsRoutes from './routes/settingsRoutes'
 import chatRoutes from './routes/chatRoutes'
 import { StatusCodes } from 'http-status-codes'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
 // MIDDLEWARES
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/', authRoutes)
 

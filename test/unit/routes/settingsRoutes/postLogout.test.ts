@@ -6,7 +6,7 @@ import AuthedRequest from '../../../../src/middlewares/authedRequest'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/logout', 'post'>).userId = 1
+    ;(req as AuthedRequest<'/logout', 'post'>).userId = 1
     return next()
   })
 }))
@@ -16,9 +16,9 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('POST /authed/logout', () => {
+describe('POST /logout', () => {
   it('should return successfully when called', async () => {
-    const res = await request(app).post('/authed/logout').send()
+    const res = await request(app).post('/logout').send()
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })

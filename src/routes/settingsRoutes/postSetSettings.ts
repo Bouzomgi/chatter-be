@@ -50,11 +50,11 @@ router.post(
 
       return res
         .status(StatusCodes.OK)
-        .json({ message: 'Successfully changed avatar' })
+        .json({ message: 'Successfully changed settings' })
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Could not change avatar' })
+        .json({ error: 'Could not change settings' })
     }
   }
 )

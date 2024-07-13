@@ -4,10 +4,10 @@ import { StatusCodes } from 'http-status-codes'
 
 const router = express.Router()
 
-router.post('/logout', (_, res: PathMethodResponse<'/authed/logout'>) =>
+router.post('/logout', (_, res: PathMethodResponse<'/logout'>) =>
   res
     .status(StatusCodes.OK)
-    .cookie('auth-token', '', {
+    .cookie('auth-token', 'abc', {
       expires: new Date(0)
     })
     .json({
