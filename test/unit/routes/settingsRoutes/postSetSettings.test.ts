@@ -25,7 +25,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('POST /setSettings', () => {
+describe('POST /authed/setSettings', () => {
   const sampleReq = { avatar: 'mocked-avatar' }
 
   it("should change a user's avatar successfully", async () => {

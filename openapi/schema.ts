@@ -342,6 +342,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/authed/chatUsersDetails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get details of all users chatting with a given user */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Successfully got details */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDetails"][];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/authed/message": {
         parameters: {
             query?: never;
@@ -435,7 +473,6 @@ export interface components {
             threadId: number;
             /** @example 1 */
             unseenMessageId?: number;
-            avatar: components["schemas"]["Avatar"];
             message: components["schemas"]["Message"];
         };
         UserDetails: {

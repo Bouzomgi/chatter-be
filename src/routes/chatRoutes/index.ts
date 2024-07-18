@@ -1,7 +1,8 @@
 import express from 'express'
 
 import { default as patchReadThreadRouter } from './patchReadThread'
-import { default as getChatHeadsRouter } from './getChatHeads'
+import { default as getChatheadsRouter } from './getChatHeads'
+import { default as getChatUsersDetails } from './getChatUsersDetails'
 import { default as getMessagesRouter } from './getMessages'
 import { default as getUserHeadsRouter } from './getUserHeads'
 import { default as postMessageRouter } from './postMessage'
@@ -9,7 +10,8 @@ import { default as postMessageRouter } from './postMessage'
 const router = express.Router()
 
 router.use(patchReadThreadRouter)
-router.use(getChatHeadsRouter)
+router.use(getChatheadsRouter)
+router.use(getChatUsersDetails)
 router.use(getMessagesRouter)
 router.use(getUserHeadsRouter)
 router.use(postMessageRouter)

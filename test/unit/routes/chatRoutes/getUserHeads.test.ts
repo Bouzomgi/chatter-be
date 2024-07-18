@@ -25,7 +25,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /userHeads', () => {
+describe('GET /authed/userHeads', () => {
   it('should successfully get user heads on valid request', async () => {
     const mockedUserHeadsDbRes = [
       {
