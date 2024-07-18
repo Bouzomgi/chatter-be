@@ -19,7 +19,7 @@ beforeEach(() => {
   prismaMock.$transaction.mockImplementation((callback) => callback(prismaMock))
 })
 
-describe('POST /message', () => {
+describe('POST /authed/message', () => {
   it('should successfully create post in a new conversation and thread if there is no existing thread', async () => {
     const reqBody = { members: [1, 2, 3], content: 'lorem ipsem' }
 

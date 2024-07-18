@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('PATCH /readThread/:threadId', () => {
+describe('PATCH /authed/readThread/:threadId', () => {
   it('should successfully read a thread given a valid threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,

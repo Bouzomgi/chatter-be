@@ -231,6 +231,30 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
 
+  /authed/chatUsersDetails:
+    get:
+      tags: 
+        - chat
+      summary: Get details of all users chatting with a given user
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Successfully got details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDetails'
+
+        "400":
+          $ref: '#/components/responses/BadRequest'
+      
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+
 
   /authed/message:
     post:
@@ -329,14 +353,11 @@ components:
         unseenMessageId: 
           type: number
           example: 1
-        avatar: 
-          $ref: '#/components/schemas/Avatar'
         message: 
           $ref: '#/components/schemas/Message'
       required:
         - conversationId
         - threadId
-        - avatar
         - message
 
     UserDetails:

@@ -26,7 +26,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /defaultAvatars', () => {
+describe('GET /authed/defaultAvatars', () => {
   it("should return the default avatars and the user's current avatar successfully", async () => {
     prismaMock.profile.findUnique.mockResolvedValue({
       id: 1,

@@ -6,7 +6,6 @@ type Message = components['schemas']['Message']
 export type CompleteMessage = Message & {
   conversationId: number
   threadId: number
-  avatar: string
   unseenMessageId?: number
 }
 
@@ -24,7 +23,6 @@ export const pullLatestMessages = (userId: number) =>
       "fromUserId", 
       "unseenMessageId", 
       "Thread"."id" AS "threadId", 
-      "Profile"."avatar"
     FROM "Thread"
     INNER JOIN
       (  
@@ -47,6 +45,5 @@ export const pullLatestMessages = (userId: number) =>
       ) AS "B"
     ON "Thread"."memberId" = ${userId}
     AND "Thread"."conversationId"="B"."conversationId"
-    INNER JOIN "Profile" ON "Profile"."id"="B"."fromUserId"
     ORDER BY "B"."createdAt" ASC
   `

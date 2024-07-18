@@ -27,3 +27,8 @@ Later
 ! I can use the integration tests both locally and on AWS !
 
 Need something that will validate the openapi schema
+
+Add the username and avatar separately to userhead and messages
+
+
+i need map of userId -> username + avatar

@@ -6,12 +6,11 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import { pullLatestMessages } from '../../queries/pullLatestMessages'
 import AuthedRequest from '../../middlewares/authedRequest'
-import { getAvatar } from '../../storage/s3Accessors'
 
 const router = express.Router()
 
 router.get(
-  '/chatheads',
+  '/chatHeads',
   async (
     req: PathMethodRequest<'/authed/chatHeads', 'get'>,
     res: PathMethodResponse<'/authed/chatHeads'>
@@ -22,7 +21,7 @@ router.get(
       // pull the messages, then get the avatars
       const messages = await pullLatestMessages(authedReq.userId)
 
-      const chatheadPromises = messages.map(async (msg) => ({
+      const chatHeads = messages.map((msg) => ({
         conversationId: msg.conversationId,
         threadId: msg.threadId,
         message: {
@@ -31,13 +30,10 @@ router.get(
           content: msg.content,
           createdAt: msg.createdAt
         },
-        avatar: await getAvatar(msg.avatar),
         unseenMessageId: msg.unseenMessageId
       }))
 
-      const chatheads = await Promise.all(chatheadPromises)
-
-      return res.status(StatusCodes.OK).json(chatheads)
+      return res.status(StatusCodes.OK).json(chatHeads)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

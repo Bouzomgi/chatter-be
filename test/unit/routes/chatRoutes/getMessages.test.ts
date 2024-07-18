@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /messages/:threadId', () => {
+describe('GET /authed/messages/:threadId', () => {
   it('should successfully get messages given a valid threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,
