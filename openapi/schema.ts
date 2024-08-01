@@ -225,85 +225,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/chatHeads": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get chat heads for a given user */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got chat heads */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ChatHead"][];
-                    };
-                };
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/authed/messages/{threadId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get messages for a specified thread */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description ID of the thread to get messages from */
-                    threadId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got messages */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Message"][];
-                    };
-                };
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/authed/userHeads": {
         parameters: {
             query?: never;
@@ -311,7 +232,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get user heads for a given user */
+        /** Get all other users */
         get: {
             parameters: {
                 query?: never;
@@ -332,6 +253,44 @@ export interface paths {
                 };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/authed/chats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all chats the user is part of */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Successfully got messages */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Chat"][];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         put?: never;
@@ -466,15 +425,6 @@ export interface components {
             /** @example www.avatar-1.com */
             url: string;
         };
-        ChatHead: {
-            /** @example 1 */
-            conversationId: number;
-            /** @example 1 */
-            threadId: number;
-            /** @example 1 */
-            unseenMessageId?: number;
-            message: components["schemas"]["Message"];
-        };
         UserDetails: {
             /** @example 1 */
             userId: number;
@@ -491,6 +441,17 @@ export interface components {
             createdAt: string;
             /** @example lorem ipsum */
             content: string;
+        };
+        Chat: {
+            /** @example 1 */
+            conversationId: number;
+            /** @example 1 */
+            threadId: number;
+            /** @example 1 */
+            memberId?: number;
+            /** @example 1 */
+            unseenMessageId?: number;
+            messages: components["schemas"]["Message"][];
         };
     };
     responses: {
@@ -525,7 +486,7 @@ export interface components {
             };
             content: {
                 "application/json": {
-                    /** @example Invalid request parameters. */
+                    /** @example Invalid request. */
                     error: string;
                 };
             };
@@ -550,6 +511,18 @@ export interface components {
             content: {
                 "application/json": {
                     /** @example Resource not found. */
+                    error: string;
+                };
+            };
+        };
+        /** @description Server cannot process request */
+        InternalServerError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Server could not process. */
                     error: string;
                 };
             };

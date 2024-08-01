@@ -20,7 +20,7 @@ router.get(
     res: PathMethodResponse<'/authed/userHeads'>
   ) => {
     try {
-      const authedReq = req as AuthedRequest<'/authed/chatHeads', 'get'>
+      const authedReq = req as AuthedRequest<'/authed/userHeads', 'get'>
 
       const profiles = await prisma.profile.findMany({
         where: {
