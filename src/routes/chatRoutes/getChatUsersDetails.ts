@@ -17,7 +17,7 @@ router.get(
     res: PathMethodResponse<'/authed/chatUsersDetails'>
   ) => {
     try {
-      const authedReq = req as AuthedRequest<'/authed/chatHeads', 'get'>
+      const authedReq = req as AuthedRequest<'/authed/chatUsersDetails', 'get'>
 
       const chatUsersDetails = await pullChatUsersDetails(authedReq.userId)
 

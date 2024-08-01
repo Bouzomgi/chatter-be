@@ -153,66 +153,12 @@ paths:
 
         "404":
           $ref: '#/components/responses/NotFound'
-
-  /authed/chatHeads:
-    get:
-      tags: 
-        - chat
-      summary: Get chat heads for a given user
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: Successfully got chat heads
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChatHead'
-
-        "400":
-          $ref: '#/components/responses/BadRequest'
-
-        "401":
-          $ref: '#/components/responses/Unauthorized'
-
-  /authed/messages/{threadId}:
-    get:
-      tags: 
-        - chat
-      summary: Get messages for a specified thread
-      security:
-        - jwtAuth: []
-      parameters:
-        - name: threadId
-          in: path
-          required: true
-          description: ID of the thread to get messages from
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successfully got messages
-          content:
-            application/json:
-              schema:
-                type: array
-                items: 
-                  $ref: '#/components/schemas/Message'
-
-        "400":
-          $ref: '#/components/responses/BadRequest'
-
-        "401":
-          $ref: '#/components/responses/Unauthorized'
-
   
   /authed/userHeads:
     get:
       tags: 
         - chat
-      summary: Get user heads for a given user
+      summary: Get all other users
       security:
         - jwtAuth: []
       responses:
@@ -230,6 +176,30 @@ paths:
 
         "401":
           $ref: '#/components/responses/Unauthorized'
+          
+  /authed/chats:
+    get:
+      tags: 
+        - chat
+      summary: Get all chats the user is part of
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Successfully got messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Chat'
+
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+          
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
 
   /authed/chatUsersDetails:
     get:
@@ -341,25 +311,6 @@ components:
         - name
         - url
 
-    ChatHead:
-      type: object
-      properties:
-        conversationId: 
-          type: number
-          example: 1
-        threadId:
-          type: number
-          example: 1
-        unseenMessageId: 
-          type: number
-          example: 1
-        message: 
-          $ref: '#/components/schemas/Message'
-      required:
-        - conversationId
-        - threadId
-        - message
-
     UserDetails:
       type: object
       properties:
@@ -397,6 +348,31 @@ components:
         - createdAt
         - content
     
+    Chat:
+      type: object
+      properties:
+        conversationId:
+          type: number
+          example: 1
+        threadId: 
+          type: number
+          example: 1
+        memberId: 
+          type: number
+          example: 1
+        unseenMessageId: 
+          type: number
+          example: 1
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      required:
+        - conversationId
+        - threadId
+        - participantUserId
+        - messages
+    
   responses:
     Ok:
       description: Successful response
@@ -431,7 +407,7 @@ components:
             properties:
               error:
                 type: string
-                example: "Invalid request parameters."
+                example: "Invalid request."
             required: 
               - error
     Unauthorized:
@@ -459,3 +435,15 @@ components:
             required: 
               - error
 
+    InternalServerError:
+      description: Server cannot process request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Server could not process."
+            required: 
+              - error
