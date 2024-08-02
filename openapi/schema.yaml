@@ -370,7 +370,7 @@ components:
       required:
         - conversationId
         - threadId
-        - participantUserId
+        - memberId
         - messages
     
   responses:

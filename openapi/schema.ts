@@ -448,7 +448,7 @@ export interface components {
             /** @example 1 */
             threadId: number;
             /** @example 1 */
-            memberId?: number;
+            memberId: number;
             /** @example 1 */
             unseenMessageId?: number;
             messages: components["schemas"]["Message"][];
