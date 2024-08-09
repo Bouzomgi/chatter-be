@@ -254,7 +254,7 @@ paths:
                 - content
   
       responses:
-        "200":
+        "201":
           description: Successfully sent message
           content:
             application/json:

@@ -371,7 +371,7 @@ export interface paths {
             };
             responses: {
                 /** @description Successfully sent message */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
