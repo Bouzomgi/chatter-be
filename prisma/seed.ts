@@ -69,13 +69,13 @@ async function main() {
           {
             fromUserId: 2,
             content: 'Who do you think will win the championship?',
-            createdAt: '2024-03-20T18:00:02Z'
+            createdAt: '2024-03-20T18:00:42Z'
           },
           {
             fromUserId: 1,
             content:
               'I think Team A has a good chance. They played exceptionally well in the last few games.',
-            createdAt: '2024-03-20T18:00:06Z'
+            createdAt: '2024-03-20T18:03:06Z'
           },
           {
             fromUserId: 1,
@@ -86,6 +86,11 @@ async function main() {
             fromUserId: 2,
             content: "That sounds like a plan. Let's do it!",
             createdAt: '2024-03-29T08:00:00Z'
+          },
+          {
+            fromUserId: 2,
+            content: 'Greatful to have you as a friend!',
+            createdAt: '2024-03-29T08:00:03Z'
           }
         ]
       }

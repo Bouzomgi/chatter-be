@@ -11,7 +11,8 @@ Quickstart: https://www.prisma.io/docs/getting-started/quickstart
 To run
 
 - Spin up a local postgres, adminer, and localstack instance using `docker compose up`
-- Create the DB tables using `prisma db push`
+- Create the DB tables using `npx prisma db push`
+- Seed database using `npx prisma db seed`
 - Run the backend using `npm start`
 
 To Do
@@ -28,7 +29,4 @@ Later
 
 Need something that will validate the openapi schema
 
-Add the username and avatar separately to userhead and messages
-
-
-i need map of userId -> username + avatar
+Need to combine getUserHeads and getChatUserDetails, all users with the threadId as well
