@@ -248,7 +248,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["UserDetails"][];
+                        "application/json": components["schemas"]["UserHead"][];
                     };
                 };
                 400: components["responses"]["BadRequest"];
@@ -370,7 +370,17 @@ export interface paths {
                 };
             };
             responses: {
-                200: components["responses"]["Ok"];
+                /** @description Successfully sent message */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChatDetails"] & {
+                            message: components["schemas"]["Message"];
+                        };
+                    };
+                };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
             };
@@ -432,6 +442,10 @@ export interface components {
             username: string;
             avatar: components["schemas"]["Avatar"];
         };
+        UserHead: components["schemas"]["UserDetails"] & {
+            /** @example 1 */
+            threadId?: number;
+        };
         Message: {
             /** @example 1 */
             messageId: number;
@@ -442,7 +456,7 @@ export interface components {
             /** @example lorem ipsum */
             content: string;
         };
-        Chat: {
+        ChatDetails: {
             /** @example 1 */
             conversationId: number;
             /** @example 1 */
@@ -451,6 +465,8 @@ export interface components {
             memberId: number;
             /** @example 1 */
             unseenMessageId?: number;
+        };
+        Chat: components["schemas"]["ChatDetails"] & {
             messages: components["schemas"]["Message"][];
         };
     };

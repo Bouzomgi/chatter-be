@@ -169,7 +169,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserDetails'
+                  $ref: '#/components/schemas/UserHead'
 
         "400":
           $ref: '#/components/responses/BadRequest'
@@ -255,7 +255,18 @@ paths:
   
       responses:
         "200":
-          $ref: '#/components/responses/Ok'
+          description: Successfully sent message
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ChatDetails'
+                  - type: object
+                    properties:
+                      message:
+                        $ref: '#/components/schemas/Message'
+                    required:
+                      - message
 
         "400":
           $ref: '#/components/responses/BadRequest'
@@ -326,6 +337,15 @@ components:
         - userId
         - username
         - avatar
+        
+    UserHead:
+      allOf:
+        - $ref: '#/components/schemas/UserDetails'
+        - type: object
+          properties:
+            threadId:
+              type: number
+              example: 1
 
     Message:
       type: object
@@ -348,7 +368,7 @@ components:
         - createdAt
         - content
     
-    Chat:
+    ChatDetails:
       type: object
       properties:
         conversationId:
@@ -363,15 +383,22 @@ components:
         unseenMessageId: 
           type: number
           example: 1
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
       required:
         - conversationId
         - threadId
         - memberId
-        - messages
+
+    Chat:
+      allOf:
+        - $ref: '#/components/schemas/ChatDetails'
+        - type: object
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: '#/components/schemas/Message'
+          required:
+            - messages
     
   responses:
     Ok:

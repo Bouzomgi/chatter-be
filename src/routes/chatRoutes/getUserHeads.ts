@@ -27,6 +27,9 @@ router.get(
           NOT: {
             id: authedReq.userId
           }
+        },
+        orderBy: {
+          username: 'asc'
         }
       })
 

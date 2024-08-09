@@ -82,7 +82,7 @@ router.post(
         return conversation.id
       }
 
-      await prisma.$transaction(async () => {
+      const messageResult = await prisma.$transaction(async () => {
         const conversationId = conversations.length
           ? conversations[0].conversationId
           : await createConversation(members)
@@ -116,11 +116,31 @@ router.post(
         })
 
         await Promise.all(threadPromises)
+
+        const currentThread = await prisma.thread.findUnique({
+          where: {
+            // eslint-disable-next-line camelcase
+            conversationId_memberId: {
+              conversationId: conversationId,
+              memberId: authedReq.userId
+            }
+          }
+        })
+
+        return {
+          conversationId: currentThread!.conversationId,
+          threadId: currentThread!.id,
+          memberId: currentThread!.memberId,
+          message: {
+            messageId: message.id,
+            fromUserId: message.fromUserId,
+            createdAt: message.createdAt.toString(),
+            content: message.content
+          }
+        }
       })
 
-      return res
-        .status(StatusCodes.CREATED)
-        .json({ message: 'Sent new message' })
+      return res.status(StatusCodes.CREATED).json(messageResult)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

@@ -69,12 +69,30 @@ describe('POST /authed/message', () => {
       unseenMessageId: 1
     })
 
+    prismaMock.thread.findUnique.mockResolvedValue({
+      id: 1,
+      conversationId: 1,
+      memberId: 1,
+      unseenMessageId: 1
+    })
+
     const res = await request(app).post('/authed/message').send(reqBody)
 
     expect(findManyUserSpy).toHaveBeenCalled()
     expect(createConversationSpy).toHaveBeenCalled()
     expect(createThreadSpy).toHaveBeenCalledTimes(3)
     expect(res.statusCode).toBe(StatusCodes.CREATED)
+    expect(res.body).toEqual({
+      conversationId: 1,
+      threadId: 1,
+      memberId: 1,
+      message: {
+        messageId: 1,
+        fromUserId: 1,
+        createdAt: new Date('2024-01-01T00:00:00Z').toString(),
+        content: 'lorem ipsum'
+      }
+    })
   })
 
   it('should create post in existing conversation if there is an existing thread', async () => {
@@ -119,12 +137,30 @@ describe('POST /authed/message', () => {
       unseenMessageId: 1
     })
 
+    prismaMock.thread.findUnique.mockResolvedValue({
+      id: 1,
+      conversationId: 1,
+      memberId: 1,
+      unseenMessageId: 1
+    })
+
     const res = await request(app).post('/authed/message').send(reqBody)
 
     expect(findManyUserSpy).not.toHaveBeenCalled()
     expect(createConversationSpy).not.toHaveBeenCalled()
     expect(createThreadSpy).not.toHaveBeenCalled()
     expect(res.statusCode).toBe(StatusCodes.CREATED)
+    expect(res.body).toEqual({
+      conversationId: 1,
+      threadId: 1,
+      memberId: 1,
+      message: {
+        messageId: 1,
+        fromUserId: 1,
+        createdAt: new Date('2024-01-01T00:00:00Z').toString(),
+        content: 'lorem ipsum'
+      }
+    })
   })
 
   it('should fail if a member does not exist', async () => {
