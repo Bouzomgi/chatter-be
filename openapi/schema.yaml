@@ -474,4 +474,3 @@ components:
                 example: "Server could not process."
             required: 
               - error
-
