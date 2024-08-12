@@ -37,6 +37,15 @@ router.get(
           }
         })
 
+        const members = await prisma.thread.findMany({
+          where: {
+            conversationId: chat.conversationId
+          },
+          select: {
+            memberId: true
+          }
+        })
+
         const renamedChats = messages.map((message) => ({
           messageId: message.id,
           createdAt: message.createdAt.toISOString(),
@@ -47,7 +56,7 @@ router.get(
         return {
           conversationId: chat.conversationId,
           threadId: chat.threadId,
-          memberId: chat.memberId,
+          members: members.map((elem) => elem.memberId),
           unseenMessageId: chat.unseenMessageId,
           messages: renamedChats
         }

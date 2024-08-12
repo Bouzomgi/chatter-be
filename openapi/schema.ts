@@ -359,11 +359,7 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example [
-                         *       1,
-                         *       2
-                         *     ] */
-                        members: number[];
+                        members: components["schemas"]["ChatMembers"];
                         /** @example lorem ipsum */
                         content: string;
                     };
@@ -435,6 +431,11 @@ export interface components {
             /** @example www.avatar-1.com */
             url: string;
         };
+        /** @example [
+         *       1,
+         *       2
+         *     ] */
+        ChatMembers: number[];
         UserDetails: {
             /** @example 1 */
             userId: number;
@@ -461,8 +462,7 @@ export interface components {
             conversationId: number;
             /** @example 1 */
             threadId: number;
-            /** @example 1 */
-            memberId: number;
+            members: components["schemas"]["ChatMembers"];
             /** @example 1 */
             unseenMessageId?: number;
         };

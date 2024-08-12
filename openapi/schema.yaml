@@ -240,12 +240,8 @@ paths:
             schema:
               type: object
               properties:
-                members: 
-                  type: array
-                  example: [1, 2]
-                  items:
-                    type: number
-                  minimum: 2
+                members:
+                  $ref: '#/components/schemas/ChatMembers'
                 content:
                   example: "lorem ipsum"
                   type: string
@@ -322,6 +318,13 @@ components:
         - name
         - url
 
+    ChatMembers:
+      type: array
+      items:
+        type: number
+      minimum: 2
+      example: [1, 2]
+      
     UserDetails:
       type: object
       properties:
@@ -350,16 +353,16 @@ components:
     Message:
       type: object
       properties:
-        messageId: 
+        messageId:
           type: number
           example: 1
-        fromUserId: 
+        fromUserId:
           type: number
           example: 1
-        createdAt: 
+        createdAt:
           type: string
           example: '2024-03-15T10:01:00Z'
-        content: 
+        content:
           type: string
           example: 'lorem ipsum'
       required:
@@ -377,16 +380,15 @@ components:
         threadId: 
           type: number
           example: 1
-        memberId: 
-          type: number
-          example: 1
+        members:
+          $ref: '#/components/schemas/ChatMembers'
         unseenMessageId: 
           type: number
           example: 1
       required:
         - conversationId
         - threadId
-        - memberId
+        - members
 
     Chat:
       allOf:
