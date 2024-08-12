@@ -18,7 +18,17 @@ jest.mock('../../../../src/queries/pullChatDetails', () => ({
     {
       conversationId: 1,
       threadId: 1,
-      memberId: 2
+      members: [1, 2]
+    }
+  ])
+}))
+
+jest.mock('../../../../src/queries/pullChatDetails', () => ({
+  pullChatDetails: jest.fn().mockResolvedValue([
+    {
+      conversationId: 1,
+      threadId: 1,
+      members: [1, 2]
     }
   ])
 }))
@@ -40,11 +50,18 @@ describe('GET /authed/chats', () => {
       }
     ])
 
+    prismaMock.thread.findMany.mockResolvedValueOnce([
+      // @ts-expect-error type signature of mockedConversationList is correct
+      { memberId: 1 },
+      // @ts-expect-error type signature of mockedConversationList is correct
+      { memberId: 2 }
+    ])
+
     const expectedBody = [
       {
         conversationId: 1,
         threadId: 1,
-        memberId: 2,
+        members: [1, 2],
         messages: [
           {
             messageId: 1,

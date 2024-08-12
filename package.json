@@ -10,7 +10,8 @@
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
     "gen-db-schema": "npx prisma generate",
-    "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts"
+    "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
+    "refresh-and-seed": "npx prisma migrate reset --force"
   },
   "author": "",
   "license": "ISC",

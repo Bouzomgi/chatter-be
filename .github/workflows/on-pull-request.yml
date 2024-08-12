@@ -41,6 +41,9 @@ jobs:
       - name: Check Lint
         run: npm run check-lint
 
+      - name: Generate TS Types from OpenAPI Schema
+        run: npm run gen-openapi-ts
+
       - name: Run Tests and Code Coverage
         run: npm test
 

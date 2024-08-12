@@ -85,7 +85,7 @@ describe('POST /authed/message', () => {
     expect(res.body).toEqual({
       conversationId: 1,
       threadId: 1,
-      memberId: 1,
+      members: [1, 2, 3],
       message: {
         messageId: 1,
         fromUserId: 1,
@@ -153,7 +153,7 @@ describe('POST /authed/message', () => {
     expect(res.body).toEqual({
       conversationId: 1,
       threadId: 1,
-      memberId: 1,
+      members: [1, 2, 3],
       message: {
         messageId: 1,
         fromUserId: 1,

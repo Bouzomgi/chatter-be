@@ -66,10 +66,9 @@ router.post(
         if (users.length != members.length)
           throw new Error('a specified member does not exist')
       }
-
       const createConversation = async (members: number[]) => {
         // create a conversation and threads for each user
-        const conversation = await prisma.conversation.create({})
+        const conversation = await prisma.conversation.create({ data: {} })
         const threads = members.map((member) =>
           prisma.thread.create({
             data: {
@@ -130,7 +129,7 @@ router.post(
         return {
           conversationId: currentThread!.conversationId,
           threadId: currentThread!.id,
-          memberId: currentThread!.memberId,
+          members: members,
           message: {
             messageId: message.id,
             fromUserId: message.fromUserId,

@@ -5,13 +5,15 @@ async function main() {
   // Seed data for User model
   const users: Prisma.UserUncheckedCreateInput[] = [
     {
+      id: 1,
       email: 'adam@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
       profile: {
-        create: { username: 'adam', avatar: './avatars/default/avatar1.svg' }
+        create: { username: 'adam', avatar: './avatars/default/avatar3.svg' }
       }
     },
     {
+      id: 2,
       email: 'britta@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
       profile: {
@@ -19,20 +21,23 @@ async function main() {
       }
     },
     {
+      id: 3,
       email: 'carl@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
       profile: {
-        create: { username: 'carl', avatar: './avatars/default/avatar3.svg' }
+        create: { username: 'carl', avatar: './avatars/default/avatar4.svg' }
       }
     },
     {
+      id: 4,
       email: 'dana@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
       profile: {
-        create: { username: 'dana', avatar: './avatars/default/avatar4.svg' }
+        create: { username: 'dana', avatar: './avatars/default/avatar1.svg' }
       }
     },
     {
+      id: 5,
       email: 'edward@example.com',
       password: '$2b$10$qdzjQqja/hWZRTBydgm5POVg/ZsKAuNHdDVNbGO.lgFs6dJVe.WdG', // 'a'
       profile: {
@@ -89,7 +94,7 @@ async function main() {
           },
           {
             fromUserId: 2,
-            content: 'Greatful to have you as a friend!',
+            content: 'Grateful to have you as a friend!',
             createdAt: '2024-03-29T08:00:03Z'
           }
         ]
@@ -154,6 +159,13 @@ async function main() {
     }
   ]
 
+  const correctAutoIncrement = (tableName: string, start: number) => {
+    const sequenceName = `${tableName}_id_seq`
+    return prisma.$executeRawUnsafe(
+      `ALTER SEQUENCE "${sequenceName}" RESTART WITH ${start};`
+    )
+  }
+
   // Use Prisma to create the seed data
   await Promise.all(
     users.map((userData) =>
@@ -163,6 +175,8 @@ async function main() {
     )
   )
 
+  await correctAutoIncrement('User', users.length + 1)
+
   await Promise.all(
     conversations.map((conversationData) =>
       prisma.conversation.create({
@@ -171,6 +185,9 @@ async function main() {
     )
   )
 
+  await correctAutoIncrement('Conversation', conversations.length + 1)
+
+  // adds and connects the threads
   await Promise.all(
     conversationUpdate.map((conversationData, index) =>
       prisma.conversation.update({
