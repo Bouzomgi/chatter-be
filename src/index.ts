@@ -1,14 +1,12 @@
-import app from './app'
+import server from './app'
 import env from './config'
-import swaggerDocs from './api/api-doc'
+import { setupWebSocket } from './websockets/messageSocket'
+
+setupWebSocket(server)
 
 // RUN THE SERVER
-app.listen(env.PORT, () => {
-  console.log(`App listening on port ${env.PORT}`)
-
-  // Spins up OpenAPI docs route
-  swaggerDocs(app, '/docs')
-  console.info('Docs available at /docs')
+server.listen(env.PORT, () => {
+  console.info(`App listening on port ${env.PORT}`)
 })
 
-export default app
+export default server

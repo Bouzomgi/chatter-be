@@ -6,6 +6,8 @@ import chatRoutes from './routes/chatRoutes'
 import { StatusCodes } from 'http-status-codes'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import http from 'http'
+import swaggerDocs from './api/api-doc'
 
 const app = express()
 
@@ -19,9 +21,13 @@ app.use('/', authRoutes)
 app.use('/authed', verifyToken, settingsRoutes)
 app.use('/authed', verifyToken, chatRoutes)
 
+swaggerDocs(app, '/docs')
+
 // ROUTES
 app.get('/health', (_, res) => {
   res.status(StatusCodes.OK).json({ error: 'Up and running!' })
 })
 
-export default app
+const server = http.createServer(app)
+
+export default server

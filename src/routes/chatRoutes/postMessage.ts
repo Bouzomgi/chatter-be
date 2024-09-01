@@ -7,6 +7,7 @@ import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
+import { notifyUsers } from '../../websockets/messageSocket'
 
 const router = express.Router()
 
@@ -138,6 +139,10 @@ router.post(
           }
         }
       })
+
+      // notify all active involved users about the sent message
+      const usersToNotify = members.filter((x) => x === authedReq.userId)
+      notifyUsers(usersToNotify, messageResult)
 
       return res.status(StatusCodes.CREATED).json(messageResult)
     } catch {
