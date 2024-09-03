@@ -5,6 +5,7 @@ type Message = components['schemas']['Message']
 type MessageNotificationPayload = {
   conversationId: number
   threadId: number
+  members: number[]
   message: Message
 }
 

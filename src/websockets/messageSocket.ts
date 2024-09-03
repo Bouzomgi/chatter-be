@@ -56,7 +56,6 @@ const notifyUsers = (
   userIds: number[],
   notificationPayload: MessageNotificationPayload
 ) => {
-  // figure out how to go from user -> websocket
   const clients: WebSocket[] = userIds.flatMap((userId) => {
     const socketMap = userIdToSocketMap.get(userId)
     return socketMap != undefined ? Array.from(socketMap) : []
