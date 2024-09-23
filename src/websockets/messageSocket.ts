@@ -52,20 +52,20 @@ const setupWebSocket = (server: Server) => {
   return wss
 }
 
-const notifyUsers = (
-  userIds: number[],
+const notifyUser = (
+  userId: number,
   notificationPayload: MessageNotificationPayload
 ) => {
-  const clients: WebSocket[] = userIds.flatMap((userId) => {
-    const socketMap = userIdToSocketMap.get(userId)
-    return socketMap != undefined ? Array.from(socketMap) : []
-  })
+  const socketMap = userIdToSocketMap.get(userId)
+  const clients: WebSocket[] =
+    socketMap != undefined ? Array.from(socketMap) : []
 
   for (const client of clients) {
     const jsonString = JSON.stringify(notificationPayload)
-    const buffer = Buffer.from(jsonString, 'utf-8')
-    client.send(buffer)
+    const buffer = Buffer.from(jsonString)
+    const text = buffer.toString('utf-8')
+    client.send(text)
   }
 }
 
-export { setupWebSocket, notifyUsers }
+export { setupWebSocket, notifyUser }
