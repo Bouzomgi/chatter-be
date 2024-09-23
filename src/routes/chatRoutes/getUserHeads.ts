@@ -25,7 +25,7 @@ router.get(
       const profiles = await prisma.profile.findMany({
         where: {
           NOT: {
-            id: authedReq.userId
+            userId: authedReq.userId
           }
         },
         orderBy: {

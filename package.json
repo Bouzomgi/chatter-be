@@ -11,7 +11,8 @@
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
-    "refresh-and-seed": "npx prisma migrate reset --force"
+    "refresh-and-seed": "npx prisma migrate reset --force",
+    "build:prod": "npm run clean && npx tsc -p tsconfig-build.json"
   },
   "author": "",
   "license": "ISC",
