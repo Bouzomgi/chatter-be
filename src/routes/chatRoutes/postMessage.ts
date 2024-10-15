@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
-import { notifyUsers } from '../../websockets/messageSocket'
+import { notifyUser } from '../../websockets/messageSocket'
 
 const router = express.Router()
 
@@ -117,17 +117,19 @@ router.post(
 
         await Promise.all(threadPromises)
 
-        const currentThread = await prisma.thread.findUnique({
+        const allThreads = await prisma.thread.findMany({
           where: {
             // eslint-disable-next-line camelcase
-            conversationId_memberId: {
-              conversationId: conversationId,
-              memberId: authedReq.userId
-            }
+            conversationId: conversationId
           }
         })
+        console.log(allThreads)
 
-        return {
+        const currentThread = allThreads.find(
+          (x) => x.memberId === authedReq.userId
+        )
+
+        let completeMessage = {
           conversationId: currentThread!.conversationId,
           threadId: currentThread!.id,
           members: members,
@@ -138,14 +140,23 @@ router.post(
             content: message.content
           }
         }
+
+        // notify all active involved users about the sent message
+        const usersToNotify = members.filter((x) => x != authedReq.userId)
+
+        console.log(usersToNotify, authedReq.userId)
+        usersToNotify.forEach((userId) => {
+          const userThreadId = allThreads.find((x) => x.memberId === userId)!.id
+          completeMessage = { ...completeMessage, threadId: userThreadId }
+          notifyUser(userId, completeMessage)
+        })
+
+        return completeMessage
       })
 
-      // notify all active involved users about the sent message
-      const usersToNotify = members.filter((x) => x === authedReq.userId)
-      notifyUsers(usersToNotify, messageResult)
-
       return res.status(StatusCodes.CREATED).json(messageResult)
-    } catch {
+    } catch (error) {
+      console.log(`postMessage error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not send message' })
