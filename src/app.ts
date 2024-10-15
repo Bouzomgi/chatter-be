@@ -25,7 +25,7 @@ swaggerDocs(app, '/docs')
 
 // ROUTES
 app.get('/health', (_, res) => {
-  res.status(StatusCodes.OK).json({ error: 'Up and running!' })
+  res.status(StatusCodes.OK).json({ message: 'Up and running!' })
 })
 
 const server = http.createServer(app)

@@ -3,3 +3,12 @@ os: linux
 files:
   - source: /
     destination: /
+hooks:
+  BeforeInstall:
+    - location: npm run build
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: node dist/src/index.js
+      timeout: 300
+      runas: root
