@@ -4,7 +4,7 @@
 cd /home/ec2-user
 
 # Unzip the application package
-unzip my-app.zip
+unzip my-app
 
 cd my-app
 
