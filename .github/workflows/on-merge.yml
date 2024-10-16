@@ -63,6 +63,14 @@ jobs:
           echo "Deployment ID: $DEPLOYMENT_ID"
           echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
 
+          # Pass the environment variables to CodeDeploy
+          aws ssm put-parameter --name "/myapp/PORT" --value "${PORT}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/DATABASE_URL" --value "${DATABASE_URL}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/STORAGE_BUCKET_NAME" --value "${STORAGE_BUCKET_NAME}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/AWS_S3_ENDPOINT" --value "${AWS_S3_ENDPOINT}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/AWS_DEFAULT_REGION" --value "${AWS_DEFAULT_REGION}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/TOKEN_SECRET" --value "${TOKEN_SECRET}" --type "String" --overwrite
+
       - name: Wait for CodeDeploy deployment to complete
         run: |
           aws deploy wait deployment-successful \
