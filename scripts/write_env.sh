@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# Pull all current environment variables and store them in /etc/environment
-env | while read -r line; do
-  echo "export $line" >> /etc/environment
-done
+# Create a file to hold environment variables
+ENV_FILE="/home/ec2-user/my-app/.env"
 
-# Source the /etc/environment file to load variables for current session
-source /etc/environment
+# Write the environment variables from the deployment
+echo "PORT=${PORT}" >> $ENV_FILE
+echo "DATABASE_URL=${DATABASE_URL}" >> $ENV_FILE
+echo "STORAGE_BUCKET_NAME=${STORAGE_BUCKET_NAME}" >> $ENV_FILE
+echo "AWS_S3_ENDPOINT=${AWS_S3_ENDPOINT}" >> $ENV_FILE
+echo "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> $ENV_FILE
+echo "TOKEN_SECRET=${TOKEN_SECRET}" >> $ENV_FILE
+
+# Optionally source the env file or export variables
+source $ENV_FILE
