@@ -11,5 +11,6 @@ rm my-app.zip
 
 cd my-app
 
+npm install --only=production
 node dist/src/index.js
 
