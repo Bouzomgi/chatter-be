@@ -45,7 +45,7 @@ jobs:
 
       - name: Create a CodeDeploy deployment
         env:
-          PORT: '8080'
+          PORT: '80'
           DATABASE_URL: 'postgresql://admin:pass@localhost:5432/chatter?schema=public'
           STORAGE_BUCKET_NAME: "local-chatter-storage"
           AWS_S3_ENDPOINT: 'http://0.0.0.0:4566'
@@ -58,7 +58,7 @@ jobs:
           aws ssm put-parameter --name "/myapp/STORAGE_BUCKET_NAME" --value "${STORAGE_BUCKET_NAME}" --type "String" --overwrite
           aws ssm put-parameter --name "/myapp/AWS_S3_ENDPOINT" --value "${AWS_S3_ENDPOINT}" --type "String" --overwrite
           aws ssm put-parameter --name "/myapp/AWS_DEFAULT_REGION" --value "${AWS_DEFAULT_REGION}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/TOKEN_SECRET" --value "${TOKEN_SECRET}" --type "String" --overwrite
+          aws ssm put-parameter --name "/myapp/TOKEN_SECRET" --value "${TOKEN_SECRET}" --type "SecureString" --overwrite
 
           DEPLOYMENT_ID=$(aws deploy create-deployment \
             --application-name chatter \
