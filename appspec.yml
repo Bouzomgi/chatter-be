@@ -1,18 +1,14 @@
 version: 0.0
 os: linux
 files:
-  - source: /dist
-    destination: /dist
+  - source: /
+    destination: /home/ec2-user/my-app
 hooks:
   BeforeInstall:
-    - location: ./scripts/build_application.sh
-      timeout: 300
-      runas: root
-  AfterInstall:
     - location: ./scripts/write_env.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
   ApplicationStart:
     - location: ./scripts/start_application.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
