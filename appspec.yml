@@ -4,10 +4,10 @@ files:
   - source: /
     destination: /home/ec2-user
 hooks:
-  # BeforeInstall:
-  #   - location: ./scripts/write_env.sh
-  #     timeout: 300
-  #     runas: ec2-user
+  BeforeInstall:
+    - location: ./scripts/write_env.sh
+      timeout: 300
+      runas: ec2-user
   ApplicationStart:
     - location: ./scripts/start_application.sh
       timeout: 300
