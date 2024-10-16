@@ -52,10 +52,20 @@ jobs:
           AWS_DEFAULT_REGION: 'us-east-1'
           TOKEN_SECRET: '+B*8nUZLkhdI7cBK+wt.St>3UF=k|5uo5{P@Q=&=VVmnTYCl;A(vwh/)h}!.J8pP'
         run: |
-          aws deploy create-deployment \
+          DEPLOYMENT_ID=$(aws deploy create-deployment \
             --application-name chatter \
             --deployment-group-name webserver \
             --s3-location bucket=chatter-be,bundleType=zip,key=my-app.zip \
             --region us-east-1 \
             --file-exists-behavior OVERWRITE \
-            --deployment-config-name CodeDeployDefault.AllAtOnce
+            --query "deploymentId" \
+            --output text)
+          echo "Deployment ID: $DEPLOYMENT_ID"
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
+
+      - name: Wait for CodeDeploy deployment to complete
+        run: |
+          aws deploy wait deployment-successful \
+            --deployment-id ${{ env.deployment_id }} \
+            --region us-east-1
+          echo "Deployment completed successfully!"
