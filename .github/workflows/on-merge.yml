@@ -25,9 +25,6 @@ jobs:
           node-version: 20.12.x
           cache: npm
 
-      - name: Install Dependencies
-        run: npm ci
-
       - name: Create Production Build
         run: CI='' npm run build
 
