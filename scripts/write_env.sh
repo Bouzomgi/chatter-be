@@ -3,6 +3,9 @@
 # Create a file to hold environment variables
 ENV_FILE="/home/ec2-user/my-app/.env"
 
+# Create the directory if it doesn't exist
+mkdir -p "$(dirname "$ENV_FILE")"
+
 # Write the environment variables from the deployment
 echo "PORT=${PORT}" >> $ENV_FILE
 echo "DATABASE_URL=${DATABASE_URL}" >> $ENV_FILE
