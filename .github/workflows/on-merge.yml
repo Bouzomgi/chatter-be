@@ -60,4 +60,5 @@ jobs:
             --s3-location bucket=chatter-be,bundleType=zip,key=my-app.zip \
             --region us-east-1 \
             --file-exists-behavior OVERWRITE \
-            --deployment-config-name CodeDeployDefault.AllAtOnce
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --debug
