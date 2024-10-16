@@ -11,6 +11,5 @@ rm my-app.zip
 
 cd my-app
 
-npm run build
 node dist/src/index.js
 
