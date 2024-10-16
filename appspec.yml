@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /dist
-    destination: /dist
+  - source: /
+    destination: /application-code
 hooks:
   BeforeInstall:
     - location: ./scripts/build_application.sh
