@@ -12,7 +12,7 @@
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
     "refresh-and-seed": "npx prisma migrate reset --force",
-    "build": "npm run clean && npx prisma generate && npx tsc -p tsconfig-build.json"
+    "build": "npm run clean && npx tsc -p tsconfig-build.json"
   },
   "author": "",
   "license": "ISC",
