@@ -45,7 +45,7 @@ jobs:
 
       - name: Create a CodeDeploy deployment
         env:
-          PORT: '80'
+          PORT: '8080'
           DATABASE_URL: 'postgresql://admin:pass@localhost:5432/chatter?schema=public'
           STORAGE_BUCKET_NAME: "local-chatter-storage"
           AWS_S3_ENDPOINT: 'http://0.0.0.0:4566'
@@ -72,8 +72,6 @@ jobs:
             --output text)
           echo "Deployment ID: $DEPLOYMENT_ID"
           echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
-
-          
 
       - name: Wait for CodeDeploy deployment to complete
         run: |
