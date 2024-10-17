@@ -7,9 +7,9 @@ cd /home/ec2-user/my-app
 nohup node dist/src/index.js &
 
 # Capture the process ID (PID) and store it in a file for later use
-echo $! > /home/ec2-user/nodeapp.pid
+echo $! > /home/ec2-user/my-app/nodeapp.pid
 
 # Disown the process so it's not attached to the terminal
 disown
 
-echo "Node.js server started in the background with PID $(cat /home/ec2-user/nodeapp.pid)"
+echo "Node.js server started in the background with PID $(cat /home/ec2-user/my-app/nodeapp.pid)"
