@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# Define the log file where the Node.js process output will be logged
+LOGFILE="/home/ec2-user/my-app/server.log"
+
+# Change to the directory where the application is located
 cd /home/ec2-user
 
-source /home/ec2-user/.env
+# Run the Node.js app in the background
+nohup node dist/src/index.js > $LOGFILE 2>&1 &
 
-npm install --only=production
+# Capture the process ID (PID) and store it in a file for later use
+echo $! > /home/ec2-user/nodeapp.pid
 
-npx prisma generate
-
-node dist/src/index.js &
+echo "Node.js server started in the background with PID $(cat /home/ec2-user/nodeapp.pid)"

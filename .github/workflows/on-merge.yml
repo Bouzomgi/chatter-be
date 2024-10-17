@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+        npx prisma generate
+
+
       - name: Create Production Build
         run: CI='' npm run build
 
@@ -40,7 +43,7 @@ jobs:
 
       - name: Sync webserver build to S3
         run: |
-          zip -r my-app.zip dist appspec.yml scripts prisma openapi package*.json  && \
+          zip -r my-app.zip dist appspec.yml scripts prisma openapi  && \
           aws s3 cp my-app.zip s3://chatter-be
 
       - name: Create a CodeDeploy deployment
