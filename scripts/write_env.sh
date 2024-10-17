@@ -15,6 +15,8 @@ echo "STORAGE_BUCKET_NAME=\"$(aws ssm get-parameter --name /myapp/STORAGE_BUCKET
 echo "AWS_S3_ENDPOINT=\"$(aws ssm get-parameter --name /myapp/AWS_S3_ENDPOINT --query 'Parameter.Value' --output text)\"" >> $ENV_FILE
 echo "AWS_DEFAULT_REGION=\"$(aws ssm get-parameter --name /myapp/AWS_DEFAULT_REGION --query 'Parameter.Value' --output text)\"" >> $ENV_FILE
 echo "TOKEN_SECRET=\"$(aws ssm get-parameter --name /myapp/TOKEN_SECRET --with-decryption --query 'Parameter.Value' --output text)\"" >> $ENV_FILE
+echo "AWS_ACCESS_KEY_ID=\"$(aws ssm get-parameter --name /myapp/AWS_ACCESS_KEY_ID --with-decryption --query 'Parameter.Value' --output text)\"" >> $ENV_FILE
+echo "AWS_SECRET_ACCESS_KEY=\"$(aws ssm get-parameter --name /myapp/AWS_SECRET_ACCESS_KEY --with-decryption --query 'Parameter.Value' --output text)\"" >> $ENV_FILE
 
 # Load the environment variables into the current session
 source $ENV_FILE
