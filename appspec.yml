@@ -5,6 +5,10 @@ files:
     destination: /home/ec2-user/my-app
 hooks:
   BeforeInstall:
+    - location: ./scripts/cleanup.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
     - location: ./scripts/write_env.sh
       timeout: 300
       runas: ec2-user
@@ -15,4 +19,4 @@ hooks:
   ApplicationStop:
     - location: scripts/stop_server.sh
       timeout: 300
-      runas: ec2-user
+      runas: root
