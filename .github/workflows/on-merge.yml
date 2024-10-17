@@ -59,6 +59,8 @@ jobs:
           aws ssm put-parameter --name "/myapp/AWS_S3_ENDPOINT" --value "${AWS_S3_ENDPOINT}" --type "String" --overwrite
           aws ssm put-parameter --name "/myapp/AWS_DEFAULT_REGION" --value "${AWS_DEFAULT_REGION}" --type "String" --overwrite
           aws ssm put-parameter --name "/myapp/TOKEN_SECRET" --value "${TOKEN_SECRET}" --type "SecureString" --overwrite
+          aws ssm put-parameter --name "/myapp/AWS_ACCESS_KEY_ID" --value "${AWS_ACCESS_KEY_ID}" --type "SecureString" --overwrite
+          aws ssm put-parameter --name "/myapp/AWS_SECRET_ACCESS_KEY" --value "${AWS_SECRET_ACCESS_KEY}" --type "SecureString" --overwrite
 
           DEPLOYMENT_ID=$(aws deploy create-deployment \
             --application-name chatter \
