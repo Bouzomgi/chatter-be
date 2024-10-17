@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the file where the process ID (PID) is stored
-PIDFILE="/home/ec2-user/my-app/nodeapp.pid"
+PIDFILE="/home/ec2-user/nodeapp.pid"
 
 # Check if the PID file exists
 if [ -f "$PIDFILE" ]; then
