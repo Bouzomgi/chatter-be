@@ -3,7 +3,7 @@
 # Create a file to hold environment variables
 ENV_FILE="/home/ec2-user/my-app/.env"
 
-rm $ENV_FILE
+rm -f $ENV_FILE
 
 # Create the directory if it doesn't exist
 mkdir -p "$(dirname "$ENV_FILE")"
