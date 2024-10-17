@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create a file to hold environment variables
-ENV_FILE="/home/ec2-user/.env"
+ENV_FILE="/home/ec2-user/my-app/.env"
 
 rm $ENV_FILE
 
