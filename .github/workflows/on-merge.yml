@@ -29,9 +29,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-        npx prisma generate
-
-
       - name: Create Production Build
         run: CI='' npm run build
 
