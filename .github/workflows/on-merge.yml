@@ -40,7 +40,7 @@ jobs:
 
       - name: Sync webserver build to S3
         run: |
-          zip -r my-app.zip dist appspec.yml scripts prisma package*.json && \
+          zip -r my-app.zip dist appspec.yml scripts prisma openapi package*.json  && \
           aws s3 cp my-app.zip s3://chatter-be
 
       - name: Create a CodeDeploy deployment
