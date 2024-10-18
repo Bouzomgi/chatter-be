@@ -9,6 +9,8 @@ cd /home/ec2-user/my-app || {
   exit 1
 }
 
+npm install --only=production
+
 # Run the Node.js app in the background
 nohup node dist/src/index.js > /dev/null 2>&1 &
 
