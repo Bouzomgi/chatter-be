@@ -13,7 +13,7 @@ jobs:
   on-pr:
     environment: test
     env:
-      PORT: 3000
+      PORT: 4000
       DATABASE_URL: postgresql://admin:pass@localhost:5432/chatter?schema=public
       STORAGE_BUCKET_NAME: local-chatter-storage
       AWS_S3_ENDPOINT: http://0.0.0.0:4566

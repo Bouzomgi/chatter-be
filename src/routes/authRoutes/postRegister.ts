@@ -5,7 +5,7 @@ import {
 } from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { getDefaultAvatars } from '../../storage/s3Accessors'
 import { checkSchema, validationResult } from 'express-validator'
 

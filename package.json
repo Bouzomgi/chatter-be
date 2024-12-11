@@ -12,7 +12,7 @@
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
     "refresh-and-seed": "npx prisma migrate reset --force",
-    "build": "npm run clean && npx tsc -p tsconfig-build.json"
+    "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
   },
   "author": "",
   "license": "ISC",
@@ -20,8 +20,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
-    "@types/aws-sdk": "^2.7.0",
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -44,19 +43,19 @@
     "nodemon": "^3.1.0",
     "openapi-typescript": "^7.0.0-rc.0",
     "prettier": "^3.2.5",
-    "prisma": "^5.14.0",
+    "prisma": "^6.0.1",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
+    "typescript": "^5.7.2",
     "typescript-eslint": "^7.2.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",
     "@aws-sdk/s3-request-presigner": "^3.590.0",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^6.0.1",
     "aws-sdk": "^2.1628.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "envalid": "^8.0.0",

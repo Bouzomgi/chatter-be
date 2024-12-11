@@ -1,4 +1,14 @@
 services:
+  api:
+    build:
+      context: .
+    ports: 
+      - "4000:4000"
+    env_file:
+      - .env
+    volumes:
+      - .env:/app/.env
+
   db:
     image: postgres
     restart: always

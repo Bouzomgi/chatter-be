@@ -5,7 +5,7 @@ import {
 } from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import env from '../../config'
 import { checkSchema, validationResult } from 'express-validator'

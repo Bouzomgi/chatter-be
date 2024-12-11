@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import app from '../../../../src/app'
 import { prismaMock } from '../../utils/singleton'
 

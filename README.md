@@ -1,5 +1,8 @@
 Chatter Backend
 
+Spin up docker:
+> `docker compose --env-file .env up`
+
 Prisma Notes
 
 - Look into validation

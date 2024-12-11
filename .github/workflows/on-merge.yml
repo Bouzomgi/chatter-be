@@ -26,11 +26,7 @@ jobs:
           node-version: 20.12.x
           cache: npm
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Create Production Build
-        run: CI='' npm run build
+      # run tests here!
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,44 +34,40 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/gha-deployment
           aws-region: us-east-1
 
-      - name: Sync webserver build to S3
-        run: |
-          zip -r my-app.zip dist appspec.yml scripts prisma openapi package*.json  && \
-          aws s3 cp my-app.zip s3://chatter-be
-
-      - name: Create a CodeDeploy deployment
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: 'true'
+  
+      - name: Build, tag, and push docker image to Amazon ECR
         env:
-          PORT: '8080'
-          DATABASE_URL: 'postgresql://admin:pass@localhost:5432/chatter?schema=public'
-          STORAGE_BUCKET_NAME: "local-chatter-storage"
-          AWS_S3_ENDPOINT: 'http://0.0.0.0:4566'
-          AWS_DEFAULT_REGION: 'us-east-1'
-          TOKEN_SECRET: '+B*8nUZLkhdI7cBK+wt.St>3UF=k|5uo5{P@Q=&=VVmnTYCl;A(vwh/)h}!.J8pP'
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: my-ecr-repo
+          IMAGE_TAG: "latest"
         run: |
-          # Pass the environment variables to CodeDeploy
-          aws ssm put-parameter --name "/myapp/PORT" --value "${PORT}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/DATABASE_URL" --value "${DATABASE_URL}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/STORAGE_BUCKET_NAME" --value "${STORAGE_BUCKET_NAME}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/AWS_S3_ENDPOINT" --value "${AWS_S3_ENDPOINT}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/AWS_DEFAULT_REGION" --value "${AWS_DEFAULT_REGION}" --type "String" --overwrite
-          aws ssm put-parameter --name "/myapp/TOKEN_SECRET" --value "${TOKEN_SECRET}" --type "SecureString" --overwrite
-          aws ssm put-parameter --name "/myapp/AWS_ACCESS_KEY_ID" --value "${AWS_ACCESS_KEY_ID}" --type "SecureString" --overwrite
-          aws ssm put-parameter --name "/myapp/AWS_SECRET_ACCESS_KEY" --value "${AWS_SECRET_ACCESS_KEY}" --type "SecureString" --overwrite
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-          DEPLOYMENT_ID=$(aws deploy create-deployment \
-            --application-name chatter \
-            --deployment-group-name webserver \
-            --s3-location bucket=chatter-be,bundleType=zip,key=my-app.zip \
-            --region us-east-1 \
-            --file-exists-behavior OVERWRITE \
-            --query "deploymentId" \
-            --output text)
-          echo "Deployment ID: $DEPLOYMENT_ID"
-          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
-
-      - name: Wait for CodeDeploy deployment to complete
+      - name: Check Deployment Existence
+        id: stack_check
         run: |
-          aws deploy wait deployment-successful \
-            --deployment-id ${{ env.deployment_id }} \
-            --region us-east-1
-          echo "Deployment completed successfully!"
+          STACK_NAME="DynamicStack"
+          aws cloudformation describe-stacks --stack-name $STACK_NAME > /dev/null 2>&1
+          echo ::set-output name=stack_exists::${?}
+
+      - name: Chicken Nugget
+        run: |
+          echo "chicken nugget"
+      # - name: Update Deployment
+      #   if: steps.stack_check.outputs.stack_exists == '0'
+      #   run: |
+      #     aws ecs update-service --cluster ca3 --service appserver-service --force-new-deployment
+      #     aws ecs wait services-stable --cluster ca3 --services appserver-service
+      #     STATUS=$(aws ecs describe-services --cluster ca3 --services appserver-service --query 'services[0].deployments[0].status' --output text)
+      #     if [ "$STATUS" != "PRIMARY" ]; then
+      #       echo "Deployment failed."
+      #       exit 1
+      #     else
+      #       echo "Deployment successful."
+      #     fi
