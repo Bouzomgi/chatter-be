@@ -6,13 +6,13 @@
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
     "test": "npx jest --setupFiles dotenv/config --detectOpenHandles",
-    "clean": "npx tsc --build",
+    "clean": "npx tsc  --showConfig --build",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
     "refresh-and-seed": "npx prisma migrate reset --force",
-    "build": "npm run clean && npx tsc --showConfig -p tsconfig-build.json && npx prisma generate"
+    "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
   },
   "author": "",
   "license": "ISC",
