@@ -144,7 +144,6 @@ router.post(
         // notify all active involved users about the sent message
         const usersToNotify = members.filter((x) => x != authedReq.userId)
 
-        console.log(usersToNotify, authedReq.userId)
         usersToNotify.forEach((userId) => {
           const userThreadId = allThreads.find((x) => x.memberId === userId)!.id
           completeMessage = { ...completeMessage, threadId: userThreadId }

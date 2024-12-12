@@ -57,3 +57,10 @@ probably like this:
     "content": "lorem ipsum"
   },
 }
+
+
+
+//////
+how to fix this stupid error about differences between docker and local
+/////
+I will clone down the repo and try to build the dockerfile locally
