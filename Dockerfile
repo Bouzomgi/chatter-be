@@ -30,10 +30,11 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
 # Expose the port
-EXPOSE 4000
+ENV PORT=4000
+EXPOSE $PORT
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:4000/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:$PORT/api/health || exit 1
 
 # Start the app
 CMD ["node", "dist/src/index.js"]
