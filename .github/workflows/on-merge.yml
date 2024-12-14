@@ -62,7 +62,7 @@ jobs:
       - name: Update Deployment
         run: |
           CLUSTER_NAME="chatter"
-          SERVICE_NAME="api-ser"
+          SERVICE_NAME="api-service"
           aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
           aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME
           STATUS=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].deployments[0].status' --output text)
