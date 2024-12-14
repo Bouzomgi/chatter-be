@@ -36,7 +36,7 @@ jobs:
 
       - name: Check ECR Existence
         run: |
-          STACK_NAME="DynamicStack"
+          STACK_NAME="CoreStack"
           aws cloudformation describe-stacks --stack-name $STACK_NAME > /dev/null 2>&1
 
       - name: Login to Amazon ECR
