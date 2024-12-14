@@ -59,19 +59,16 @@ jobs:
           STACK_NAME="DynamicStack"
           aws cloudformation describe-stacks --stack-name $STACK_NAME > /dev/null 2>&1
 
-      - name: Chicken Nugget
+      - name: Update Deployment
         run: |
-          echo "chicken nugget"
-
-      # - name: Update Deployment
-      #   if: steps.stack_check.outputs.stack_exists == '0'
-      #   run: |
-      #     aws ecs update-service --cluster ca3 --service appserver-service --force-new-deployment
-      #     aws ecs wait services-stable --cluster ca3 --services appserver-service
-      #     STATUS=$(aws ecs describe-services --cluster ca3 --services appserver-service --query 'services[0].deployments[0].status' --output text)
-      #     if [ "$STATUS" != "PRIMARY" ]; then
-      #       echo "Deployment failed."
-      #       exit 1
-      #     else
-      #       echo "Deployment successful."
-      #     fi
+          CLUSTER_NAME="chatter"
+          SERVICE_NAME="api-ser"
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
+          aws ecs wait services-stable --cluster $CLUSTER_NAME --services $SERVICE_NAME
+          STATUS=$(aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME --query 'services[0].deployments[0].status' --output text)
+          if [ "$STATUS" != "PRIMARY" ]; then
+            echo "Deployment failed."
+            exit 1
+          else
+            echo "Deployment successful."
+          fi
