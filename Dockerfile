@@ -4,14 +4,11 @@ FROM node:20 AS builder
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+# Copy the application code
+COPY . .
 
 # Install dependencies
 RUN npm ci
-
-# Copy the rest of the application code
-COPY . .
 
 # Build the TypeScript files
 RUN npm run build
