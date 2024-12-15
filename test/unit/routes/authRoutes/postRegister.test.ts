@@ -4,7 +4,7 @@ import app from '../../../../src/app'
 import { prismaMock } from '../../utils/singleton'
 import { getDefaultAvatars } from '../../../../src/storage/s3Accessors'
 
-jest.mock('bcrypt', () => ({
+jest.mock('bcryptjs', () => ({
   genSalt: jest.fn(() => 'mocked-salt'),
   hash: jest.fn(() => 'mocked-hash')
 }))
@@ -18,7 +18,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('POST /register', () => {
+describe('POST /api/register', () => {
   const reqBody = {
     email: 'a@gmail.com',
     username: 'Adam',
@@ -42,7 +42,7 @@ describe('POST /register', () => {
     prismaMock.user.findFirst.mockResolvedValue(null)
     prismaMock.profile.findFirst.mockResolvedValue(null)
 
-    const res = await request(app).post('/register').send(reqBody)
+    const res = await request(app).post('/api/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.CREATED)
   })
@@ -50,7 +50,7 @@ describe('POST /register', () => {
   it('should fail when email already exists', async () => {
     prismaMock.user.findFirst.mockResolvedValue(mockedUserDbRes)
 
-    const res = await request(app).post('/register').send(reqBody)
+    const res = await request(app).post('/api/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
@@ -59,7 +59,7 @@ describe('POST /register', () => {
     prismaMock.user.findFirst.mockResolvedValueOnce(null)
     prismaMock.profile.findFirst.mockResolvedValueOnce(mockedProfileDbRes)
 
-    const res = await request(app).post('/register').send(reqBody)
+    const res = await request(app).post('/api/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.CONFLICT)
   })
@@ -69,13 +69,13 @@ describe('POST /register', () => {
     prismaMock.profile.findFirst.mockResolvedValue(null)
     ;(getDefaultAvatars as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const res = await request(app).post('/register').send(reqBody)
+    const res = await request(app).post('/api/register').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
 
   it('should fail if request is invalid', async () => {
-    const res = await request(app).post('/register').send({})
+    const res = await request(app).post('/api/register').send({})
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

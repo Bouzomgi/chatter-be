@@ -7,9 +7,9 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /health', () => {
+describe('GET /api/health', () => {
   it('should return a healthcheck response', async () => {
-    const res = await request(app).get('/health')
+    const res = await request(app).get('/api/health')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })

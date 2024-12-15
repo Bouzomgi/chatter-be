@@ -11,8 +11,8 @@ const router = express.Router()
 router.get(
   '/defaultAvatars',
   async (
-    req: PathMethodRequest<'/authed/defaultAvatars', 'get'>,
-    res: PathMethodResponse<'/authed/defaultAvatars'>
+    req: PathMethodRequest<'/api/authed/defaultAvatars', 'get'>,
+    res: PathMethodResponse<'/api/authed/defaultAvatars'>
   ) => {
     try {
       const defaultAvatars = await getDefaultAvatars()

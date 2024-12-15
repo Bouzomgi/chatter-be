@@ -22,6 +22,7 @@ RUN apt-get update -y && apt-get install -y openssl
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/openapi/schema.yaml ./openapi/schema.yaml
+COPY --from=builder /app/prisma ./prisma
 
 RUN npm ci --only=production
 

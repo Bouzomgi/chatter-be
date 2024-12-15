@@ -8,7 +8,7 @@ import { getDefaultAvatars } from '../../../../src/storage/s3Accessors'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/defaultAvatars', 'post'>).userId = 1
+    ;(req as AuthedRequest<'/api/authed/defaultAvatars', 'post'>).userId = 1
     return next()
   })
 }))
@@ -26,7 +26,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /authed/defaultAvatars', () => {
+describe('GET /api/authed/defaultAvatars', () => {
   it("should return the default avatars and the user's current avatar successfully", async () => {
     prismaMock.profile.findUnique.mockResolvedValue({
       id: 1,
@@ -35,7 +35,7 @@ describe('GET /authed/defaultAvatars', () => {
       avatar: 'mocked-avatar'
     })
 
-    const res = await request(app).get('/authed/defaultAvatars').send()
+    const res = await request(app).get('/api/authed/defaultAvatars').send()
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual({
@@ -51,7 +51,7 @@ describe('GET /authed/defaultAvatars', () => {
   it('should fail if getDefaultAvatar fails', async () => {
     ;(getDefaultAvatars as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const res = await request(app).get('/authed/defaultAvatars').send()
+    const res = await request(app).get('/api/authed/defaultAvatars').send()
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

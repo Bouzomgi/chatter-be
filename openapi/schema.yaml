@@ -9,7 +9,7 @@ tags:
   - name: settings
   - name: chat
 paths:
-  /health:
+  /api/health:
     get:
       tags: 
         - general
@@ -18,7 +18,7 @@ paths:
         "200":
           $ref: '#/components/responses/Ok'
 
-  /register:
+  /api/register:
     post:
       tags: 
         - authentication
@@ -51,7 +51,7 @@ paths:
         "400":
           $ref: '#/components/responses/BadRequest'
 
-  /login:
+  /api/login:
     post:
       tags: 
         - authentication
@@ -86,7 +86,7 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
           
-  /logout:
+  /api/logout:
     post:
       tags:
         - authentication
@@ -97,7 +97,7 @@ paths:
         "200":
           $ref: '#/components/responses/Ok'
 
-  /authed/defaultAvatars:
+  /api/authed/defaultAvatars:
     get:
       tags: 
         - settings
@@ -124,7 +124,7 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
 
-  /authed/setSettings:
+  /api/authed/setSettings:
     post:
       tags: 
         - settings
@@ -154,7 +154,7 @@ paths:
         "404":
           $ref: '#/components/responses/NotFound'
   
-  /authed/userHeads:
+  /api/authed/userHeads:
     get:
       tags: 
         - chat
@@ -177,7 +177,7 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
           
-  /authed/chats:
+  /api/authed/chats:
     get:
       tags: 
         - chat
@@ -201,7 +201,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
 
-  /authed/chatUsersDetails:
+  /api/authed/chatUsersDetails:
     get:
       tags: 
         - chat
@@ -226,7 +226,7 @@ paths:
 
 
 
-  /authed/message:
+  /api/authed/message:
     post:
       tags: 
         - chat
@@ -270,7 +270,7 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
 
-  /authed/readThread/{threadId}:
+  /api/authed/readThread/{threadId}:
     patch:
       tags: 
         - chat

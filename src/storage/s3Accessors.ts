@@ -6,14 +6,18 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
-const client = env.AWS_S3_ENDPOINT
-  ? new S3Client({
+const clientOptions = env.AWS_S3_ENDPOINT
+  ? {
       region: env.AWS_DEFAULT_REGION,
-      endpoint: env.AWS_S3_ENDPOINT
-    })
-  : new S3Client({
-      region: env.AWS_DEFAULT_REGION
-    })
+      endpoint: env.AWS_S3_ENDPOINT,
+      credentials: {
+        accessKeyId: 'localstack',
+        secretAccessKey: 'localstack'
+      }
+    }
+  : { region: env.AWS_DEFAULT_REGION }
+
+const client = new S3Client(clientOptions)
 
 // Takes in an avatar name
 export async function getAvatar(avatar: string) {

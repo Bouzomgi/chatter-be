@@ -7,7 +7,7 @@ import { prismaMock } from '../../utils/singleton'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/message', 'post'>).userId = 1
+    ;(req as AuthedRequest<'/api/authed/message', 'post'>).userId = 1
     return next()
   })
 }))
@@ -19,7 +19,7 @@ beforeEach(() => {
   prismaMock.$transaction.mockImplementation((callback) => callback(prismaMock))
 })
 
-describe('POST /authed/message', () => {
+describe('POST /api/authed/message', () => {
   it('should successfully create post in a new conversation and thread if there is no existing thread', async () => {
     const reqBody = { members: [1, 2, 3], content: 'lorem ipsem' }
 
@@ -53,11 +53,23 @@ describe('POST /authed/message', () => {
       fromUserId: 1
     })
 
-    prismaMock.thread.findMany.mockResolvedValueOnce([
+    prismaMock.thread.findMany.mockResolvedValue([
+      {
+        id: 1,
+        conversationId: 1,
+        memberId: 1,
+        unseenMessageId: null
+      },
       {
         id: 2,
         conversationId: 1,
-        memberId: 1,
+        memberId: 2,
+        unseenMessageId: null
+      },
+      {
+        id: 3,
+        conversationId: 1,
+        memberId: 3,
         unseenMessageId: null
       }
     ])
@@ -76,7 +88,7 @@ describe('POST /authed/message', () => {
       unseenMessageId: 1
     })
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    const res = await request(app).post('/api/authed/message').send(reqBody)
 
     expect(findManyUserSpy).toHaveBeenCalled()
     expect(createConversationSpy).toHaveBeenCalled()
@@ -121,11 +133,23 @@ describe('POST /authed/message', () => {
       fromUserId: 1
     })
 
-    prismaMock.thread.findMany.mockResolvedValueOnce([
+    prismaMock.thread.findMany.mockResolvedValue([
+      {
+        id: 1,
+        conversationId: 1,
+        memberId: 1,
+        unseenMessageId: null
+      },
       {
         id: 2,
         conversationId: 1,
-        memberId: 1,
+        memberId: 2,
+        unseenMessageId: null
+      },
+      {
+        id: 3,
+        conversationId: 1,
+        memberId: 3,
         unseenMessageId: null
       }
     ])
@@ -144,7 +168,7 @@ describe('POST /authed/message', () => {
       unseenMessageId: 1
     })
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    const res = await request(app).post('/api/authed/message').send(reqBody)
 
     expect(findManyUserSpy).not.toHaveBeenCalled()
     expect(createConversationSpy).not.toHaveBeenCalled()
@@ -174,7 +198,7 @@ describe('POST /authed/message', () => {
 
     const createConversationSpy = jest.spyOn(prismaMock.conversation, 'create')
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    const res = await request(app).post('/api/authed/message').send(reqBody)
 
     expect(createConversationSpy).not.toHaveBeenCalled()
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
@@ -183,7 +207,7 @@ describe('POST /authed/message', () => {
   it("should fail if user is not part of the request's members", async () => {
     const reqBody = { members: [2, 3], content: 'lorem ipsem' }
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    const res = await request(app).post('/api/authed/message').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })
@@ -191,7 +215,7 @@ describe('POST /authed/message', () => {
   it('should fail if the request is invalid', async () => {
     const reqBody = { members: ['1'], content: 'lorem ipsem' }
 
-    const res = await request(app).post('/authed/message').send(reqBody)
+    const res = await request(app).post('/api/authed/message').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

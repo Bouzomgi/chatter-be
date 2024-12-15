@@ -8,7 +8,7 @@ import { pullChatDetails } from '../../../../src/queries/pullChatDetails'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/chats', 'get'>).userId = 1
+    ;(req as AuthedRequest<'/api/authed/chats', 'get'>).userId = 1
     return next()
   })
 }))
@@ -38,7 +38,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /authed/chats', () => {
+describe('GET /api/authed/chats', () => {
   it('should successfully get chats', async () => {
     prismaMock.message.findMany.mockResolvedValueOnce([
       {
@@ -73,7 +73,7 @@ describe('GET /authed/chats', () => {
       }
     ]
 
-    const res = await request(app).get('/authed/chats')
+    const res = await request(app).get('/api/authed/chats')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual(expectedBody)
@@ -82,7 +82,7 @@ describe('GET /authed/chats', () => {
   it('should fail if user does not have access to the given threadId', async () => {
     ;(pullChatDetails as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const res = await request(app).get('/authed/chats')
+    const res = await request(app).get('/api/authed/chats')
 
     expect(res.statusCode).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })

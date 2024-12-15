@@ -27,13 +27,13 @@ router.post(
     'content': { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/authed/message', 'post'>,
-    res: PathMethodResponse<'/authed/message'>
+    req: PathMethodRequest<'/api/authed/message', 'post'>,
+    res: PathMethodResponse<'/api/authed/message'>
   ) => {
     try {
       await validationResult(req).throw()
 
-      const authedReq = req as AuthedRequest<'/authed/message', 'post'>
+      const authedReq = req as AuthedRequest<'/api/authed/message', 'post'>
 
       const members: Array<number> = authedReq.body.members
 
@@ -123,7 +123,6 @@ router.post(
             conversationId: conversationId
           }
         })
-        console.log(allThreads)
 
         const currentThread = allThreads.find(
           (x) => x.memberId === authedReq.userId
@@ -150,7 +149,7 @@ router.post(
           notifyUser(userId, completeMessage)
         })
 
-        return completeMessage
+        return { ...completeMessage, threadId: currentThread!.id }
       })
 
       return res.status(StatusCodes.CREATED).json(messageResult)

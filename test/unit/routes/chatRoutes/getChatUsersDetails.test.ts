@@ -13,7 +13,7 @@ type UserDetails = components['schemas']['UserDetails']
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/chatUsersDetails', 'get'>).userId = 1
+    ;(req as AuthedRequest<'/api/authed/chatUsersDetails', 'get'>).userId = 1
     return next()
   })
 }))
@@ -59,7 +59,7 @@ describe('GET /chatUsersDetails', () => {
       }
     ]
 
-    const res = await request(app).get('/authed/chatUsersDetails')
+    const res = await request(app).get('/api/authed/chatUsersDetails')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual(expected)
@@ -68,7 +68,7 @@ describe('GET /chatUsersDetails', () => {
   it('should successfully return nothing if user is not part of any conversations', async () => {
     ;(pullChatUsersDetails as jest.Mock).mockResolvedValueOnce([])
 
-    const res = await request(app).get('/authed/chatUsersDetails')
+    const res = await request(app).get('/api/authed/chatUsersDetails')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual([])
@@ -77,7 +77,7 @@ describe('GET /chatUsersDetails', () => {
   it('should fail if pullChatUsersDetails fails', async () => {
     ;(pullChatUsersDetails as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const res = await request(app).get('/authed/chatUsersDetails')
+    const res = await request(app).get('/api/authed/chatUsersDetails')
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

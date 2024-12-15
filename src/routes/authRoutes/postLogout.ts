@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 
 const router = express.Router()
 
-router.post('/logout', (_, res: PathMethodResponse<'/logout'>) =>
+router.post('/logout', (_, res: PathMethodResponse<'/api/logout'>) =>
   res
     .status(StatusCodes.OK)
     .cookie('auth-token', 'abc', {

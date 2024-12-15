@@ -13,11 +13,11 @@ const router = express.Router()
 router.get(
   '/chats',
   async (
-    req: PathMethodRequest<'/authed/chats', 'get'>,
-    res: PathMethodResponse<'/authed/chats'>
+    req: PathMethodRequest<'/api/authed/chats', 'get'>,
+    res: PathMethodResponse<'/api/authed/chats'>
   ) => {
     try {
-      const authedReq = req as AuthedRequest<'/authed/chats', 'get'>
+      const authedReq = req as AuthedRequest<'/api/authed/chats', 'get'>
 
       const chatDetails = await pullChatDetails(authedReq.userId)
 

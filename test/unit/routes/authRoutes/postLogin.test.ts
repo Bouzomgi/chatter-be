@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import app from '../../../../src/app'
 import { prismaMock } from '../../utils/singleton'
 
-jest.mock('bcrypt', () => ({
+jest.mock('bcryptjs', () => ({
   compare: jest.fn(() => true)
 }))
 
@@ -23,7 +23,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('POST /login', () => {
+describe('POST /api/login', () => {
   const reqBody = {
     username: 'adam',
     password: 'abc123'
@@ -46,7 +46,7 @@ describe('POST /login', () => {
   })
 
   it('should login a user successfully', async () => {
-    const res = await request(app).post('/login').send(reqBody)
+    const res = await request(app).post('/api/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.headers['set-cookie'][0]).toMatch(
@@ -62,7 +62,7 @@ describe('POST /login', () => {
   it('should fail if username does not exists', async () => {
     prismaMock.profile.findUnique.mockResolvedValue(null)
 
-    const res = await request(app).post('/login').send(reqBody)
+    const res = await request(app).post('/api/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
@@ -70,13 +70,13 @@ describe('POST /login', () => {
   it('should fail if password is invalid', async () => {
     ;(bcrypt.compare as jest.Mock).mockResolvedValueOnce(false)
 
-    const res = await request(app).post('/login').send(reqBody)
+    const res = await request(app).post('/api/login').send(reqBody)
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
 
   it('should fail if request is invalid', async () => {
-    const res = await request(app).post('/login').send({})
+    const res = await request(app).post('/api/login').send({})
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

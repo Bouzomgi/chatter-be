@@ -19,14 +19,14 @@ router.patch(
     }
   }),
   async (
-    req: PathMethodRequest<'/authed/readThread/{threadId}', 'patch'>,
-    res: PathMethodResponse<'/authed/readThread/{threadId}'>
+    req: PathMethodRequest<'/api/authed/readThread/{threadId}', 'patch'>,
+    res: PathMethodResponse<'/api/authed/readThread/{threadId}'>
   ) => {
     try {
       await validationResult(req).throw()
 
       const authedReq = req as AuthedRequest<
-        '/authed/readThread/{threadId}',
+        '/api/authed/readThread/{threadId}',
         'patch'
       >
       const threadId = parseInt(authedReq.params.threadId)

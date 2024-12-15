@@ -7,7 +7,9 @@ import { prismaMock } from '../../utils/singleton'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/readThread/{threadId}', 'patch'>).userId = 1
+    ;(
+      req as AuthedRequest<'/api/authed/readThread/{threadId}', 'patch'>
+    ).userId = 1
     return next()
   })
 }))
@@ -17,7 +19,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('PATCH /authed/readThread/:threadId', () => {
+describe('PATCH /api/authed/readThread/:threadId', () => {
   it('should successfully read a thread given a valid threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce({
       id: 1,
@@ -33,7 +35,7 @@ describe('PATCH /authed/readThread/:threadId', () => {
       unseenMessageId: null
     })
 
-    const res = await request(app).patch('/authed/readThread/1')
+    const res = await request(app).patch('/api/authed/readThread/1')
 
     expect(res.statusCode).toBe(StatusCodes.OK)
   })
@@ -41,13 +43,13 @@ describe('PATCH /authed/readThread/:threadId', () => {
   it('should fail if user does not have access to the given threadId', async () => {
     prismaMock.thread.findUnique.mockResolvedValueOnce(null)
 
-    const res = await request(app).patch('/authed/readThread/1')
+    const res = await request(app).patch('/api/authed/readThread/1')
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED)
   })
 
   it('should fail if request is invalid', async () => {
-    const res = await request(app).patch('/authed/readThread/1a')
+    const res = await request(app).patch('/api/authed/readThread/1a')
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

@@ -8,7 +8,7 @@ import { getAvatar } from '../../../../src/storage/s3Accessors'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('../../../../src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/authed/userHeads', 'get'>).userId = 1
+    ;(req as AuthedRequest<'/api/authed/userHeads', 'get'>).userId = 1
     return next()
   })
 }))
@@ -25,7 +25,7 @@ beforeEach(() => {
   jest.clearAllMocks() // Clear all mocks
 })
 
-describe('GET /authed/userHeads', () => {
+describe('GET /api/authed/userHeads', () => {
   it('should successfully get user heads on valid request', async () => {
     const mockedUserHeadsDbRes = [
       {
@@ -49,7 +49,7 @@ describe('GET /authed/userHeads', () => {
       }
     ]
 
-    const res = await request(app).get('/authed/userHeads').send()
+    const res = await request(app).get('/api/authed/userHeads').send()
 
     expect(res.statusCode).toBe(StatusCodes.OK)
     expect(res.body).toEqual(expectedBody)
@@ -68,7 +68,7 @@ describe('GET /authed/userHeads', () => {
     prismaMock.profile.findMany.mockResolvedValueOnce(mockedUserHeadsDbRes)
     ;(getAvatar as jest.Mock).mockRejectedValueOnce(undefined)
 
-    const res = await request(app).post('/authed/message').send()
+    const res = await request(app).post('/api/authed/message').send()
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST)
   })

@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/health": {
+    "/api/health": {
         parameters: {
             query?: never;
             header?: never;
@@ -32,7 +32,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/register": {
+    "/api/register": {
         parameters: {
             query?: never;
             header?: never;
@@ -72,7 +72,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/login": {
+    "/api/login": {
         parameters: {
             query?: never;
             header?: never;
@@ -119,7 +119,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/logout": {
+    "/api/logout": {
         parameters: {
             query?: never;
             header?: never;
@@ -147,7 +147,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/defaultAvatars": {
+    "/api/authed/defaultAvatars": {
         parameters: {
             query?: never;
             header?: never;
@@ -187,7 +187,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/setSettings": {
+    "/api/authed/setSettings": {
         parameters: {
             query?: never;
             header?: never;
@@ -225,7 +225,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/userHeads": {
+    "/api/authed/userHeads": {
         parameters: {
             query?: never;
             header?: never;
@@ -263,7 +263,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/chats": {
+    "/api/authed/chats": {
         parameters: {
             query?: never;
             header?: never;
@@ -301,7 +301,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/chatUsersDetails": {
+    "/api/authed/chatUsersDetails": {
         parameters: {
             query?: never;
             header?: never;
@@ -339,7 +339,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/message": {
+    "/api/authed/message": {
         parameters: {
             query?: never;
             header?: never;
@@ -387,7 +387,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/authed/readThread/{threadId}": {
+    "/api/authed/readThread/{threadId}": {
         parameters: {
             query?: never;
             header?: never;

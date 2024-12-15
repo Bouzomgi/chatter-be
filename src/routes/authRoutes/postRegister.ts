@@ -33,8 +33,8 @@ router.post(
     }
   }),
   async (
-    req: PathMethodRequest<'/register', 'post'>,
-    res: PathMethodResponse<'/register'>
+    req: PathMethodRequest<'/api/register', 'post'>,
+    res: PathMethodResponse<'/api/register'>
   ) => {
     try {
       await validationResult(req).throw()

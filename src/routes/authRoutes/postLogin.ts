@@ -20,8 +20,8 @@ router.post(
     password: { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/login', 'post'>,
-    res: PathMethodResponse<'/login'>
+    req: PathMethodRequest<'/api/login', 'post'>,
+    res: PathMethodResponse<'/api/login'>
   ) => {
     try {
       await validationResult(req).throw()
@@ -34,13 +34,13 @@ router.post(
           user: true
         }
       })
+      console.log(existingProfile)
 
-      if (existingProfile === null) {
+      if (existingProfile == null) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
           .json({ error: 'Invalid login attempt' })
       }
-
       const existingUser = existingProfile.user
 
       const validPass = await bcrypt.compare(
@@ -77,7 +77,15 @@ router.post(
           username: existingProfile.username,
           avatar: userAvatar
         })
-    } catch {
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Login failed:', {
+          message: error?.message || 'Unknown error',
+          stack: error?.stack || 'No stack trace'
+        })
+      } else {
+        console.error('Login failed with unknown error:')
+      }
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not login' })
