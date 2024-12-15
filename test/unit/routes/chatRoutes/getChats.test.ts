@@ -2,7 +2,7 @@ import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
 import AuthedRequest from '../../../../src/middlewares/authedRequest'
-import { prismaMock } from '../../utils/singleton'
+import { prismaMock } from '../../utils/setup'
 import { pullChatDetails } from '../../../../src/queries/pullChatDetails'
 
 // Mocking the verifyToken middleware to call next immediately

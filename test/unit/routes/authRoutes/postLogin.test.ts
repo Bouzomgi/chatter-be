@@ -2,7 +2,7 @@ import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import bcrypt from 'bcryptjs'
 import app from '../../../../src/app'
-import { prismaMock } from '../../utils/singleton'
+import { prismaMock } from '../../utils/setup'
 
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(() => true)

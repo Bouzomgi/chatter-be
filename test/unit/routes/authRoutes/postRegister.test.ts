@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import app from '../../../../src/app'
-import { prismaMock } from '../../utils/singleton'
+import { prismaMock } from '../../utils/setup'
 import { getDefaultAvatars } from '../../../../src/storage/s3Accessors'
 
 jest.mock('bcryptjs', () => ({

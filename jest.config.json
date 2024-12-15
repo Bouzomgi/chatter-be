@@ -1,14 +1,7 @@
 {
-  "transform": { "^.+\\.ts?$": "ts-jest" },
+  "rootDir": "./", 
   "testEnvironment": "node",
   "verbose": true,
-  "testMatch": ["<rootDir>/test/**/*.test.ts"],
-  "coveragePathIgnorePatterns": [
-    "<rootDir>/src/queries/*",
-    "<rootDir>/src/api/*"
-  ],
-  "clearMocks": true,
-  "preset": "ts-jest",
   "collectCoverage": true,
   "coverageReporters": ["html", "text-summary"],
   "coverageThreshold": {
@@ -19,6 +12,26 @@
       "statements": 95
     }
   },
-  "setupFilesAfterEnv": ["<rootDir>/test/unit/utils/singleton.ts"],
-  "setupFiles": ["<rootDir>/test/setup.ts"]
+  "projects": [
+    {
+      "displayName": "unit",
+      "transform": { "^.+\\.ts?$": "ts-jest" },
+      "testMatch": ["<rootDir>/test/unit/**/*.test.ts"],
+      "setupFilesAfterEnv": ["<rootDir>/test/unit/utils/setup.ts"],
+      "coveragePathIgnorePatterns": [
+        "<rootDir>/src/queries/*",
+        "<rootDir>/src/api/*"
+      ]
+    },
+    {
+      "displayName": "integration",
+      "transform": { "^.+\\.ts?$": "ts-jest" },
+      "testMatch": ["<rootDir>/test/integration/**/*.test.ts"],
+      "setupFilesAfterEnv": ["<rootDir>/test/integration/utils/setup.ts"],
+      "coveragePathIgnorePatterns": [
+        "<rootDir>/src/queries/*",
+        "<rootDir>/src/api/*"
+      ]
+    }
+  ]
 }

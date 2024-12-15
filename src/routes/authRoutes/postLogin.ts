@@ -34,7 +34,6 @@ router.post(
           user: true
         }
       })
-      console.log(existingProfile)
 
       if (existingProfile == null) {
         return res
