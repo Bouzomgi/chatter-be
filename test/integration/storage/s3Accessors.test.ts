@@ -1,13 +1,14 @@
-import { getAvatar, getDefaultAvatars } from '../../src/storage/s3Accessors'
+import { getAvatar, getDefaultAvatars } from '../../../src/storage/s3Accessors'
+import isS3SignedUrlValid from '../utils/checkSignedUrl'
 
 describe('Get avatar', () => {
   it('can get a URL to an avatar', async () => {
-    const knownAvatarName = 'avatar1'
+    const knownAvatarName = 'avatars/default/avatar1.svg'
     const avatarDetails = await getAvatar(knownAvatarName)
 
-    // Verify that the returned details contain the correct name and a valid URL
-    expect(avatarDetails).toHaveProperty('name', knownAvatarName)
-    expect(avatarDetails).toHaveProperty('url')
+    expect(avatarDetails.name).toBe(knownAvatarName)
+    const avatarUrlValidity = await isS3SignedUrlValid(avatarDetails.url)
+    expect(avatarUrlValidity).toBeTruthy()
   })
 })
 

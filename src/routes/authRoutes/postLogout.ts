@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/logout', (_, res: PathMethodResponse<'/api/logout'>) =>
   res
     .status(StatusCodes.OK)
-    .cookie('auth-token', 'abc', {
+    .cookie('auth-token', 'expiring_token', {
       expires: new Date(0)
     })
     .json({

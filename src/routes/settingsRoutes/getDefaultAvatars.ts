@@ -17,9 +17,7 @@ router.get(
     try {
       const defaultAvatars = await getDefaultAvatars()
 
-      return res.status(StatusCodes.OK).json({
-        defaultAvatars
-      })
+      return res.status(StatusCodes.OK).send(defaultAvatars)
     } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)

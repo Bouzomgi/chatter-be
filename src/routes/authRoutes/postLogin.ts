@@ -6,17 +6,26 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import env from '../../config'
 import { checkSchema, validationResult } from 'express-validator'
 import { getAvatar } from '../../storage/s3Accessors'
+import generateAuthToken from '../../utils/auth/generateAuthToken'
 
 const router = express.Router()
 
 router.post(
   '/login',
   checkSchema({
-    username: { in: ['body'], trim: true, notEmpty: true, toLowerCase: true },
+    username: {
+      in: ['body'],
+      trim: true,
+      notEmpty: true,
+      toLowerCase: true,
+      matches: {
+        options: /^[A-Za-z0-9_-]+$/,
+        errorMessage:
+          'Username must only contain letters, numbers, underscores, and dashes.'
+      }
+    },
     password: { in: ['body'], notEmpty: true }
   }),
   async (
@@ -56,13 +65,7 @@ router.post(
       const userAvatar = await getAvatar(existingProfile.avatar)
 
       // CREATE AND ASSIGN A TOKEN
-      const token = await jwt.sign(
-        {
-          userId: existingUser!.id
-        },
-        env.TOKEN_SECRET,
-        { expiresIn: '30h' }
-      )
+      const token = generateAuthToken(existingUser!.id)
 
       return res
         .status(StatusCodes.OK)
@@ -76,15 +79,7 @@ router.post(
           username: existingProfile.username,
           avatar: userAvatar
         })
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Login failed:', {
-          message: error?.message || 'Unknown error',
-          stack: error?.stack || 'No stack trace'
-        })
-      } else {
-        console.error('Login failed with unknown error:')
-      }
+    } catch {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not login' })

@@ -11,28 +11,26 @@ export type PrefetchedChatUserDetails = {
 */
 export const pullChatUsersDetails = (userId: number) =>
   prisma.$queryRaw<PrefetchedChatUserDetails[]>`
-    SELECT
-      "memberId" AS "userId",
-      "username",
-      "avatar"
-    FROM
-      (SELECT 
-        DISTINCT "memberId" 
-      FROM 
-        (SELECT
+    SELECT 
+      "Thread"."memberId" AS "userId",
+      "Profile"."username",
+      "Profile"."avatar"
+    FROM 
+      "Thread"
+    INNER JOIN 
+      "Profile" ON "Profile"."userId" = "Thread"."memberId"
+    WHERE 
+      "Thread"."conversationId" IN (
+        SELECT 
           "conversationId"
         FROM 
           "Thread"
-        WHERE
-          "Thread"."memberId" = ${userId}) AS "ParticipantThreads"
-      INNER JOIN 
-        "Thread"
-      ON
-        "ParticipantThreads"."conversationId" = "Thread"."conversationId") AS "ParticipantUsers"
-    INNER JOIN
-      "Profile"
-    ON
-      "Profile"."userId" = "ParticipantUsers"."memberId"
-    WHERE NOT 
-      "memberId" = ${userId}
+        WHERE 
+          "Thread"."memberId" = ${userId}
+      )
+      AND "Thread"."memberId" <> ${userId}
+    GROUP BY 
+      "Thread"."memberId", "Profile"."username", "Profile"."avatar"
+    ORDER BY 
+      "Thread"."memberId";
   `

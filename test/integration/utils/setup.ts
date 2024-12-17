@@ -1,12 +1,19 @@
-import { execa } from 'execa'
+import { spawn } from 'child_process'
 
-async function deployPrismaMigrations() {
-  try {
-    const { stdout } = await execa('bash', ['-c', 'npm run refresh-and-seed'])
-    console.log(stdout)
-  } catch (error) {
-    console.error('Script failed:', error)
-  }
-}
+/*
+  To cut down on testing time, we will only reseed the database between test files
+  We need to be cognizant that test file's I/O do not collide
+*/
+beforeAll((done) => {
+  const childProcess = spawn('npm', ['run', 'reset-and-seed'])
 
-deployPrismaMigrations()
+  childProcess.on('close', (code) => {
+    if (code === 0) {
+      console.log('Reset and seeded database...')
+    } else {
+      console.error(`Reset and seed failed with exit code ${code}`)
+    }
+    childProcess.kill()
+    done()
+  })
+}, 10000) // Set timeout for this specific hook to 10 seconds

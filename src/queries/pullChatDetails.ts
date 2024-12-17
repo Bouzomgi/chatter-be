@@ -20,4 +20,5 @@ export const pullChatDetails = (userId: number) =>
     INNER JOIN "Thread"
     ON "Thread"."conversationId" = "UserThreads"."conversationId"
     WHERE NOT "Thread"."memberId" = ${userId}
+    ORDER BY "UserThreads"."conversationId" ASC
   `

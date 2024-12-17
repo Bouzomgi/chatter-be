@@ -110,14 +110,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  defaultAvatars:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Avatar'
-                required:
-                  - defaultAvatars
+                type: array
+                items:
+                  $ref: '#/components/schemas/Avatar'
+
         "400":
           $ref: '#/components/responses/BadRequest'
  

@@ -170,9 +170,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            defaultAvatars: components["schemas"]["Avatar"][];
-                        };
+                        "application/json": components["schemas"]["Avatar"][];
                     };
                 };
                 400: components["responses"]["BadRequest"];

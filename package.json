@@ -6,13 +6,13 @@
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
     "test": "npx jest --selectProjects unit --setupFiles dotenv/config --detectOpenHandles",
-    "test:integration": "npx jest --selectProjects integration --setupFiles dotenv/config",
+    "test:integration": "npx jest --selectProjects integration --setupFiles dotenv/config --detectOpenHandles",
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
-    "refresh-and-seed": "npx prisma migrate reset --force",
+    "reset-and-seed": "npx prisma migrate reset --force",
     "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
   },
   "author": "",
@@ -21,6 +21,9 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
@@ -33,7 +36,10 @@
     "@types/swagger-ui-express": "^4.1.6",
     "@types/ws": "^8.5.12",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "axios": "^1.7.9",
+    "babel-jest": "^29.7.0",
     "concurrently": "^8.2.2",
+    "cookie": "^1.0.2",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -48,9 +54,11 @@
     "prettier": "^3.2.5",
     "prisma": "^6.0.1",
     "supertest": "^6.3.4",
+    "supertest-session": "^5.0.1",
     "ts-jest": "^29.1.2",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^7.2.0"
+    "typescript-eslint": "^7.2.0",
+    "unicorn-magic": "^0.3.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",

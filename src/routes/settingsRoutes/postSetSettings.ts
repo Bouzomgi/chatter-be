@@ -11,8 +11,6 @@ import { getDefaultAvatars } from '../../storage/s3Accessors'
 
 const router = express.Router()
 
-// TODO: make sure that the avatar is actually an avatar... not just like, random code
-// I think i can make a call to the BE, find all avatars, and store this so i dont keep making this req
 router.post(
   '/setSettings',
   checkSchema({
@@ -32,7 +30,9 @@ router.post(
           (avatar) => avatar.name
         )
 
-        if (!defaultAvatarNames.includes(req.body.avatar)) {
+        const strippedAvatarName = stripLeadingDotSlash(req.body.avatar)
+
+        if (!defaultAvatarNames.includes(strippedAvatarName)) {
           return res
             .status(StatusCodes.NOT_FOUND)
             .json({ message: 'Could not find avatar' })
@@ -40,7 +40,7 @@ router.post(
 
         await prisma.profile.update({
           where: {
-            id: authedReq.userId
+            userId: authedReq.userId
           },
           data: {
             avatar: req.body.avatar
@@ -58,5 +58,12 @@ router.post(
     }
   }
 )
+
+const stripLeadingDotSlash = (input: string) => {
+  if (input.startsWith('./')) {
+    return input.slice(2)
+  }
+  return input
+}
 
 export default router
