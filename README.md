@@ -58,6 +58,9 @@ probably like this:
   },
 }
 
+TESTING TODOS: 
+* type the responses
+* fix the add credentials
 
 
 //////

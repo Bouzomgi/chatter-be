@@ -8,7 +8,7 @@ describe('Get avatar', () => {
 
     expect(avatarDetails.name).toBe(knownAvatarName)
     const avatarUrlValidity = await isS3SignedUrlValid(avatarDetails.url)
-    expect(avatarUrlValidity).toBeTruthy()
+    expect(avatarUrlValidity).toBe(true)
   })
 })
 

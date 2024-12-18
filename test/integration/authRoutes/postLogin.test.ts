@@ -19,7 +19,7 @@ describe('Login', () => {
     expect(res.body.username).toBe('adam')
 
     const avatarUrlValidity = await isS3SignedUrlValid(res.body.avatar.url)
-    expect(avatarUrlValidity).toBeTruthy()
+    expect(avatarUrlValidity).toBe(true)
 
     const cookie = getCookie(res, 'auth-token')
     expect(cookie).toBeDefined()

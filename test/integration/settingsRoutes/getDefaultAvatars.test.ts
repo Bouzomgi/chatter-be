@@ -18,13 +18,13 @@ describe('Get Default Avatars', () => {
       .send()
     expect(res.status).toBe(StatusCodes.OK)
 
-    res.body.forEach((avatar: Avatar) => {
-      const isUrlValid = isS3SignedUrlValid(avatar.url)
-      expect(isUrlValid).toBeTruthy()
-    })
+    const urlValidityPromises: Promise<boolean>[] = res.body.map(
+      (avatar: Avatar) => isS3SignedUrlValid(avatar.url)
+    )
+    const urlValidities = await Promise.all(urlValidityPromises)
+    expect(urlValidities.every((elem) => elem === true)).toBe(true)
 
     const normalizedResponse = res.body.map(normalizeAvatar)
-
     const expectedResponse = [
       { name: 'avatars/default/avatar1.svg' },
       { name: 'avatars/default/avatar2.svg' },

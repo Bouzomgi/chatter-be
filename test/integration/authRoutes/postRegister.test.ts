@@ -7,8 +7,8 @@ import prisma from '../../../src/database'
 describe('Register', () => {
   it('should successfully register a new account', async () => {
     // account should not exist yet
-    expect(await isUsernameRegistered('fred')).toBeFalsy()
-    expect(await isEmailRegistered('fred@example.com')).toBeFalsy()
+    expect(await isUsernameRegistered('fred')).toBe(false)
+    expect(await isEmailRegistered('fred@example.com')).toBe(false)
 
     const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
       email: 'fred@example.com',
@@ -20,12 +20,12 @@ describe('Register', () => {
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CREATED)
 
-    expect(await isUsernameRegistered('fred')).toBeTruthy()
+    expect(await isUsernameRegistered('fred')).toBe(true)
   })
 
   it('should fail registration if an account already exists with the same username', async () => {
-    expect(await isUsernameRegistered('adam')).toBeTruthy()
-    expect(await isEmailRegistered('brand_new@example.com')).toBeFalsy()
+    expect(await isUsernameRegistered('adam')).toBe(true)
+    expect(await isEmailRegistered('brand_new@example.com')).toBe(false)
 
     const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
       email: 'brand_new@example.com',
@@ -37,12 +37,12 @@ describe('Register', () => {
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CONFLICT)
 
-    expect(await isEmailRegistered('brand_new@example.com')).toBeFalsy()
+    expect(await isEmailRegistered('brand_new@example.com')).toBe(false)
   })
 
   it('should fail registration if an account already exists with the same email', async () => {
-    expect(await isUsernameRegistered('emily')).toBeFalsy()
-    expect(await isEmailRegistered('adam@example.com')).toBeTruthy()
+    expect(await isUsernameRegistered('emily')).toBe(false)
+    expect(await isEmailRegistered('adam@example.com')).toBe(true)
 
     const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
       email: 'adam@example.com',
@@ -54,7 +54,7 @@ describe('Register', () => {
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CONFLICT)
 
-    expect(await isUsernameRegistered('emily')).toBeFalsy()
+    expect(await isUsernameRegistered('emily')).toBe(false)
   })
 
   it('should fail registration if request is bad', async () => {

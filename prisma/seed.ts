@@ -175,13 +175,6 @@ async function main() {
     }
   ]
 
-  const correctAutoIncrement = (tableName: string, start: number) => {
-    const sequenceName = `${tableName}_id_seq`
-    return prisma.$executeRawUnsafe(
-      `ALTER SEQUENCE "${sequenceName}" RESTART WITH ${start};`
-    )
-  }
-
   // Use Prisma to create the seed data
   await Promise.all(
     users.map((userData) =>
@@ -192,6 +185,15 @@ async function main() {
   )
 
   await correctAutoIncrement('User', users.length + 1)
+
+  const totalMessageTotal = conversations.reduce((currentTotal, convo) => {
+    const messageConstructors = convo?.messages?.create
+    const numberOfMessages = Array.isArray(messageConstructors)
+      ? messageConstructors.length
+      : 0
+    return currentTotal + numberOfMessages
+  }, 0)
+  await correctAutoIncrement('Message', totalMessageTotal + 1)
 
   await Promise.all(
     conversations.map((conversationData) =>
@@ -213,7 +215,23 @@ async function main() {
     )
   )
 
+  const totalThreadTotal = conversationUpdate.reduce((currentTotal, convo) => {
+    const threadConstructors = convo?.threads?.create
+    const numberOfThreads = Array.isArray(threadConstructors)
+      ? threadConstructors.length
+      : 0
+    return currentTotal + numberOfThreads
+  }, 0)
+  await correctAutoIncrement('Thread', totalThreadTotal + 1)
+
   console.log('Seed data created successfully')
+}
+
+const correctAutoIncrement = (tableName: string, start: number) => {
+  const sequenceName = `${tableName}_id_seq`
+  return prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "${sequenceName}" RESTART WITH ${start};`
+  )
 }
 
 main()
