@@ -89,7 +89,8 @@ router.post(
       return res
         .status(StatusCodes.CREATED)
         .json({ message: 'Successfully created user' })
-    } catch {
+    } catch (error) {
+      console.error(`post /register error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not register' })

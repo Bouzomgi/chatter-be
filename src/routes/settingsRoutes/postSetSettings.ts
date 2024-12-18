@@ -51,7 +51,8 @@ router.post(
       return res
         .status(StatusCodes.OK)
         .json({ message: 'Successfully changed settings' })
-    } catch {
+    } catch (error) {
+      console.error(`post /setSettings error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not change settings' })

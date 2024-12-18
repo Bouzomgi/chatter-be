@@ -18,7 +18,8 @@ router.get(
       const defaultAvatars = await getDefaultAvatars()
 
       return res.status(StatusCodes.OK).send(defaultAvatars)
-    } catch {
+    } catch (error) {
+      console.error(`get /defaultAvatars error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not get default' })

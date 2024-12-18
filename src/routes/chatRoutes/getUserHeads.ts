@@ -42,7 +42,8 @@ router.get(
       const userheads: Userhead[] = await Promise.all(userheadPromises)
 
       return res.status(StatusCodes.OK).json(userheads)
-    } catch {
+    } catch (error) {
+      console.error(`get /userHeads error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not get users' })

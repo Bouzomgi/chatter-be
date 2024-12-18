@@ -155,7 +155,7 @@ router.post(
 
       return res.status(StatusCodes.CREATED).json(messageResult)
     } catch (error) {
-      console.log(error)
+      console.error(`post /message error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not send message' })

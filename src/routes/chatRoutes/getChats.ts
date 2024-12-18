@@ -65,7 +65,8 @@ router.get(
       const chats = await Promise.all(promisedChats)
 
       return res.status(StatusCodes.OK).json(chats)
-    } catch {
+    } catch (error) {
+      console.error(`get /chats error: ${error}`)
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not get messages' })

@@ -39,7 +39,8 @@ router.get(
       )
 
       return res.status(StatusCodes.OK).json(completeChatUsersDetails)
-    } catch {
+    } catch (error) {
+      console.error(`get /chatUsers error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not get chat heads' })

@@ -79,7 +79,8 @@ router.post(
           username: existingProfile.username,
           avatar: userAvatar
         })
-    } catch {
+    } catch (error) {
+      console.error(`post /login error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not login' })

@@ -55,7 +55,8 @@ router.patch(
       })
 
       return res.status(StatusCodes.OK).json({ message: 'Read thread' })
-    } catch {
+    } catch (error) {
+      console.error(`patch /readThread error: ${error}`)
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Could not read thread' })
