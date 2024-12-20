@@ -1,5 +1,5 @@
 import prisma from '../database'
-import { components } from '../../openapi/schema'
+import { components } from '@openapi/schema'
 
 type ChatDetails = components['schemas']['ChatDetails']
 

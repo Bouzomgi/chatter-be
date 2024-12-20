@@ -6,7 +6,7 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import prisma from '../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
-import { components } from '../../../openapi/schema'
+import { components } from '@openapi/schema'
 import { getAvatar } from '../../storage/s3Accessors'
 
 type Userhead = components['schemas']['UserDetails']

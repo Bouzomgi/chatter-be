@@ -6,7 +6,7 @@ const verifyTokenWebSocket = async (
   req: IncomingMessage
 ): Promise<number | null> => {
   try {
-    console.log('attempting to authenticate')
+    console.debug('attempting to authenticate')
 
     const cookies = req.headers.cookie
     if (!cookies) return null
@@ -21,7 +21,8 @@ const verifyTokenWebSocket = async (
     // Verify the token
     const decoded = (await jwt.verify(token, env.TOKEN_SECRET)) as JwtPayload
     return decoded.userId
-  } catch {
+  } catch (error) {
+    console.error('websocket validation error:', error)
     return null
   }
 }

@@ -59,11 +59,9 @@ probably like this:
 }
 
 TESTING TODOS: 
-* type the responses
-* fix the add credentials
-
-
-//////
-how to fix this stupid error about differences between docker and local
-/////
-I will clone down the repo and try to build the dockerfile locally
+* add onMessage websocket test in userFlow
+* check coverage
+* figure out how i will do the test with failing prisma guy
+  * I think i will have to do dependency injection
+* add prod seeding
+* add service tests (need a new url envvar)

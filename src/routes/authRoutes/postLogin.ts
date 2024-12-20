@@ -8,7 +8,7 @@ import prisma from './../../database'
 import bcrypt from 'bcryptjs'
 import { checkSchema, validationResult } from 'express-validator'
 import { getAvatar } from '../../storage/s3Accessors'
-import generateAuthToken from '../../utils/auth/generateAuthToken'
+import generateAuthToken from '../../utils/generateAuthToken'
 
 const router = express.Router()
 

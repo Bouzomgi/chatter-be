@@ -18,9 +18,7 @@ app.use(cookieParser())
 
 app.use('/api', authRoutes)
 
-// app.use('/api/authed', verifyToken, [settingsRoutes, chatRoutes])
-app.use('/api/authed', verifyToken, settingsRoutes)
-app.use('/api/authed', verifyToken, chatRoutes)
+app.use('/api/authed', verifyToken, [settingsRoutes, chatRoutes])
 
 swaggerDocs(app, 'api/docs')
 

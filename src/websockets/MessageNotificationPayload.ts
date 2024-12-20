@@ -1,4 +1,4 @@
-import { components } from '../../openapi/schema'
+import { components } from '@openapi/schema'
 
 type Message = components['schemas']['Message']
 

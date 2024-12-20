@@ -224,7 +224,7 @@ async function main() {
   }, 0)
   await correctAutoIncrement('Thread', totalThreadTotal + 1)
 
-  console.log('Seed data created successfully')
+  console.info('Seed data created successfully')
 }
 
 const correctAutoIncrement = (tableName: string, start: number) => {

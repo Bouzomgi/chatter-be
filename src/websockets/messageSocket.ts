@@ -7,17 +7,14 @@ interface UserSocket extends WebSocket {
   userId: number
 }
 
-const onSocketError = (err: Error) => {
-  console.error(err)
-}
-
 const userIdToSocketMap = new Map<number, Set<WebSocket>>()
 
-const setupWebSocket = (server: Server) => {
+const setupWebSocketServer = (server: Server) => {
   const wss = new WebSocketServer({ noServer: true })
 
   server.on('upgrade', async (request, socket, head) => {
-    socket.on('error', onSocketError)
+    console.debug('Upgrading connection to WebSocket')
+    socket.on('error', (err) => console.error(err))
 
     // Validate the token during the handshake
     const userId = await verifyTokenWebSocket(request)
@@ -31,11 +28,12 @@ const setupWebSocket = (server: Server) => {
     wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
       ;(ws as UserSocket).userId = userId
       wss.emit('connection', ws, request)
+      console.debug('Websocket connection established')
     })
   })
 
   wss.on('connection', (ws: UserSocket) => {
-    console.log('Client has been added')
+    console.debug('Client has been added')
     const existingSocketSet = userIdToSocketMap.get(ws.userId)
 
     if (existingSocketSet != undefined) {
@@ -47,6 +45,8 @@ const setupWebSocket = (server: Server) => {
     ws.on('close', () => {
       userIdToSocketMap.get(ws.userId)?.delete(ws)
     })
+
+    ws.on('error', (err) => console.error(err))
   })
 
   return wss
@@ -56,6 +56,7 @@ const notifyUser = (
   userId: number,
   notificationPayload: MessageNotificationPayload
 ) => {
+  console.debug('Notifying user', userId)
   const socketMap = userIdToSocketMap.get(userId)
   const clients: WebSocket[] =
     socketMap != undefined ? Array.from(socketMap) : []
@@ -65,7 +66,8 @@ const notifyUser = (
     const buffer = Buffer.from(jsonString)
     const text = buffer.toString('utf-8')
     client.send(text)
+    console.debug("Sent message to user's client")
   }
 }
 
-export { setupWebSocket, notifyUser }
+export { setupWebSocketServer, notifyUser }

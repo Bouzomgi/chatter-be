@@ -1,8 +1,8 @@
 import server from './app'
 import env from './config'
-import { setupWebSocket } from './websockets/messageSocket'
+import { setupWebSocketServer } from './websockets/messageSocket'
 
-setupWebSocket(server)
+setupWebSocketServer(server)
 
 // RUN THE SERVER
 server.listen(env.PORT, () => {

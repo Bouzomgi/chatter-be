@@ -1,5 +1,5 @@
 {
-  "rootDir": "./", 
+  "rootDir": ".", 
   "testEnvironment": "node",
   "verbose": true,
   "collectCoverage": true,
@@ -15,22 +15,36 @@
   "projects": [
     {
       "displayName": "unit",
+      "moduleNameMapper": {
+        "^@src/(.*)": "<rootDir>/src/$1",
+        "^@test/(.*)": "<rootDir>/test/$1",
+        "^@openapi/(.*)": "<rootDir>/openapi/$1"
+      },
       "transform": { "^.+\\.ts?$": "ts-jest" },
       "testMatch": ["<rootDir>/test/unit/**/*.test.ts"],
-      "setupFilesAfterEnv": ["<rootDir>/test/unit/utils/setup.ts"],
+      "setupFilesAfterEnv": [
+        "<rootDir>/test/commonSetup.ts"
+      ],
       "coveragePathIgnorePatterns": [
-        "<rootDir>/src/queries/*",
         "<rootDir>/src/api/*"
       ]
     },
     {
       "displayName": "integration",
+      "moduleNameMapper": {
+        "^@src/(.*)": "<rootDir>/src/$1",
+        "^@test/(.*)": "<rootDir>/test/$1",
+        "^@openapi/(.*)": "<rootDir>/openapi/$1"
+      },
       "transform": { "^.+\\.ts?$": "ts-jest" },
       "testMatch": ["<rootDir>/test/integration/**/*.test.ts"],
-      "setupFilesAfterEnv": ["<rootDir>/test/integration/utils/setup.ts"],
+      "setupFilesAfterEnv": [
+        "<rootDir>/test/commonSetup.ts",
+        "<rootDir>/test/integration/setup/reseed.ts"
+      ],
       "coveragePathIgnorePatterns": [
-        "<rootDir>/src/queries/*",
-        "<rootDir>/src/api/*"
+        "<rootDir>/src/api/*",
+        "<rootDir>/test/*"
       ]
     }
   ]

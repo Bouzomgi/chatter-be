@@ -39,6 +39,7 @@ type ExtractResponseContent<T> = T extends {
 }
   ? R
   : never
+
 type ExtractResponses<T> = T extends { responses: infer R }
   ? {
       [K in keyof R]: ExtractResponseContent<R[K]>
