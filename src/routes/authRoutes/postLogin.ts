@@ -33,7 +33,13 @@ router.post(
     res: PathMethodResponse<'/api/login'>
   ) => {
     try {
-      await validationResult(req).throw()
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        console.error('post /login validation failed:', errors.array())
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Could not login' })
+      }
 
       const existingProfile = await prisma.profile.findUnique({
         where: {
@@ -49,6 +55,7 @@ router.post(
           .status(StatusCodes.UNAUTHORIZED)
           .json({ error: 'Invalid login attempt' })
       }
+
       const existingUser = existingProfile.user
 
       const validPass = await bcrypt.compare(
@@ -82,7 +89,7 @@ router.post(
     } catch (error) {
       console.error(`post /login error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not login' })
     }
   }

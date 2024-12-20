@@ -50,6 +50,12 @@ paths:
 
         "400":
           $ref: '#/components/responses/BadRequest'
+          
+        "409":
+          $ref: '#/components/responses/Conflict'
+          
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /api/login:
     post:
@@ -86,6 +92,9 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
           
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+          
   /api/logout:
     post:
       tags:
@@ -114,11 +123,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Avatar'
 
-        "400":
-          $ref: '#/components/responses/BadRequest'
- 
         "401":
           $ref: '#/components/responses/Unauthorized'
+          
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /api/authed/setSettings:
     post:
@@ -149,6 +158,9 @@ paths:
 
         "404":
           $ref: '#/components/responses/NotFound'
+          
+        "500":
+          $ref: '#/components/responses/InternalServerError'
   
   /api/authed/userHeads:
     get:
@@ -173,6 +185,9 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
           
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+          
   /api/authed/chats:
     get:
       tags: 
@@ -196,7 +211,6 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-
   /api/authed/chatUsersDetails:
     get:
       tags: 
@@ -214,13 +228,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserDetails'
 
-        "400":
-          $ref: '#/components/responses/BadRequest'
-      
         "401":
           $ref: '#/components/responses/Unauthorized'
 
-
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /api/authed/message:
     post:
@@ -266,6 +278,9 @@ paths:
         "401":
           $ref: '#/components/responses/Unauthorized'
 
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
   /api/authed/readThread/{threadId}:
     patch:
       tags: 
@@ -292,6 +307,9 @@ paths:
 
         "404":
           $ref: '#/components/responses/NotFound'
+          
+        "500":
+          $ref: '#/components/responses/InternalServerError'          
                       
 components:
   securitySchemes:
@@ -457,6 +475,19 @@ components:
               error:
                 type: string
                 example: "Resource not found."
+            required: 
+              - error
+
+    Conflict:
+      description: Resource already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Resource already exists."
             required: 
               - error
 

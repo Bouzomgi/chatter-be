@@ -21,8 +21,8 @@ router.get(
     } catch (error) {
       console.error(`get /defaultAvatars error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Could not get default' })
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: 'Could not get default avatars' })
     }
   }
 )

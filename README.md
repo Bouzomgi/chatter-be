@@ -65,3 +65,6 @@ TESTING TODOS:
   * I think i will have to do dependency injection
 * add prod seeding
 * add service tests (need a new url envvar)
+* targets for extensions 
+  * adding auth token for supertests
+  * custom prisma queries

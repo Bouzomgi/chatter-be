@@ -64,6 +64,8 @@ export interface paths {
             responses: {
                 201: components["responses"]["Created"];
                 400: components["responses"]["BadRequest"];
+                409: components["responses"]["Conflict"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         delete?: never;
@@ -111,6 +113,7 @@ export interface paths {
                 };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         delete?: never;
@@ -173,8 +176,8 @@ export interface paths {
                         "application/json": components["schemas"]["Avatar"][];
                     };
                 };
-                400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         put?: never;
@@ -215,6 +218,7 @@ export interface paths {
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         delete?: never;
@@ -251,6 +255,7 @@ export interface paths {
                 };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         put?: never;
@@ -325,8 +330,8 @@ export interface paths {
                         "application/json": components["schemas"]["UserDetails"][];
                     };
                 };
-                400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         put?: never;
@@ -377,6 +382,7 @@ export interface paths {
                 };
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         delete?: never;
@@ -415,6 +421,7 @@ export interface paths {
                 400: components["responses"]["BadRequest"];
                 401: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
             };
         };
         trace?: never;
@@ -525,6 +532,18 @@ export interface components {
             content: {
                 "application/json": {
                     /** @example Resource not found. */
+                    error: string;
+                };
+            };
+        };
+        /** @description Resource already exists */
+        Conflict: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example Resource already exists. */
                     error: string;
                 };
             };

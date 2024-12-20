@@ -37,7 +37,13 @@ router.post(
     res: PathMethodResponse<'/api/register'>
   ) => {
     try {
-      await validationResult(req).throw()
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        console.error('post /register validation failed:', errors.array())
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Could not register' })
+      }
 
       const emailExists = await prisma.user.findFirst({
         where: {
@@ -92,7 +98,7 @@ router.post(
     } catch (error) {
       console.error(`post /register error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not register' })
     }
   }

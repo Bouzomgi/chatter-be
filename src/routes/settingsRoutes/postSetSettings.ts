@@ -21,7 +21,13 @@ router.post(
     res: PathMethodResponse<'/api/authed/setSettings'>
   ) => {
     try {
-      await validationResult(req).throw()
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        console.error('post /setSettings validation failed:', errors.array())
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Could not set settings' })
+      }
 
       const authedReq = req as AuthedRequest<'/api/authed/setSettings', 'post'>
 
@@ -54,7 +60,7 @@ router.post(
     } catch (error) {
       console.error(`post /setSettings error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not change settings' })
     }
   }

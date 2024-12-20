@@ -31,45 +31,53 @@ router.post(
     res: PathMethodResponse<'/api/authed/message'>
   ) => {
     try {
-      await validationResult(req).throw()
-
-      const authedReq = req as AuthedRequest<'/api/authed/message', 'post'>
-
-      const members: Array<number> = authedReq.body.members
-
-      if (!members.includes(authedReq.userId)) {
-        throw new Error('user is not a member of the chat')
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        console.error('post /message validation failed:', errors.array())
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Could not send message' })
       }
 
-      // try to find the conversation that is being specified in the req
+      const authedReq = req as AuthedRequest<'/api/authed/message', 'post'>
+      const members: Array<number> = authedReq.body.members
+
+      // Check if the user is in the members list
+      if (!members.includes(authedReq.userId)) {
+        console.error('User is not a member of the chat')
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: 'Could not send message' })
+      }
+
+      // Try to find an existing conversation
       const conversations = await prisma.thread.groupBy({
         by: ['conversationId'],
         where: {
-          memberId: {
-            in: members
-          }
+          memberId: { in: members }
         },
         having: {
           conversationId: {
-            _count: {
-              equals: members.length
-            }
+            _count: { equals: members.length }
           }
         }
       })
 
-      // if no conversation already exists, make sure specified members exist
+      // If no conversation exists, ensure members exist
       if (!conversations.length) {
         const users = await prisma.user.findMany({
           where: { id: { in: members } }
         })
 
-        if (users.length != members.length)
-          throw new Error('a specified member does not exist')
+        if (users.length !== members.length) {
+          console.error('Not all members found in the system')
+          return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ error: 'Could not send message' })
+        }
       }
 
       const createConversation = async (members: number[]) => {
-        // create a conversation and threads for each user
         const conversation = await prisma.conversation.create({ data: {} })
         const threads = members.map((member) =>
           prisma.thread.create({
@@ -90,16 +98,15 @@ router.post(
 
         const message = await prisma.message.create({
           data: {
-            conversationId: conversationId,
+            conversationId,
             fromUserId: authedReq.userId,
             content: authedReq.body.content
           }
         })
 
-        // find all threads other than the senders that are not unseen
         const otherThreads = await prisma.thread.findMany({
           where: {
-            conversationId: conversationId,
+            conversationId,
             NOT: { memberId: authedReq.userId },
             unseenMessageId: null
           }
@@ -107,22 +114,15 @@ router.post(
 
         const threadPromises = otherThreads.map(async (thread) => {
           await prisma.thread.update({
-            where: {
-              id: thread.id
-            },
-            data: {
-              unseenMessageId: message.id
-            }
+            where: { id: thread.id },
+            data: { unseenMessageId: message.id }
           })
         })
 
         await Promise.all(threadPromises)
 
         const allThreads = await prisma.thread.findMany({
-          where: {
-            // eslint-disable-next-line camelcase
-            conversationId: conversationId
-          }
+          where: { conversationId }
         })
 
         const currentThread = allThreads.find(
@@ -132,7 +132,7 @@ router.post(
         let completeMessage = {
           conversationId: currentThread!.conversationId,
           threadId: currentThread!.id,
-          members: members,
+          members,
           message: {
             messageId: message.id,
             fromUserId: message.fromUserId,
@@ -141,9 +141,8 @@ router.post(
           }
         }
 
-        // notify all active involved users about the sent message
-        const usersToNotify = members.filter((x) => x != authedReq.userId)
-
+        // Notify users involved in the conversation
+        const usersToNotify = members.filter((x) => x !== authedReq.userId)
         usersToNotify.forEach((userId) => {
           const userThreadId = allThreads.find((x) => x.memberId === userId)!.id
           completeMessage = { ...completeMessage, threadId: userThreadId }
@@ -157,7 +156,7 @@ router.post(
     } catch (error) {
       console.error(`post /message error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not send message' })
     }
   }

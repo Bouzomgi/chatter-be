@@ -42,7 +42,7 @@ router.get(
     } catch (error) {
       console.error(`get /chatUsers error: ${error}`)
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Could not get chat heads' })
     }
   }
