@@ -1,17 +1,17 @@
 import { Server } from 'http'
 import WebSocket from 'ws'
-import { setupWebSocketServer, notifyUser } from '@src/websockets/messageSocket'
+import { setupWebSocketServer, notifyUser } from '@src/websocket/messageSocket'
 import express from 'express'
 import generateAuthToken from '@src/utils/generateAuthToken'
-import MessageNotificationPayload from '@src/websockets/MessageNotificationPayload'
+import MessageNotificationPayload from '@src/websocket/MessageNotificationPayload'
+import env from '@src/config'
 
-const testPort = 4001
 const app = express()
 let server: Server
 let wss: WebSocket.Server
 
 beforeEach(() => {
-  server = app.listen(testPort)
+  server = app.listen(env.PORT)
   wss = setupWebSocketServer(server)
 })
 
@@ -21,7 +21,7 @@ afterEach(() => {
 })
 
 const createWebSocket = (token: string) =>
-  new WebSocket(`ws://localhost:${testPort}/`, {
+  new WebSocket(`ws://localhost:${env.PORT}/`, {
     headers: {
       Cookie: `auth-token=${token}`
     }

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
-    "test": "npx jest --selectProjects unit --setupFiles dotenv/config --detectOpenHandles",
+    "test": "npx jest --setupFiles dotenv/config --detectOpenHandles",
+    "test:unit": "npx jest --selectProjects unit --setupFiles dotenv/config --detectOpenHandles",
     "test:integration": "npx jest --selectProjects integration --setupFiles dotenv/config --detectOpenHandles",
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",

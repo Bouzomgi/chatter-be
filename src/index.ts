@@ -1,6 +1,6 @@
 import server from './app'
 import env from './config'
-import { setupWebSocketServer } from './websockets/messageSocket'
+import { setupWebSocketServer } from './websocket/messageSocket'
 
 setupWebSocketServer(server)
 

@@ -26,7 +26,11 @@
         "<rootDir>/test/commonSetup.ts"
       ],
       "coveragePathIgnorePatterns": [
-        "<rootDir>/src/api/*"
+        "<rootDir>/src/api/*",
+        "<rootDir>/src/middlewares/*",
+        "<rootDir>/src/queries/*",
+        "<rootDir>/src/routes",
+        "<rootDir>/src/storage/*"
       ]
     },
     {
@@ -44,7 +48,8 @@
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",
-        "<rootDir>/test/*"
+        "<rootDir>/test/*",
+        "<rootDir>/src/websocket/validate.ts"
       ]
     }
   ]

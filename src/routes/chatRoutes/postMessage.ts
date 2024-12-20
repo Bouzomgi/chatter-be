@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes'
 import prisma from './../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
 import { checkSchema, validationResult } from 'express-validator'
-import { notifyUser } from '../../websockets/messageSocket'
+import { notifyUser } from '../../websocket/messageSocket'
 
 const router = express.Router()
 

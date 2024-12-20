@@ -1,4 +1,4 @@
-import verifyTokenWebSocket from '@src/websockets/validate'
+import verifyTokenWebSocket from '@src/websocket/validate'
 import { IncomingMessage } from 'http'
 import generateAuthToken from '@src/utils/generateAuthToken'
 
