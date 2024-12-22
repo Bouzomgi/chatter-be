@@ -1,9 +1,9 @@
 import express from 'express'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
 import { getDefaultAvatars } from '../../storage/s3Accessors'
 
 const router = express.Router()

@@ -56,6 +56,16 @@ describe('Read Thread', () => {
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 
+  it('should fail with a malformed request', async () => {
+    const authToken = generateAuthToken(1)
+    const res = await request(server)
+      .patch('/api/authed/readThread/abc')
+      .set('Cookie', [`auth-token=${authToken}`])
+      .send()
+
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+  })
+
   it('should fail if user is not logged in', async () => {
     const res = await request(server).get('/api/authed/userHeads').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)

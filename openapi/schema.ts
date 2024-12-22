@@ -4,567 +4,567 @@
  */
 
 export interface paths {
-    "/api/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Health check */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["Ok"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Register a new User */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        /** @example mike@gmail.com */
-                        email: string;
-                        /** @example mike11 */
-                        username: string;
-                        /** @example password123 */
-                        password: string;
-                    };
-                };
-            };
-            responses: {
-                201: components["responses"]["Created"];
-                400: components["responses"]["BadRequest"];
-                409: components["responses"]["Conflict"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Login as a User */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        /** @example mike11 */
-                        username: string;
-                        /** @example password123 */
-                        password: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Successfully logged in */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserDetails"];
-                    };
-                };
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Logout the current User */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["Ok"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/defaultAvatars": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get default avatars and the user's current avatar */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default avatars and current avatar */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Avatar"][];
-                    };
-                };
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/setSettings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Set settings for a User */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        /** @example avatar-1 */
-                        avatar?: string;
-                    };
-                };
-            };
-            responses: {
-                200: components["responses"]["Ok"];
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-                404: components["responses"]["NotFound"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/userHeads": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all other users */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got user heads */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserHead"][];
-                    };
-                };
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/chats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all chats the user is part of */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got messages */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Chat"][];
-                    };
-                };
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/chatUsersDetails": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get details of all users chatting with a given user */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Successfully got details */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserDetails"][];
-                    };
-                };
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/message": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Send a message to a specified chat thread */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        members: components["schemas"]["ChatMembers"];
-                        /** @example lorem ipsum */
-                        content: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Successfully sent message */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ChatDetails"] & {
-                            message: components["schemas"]["Message"];
-                        };
-                    };
-                };
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/authed/readThread/{threadId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Mark a specified thread as read */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description ID of the thread to be marked as read */
-                    threadId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: components["responses"]["Ok"];
-                400: components["responses"]["BadRequest"];
-                401: components["responses"]["Unauthorized"];
-                404: components["responses"]["NotFound"];
-                500: components["responses"]["InternalServerError"];
-            };
-        };
-        trace?: never;
-    };
-}
-export type webhooks = Record<string, never>;
-export interface components {
-    schemas: {
-        Avatar: {
-            /** @example avatar-1 */
-            name: string;
-            /** @example www.avatar-1.com */
-            url: string;
-        };
-        /** @example [
-         *       1,
-         *       2
-         *     ] */
-        ChatMembers: number[];
-        UserDetails: {
-            /** @example 1 */
-            userId: number;
+  '/api/health': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Health check */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        200: components['responses']['Ok']
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/register': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Register a new User */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @example mike@gmail.com */
+            email: string
             /** @example mike11 */
-            username: string;
-            avatar: components["schemas"]["Avatar"];
-        };
-        UserHead: components["schemas"]["UserDetails"] & {
-            /** @example 1 */
-            threadId?: number;
-        };
-        Message: {
-            /** @example 1 */
-            messageId: number;
-            /** @example 1 */
-            fromUserId: number;
-            /** @example 2024-03-15T10:01:00Z */
-            createdAt: string;
+            username: string
+            /** @example password123 */
+            password: string
+          }
+        }
+      }
+      responses: {
+        201: components['responses']['Created']
+        400: components['responses']['BadRequest']
+        409: components['responses']['Conflict']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/login': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Login as a User */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @example mike11 */
+            username: string
+            /** @example password123 */
+            password: string
+          }
+        }
+      }
+      responses: {
+        /** @description Successfully logged in */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['UserDetails']
+          }
+        }
+        400: components['responses']['BadRequest']
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/logout': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Logout the current User */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        200: components['responses']['Ok']
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/defaultAvatars': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get default avatars and the user's current avatar */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Default avatars and current avatar */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Avatar'][]
+          }
+        }
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/setSettings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Set settings for a User */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @example avatar-1 */
+            avatar?: string
+          }
+        }
+      }
+      responses: {
+        200: components['responses']['Ok']
+        400: components['responses']['BadRequest']
+        401: components['responses']['Unauthorized']
+        404: components['responses']['NotFound']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/userHeads': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get all other users */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Successfully got user heads */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['UserHead'][]
+          }
+        }
+        400: components['responses']['BadRequest']
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/chats': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get all chats the user is part of */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Successfully got messages */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Chat'][]
+          }
+        }
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/chatUsersDetails': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get details of all users chatting with a given user */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Successfully got details */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['UserDetails'][]
+          }
+        }
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/message': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Send a message to a specified chat thread */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': {
+            members: components['schemas']['ChatMembers']
             /** @example lorem ipsum */
-            content: string;
-        };
-        ChatDetails: {
-            /** @example 1 */
-            conversationId: number;
-            /** @example 1 */
-            threadId: number;
-            members: components["schemas"]["ChatMembers"];
-            /** @example 1 */
-            unseenMessageId?: number;
-        };
-        Chat: components["schemas"]["ChatDetails"] & {
-            messages: components["schemas"]["Message"][];
-        };
-    };
-    responses: {
-        /** @description Successful response */
-        Ok: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Request was successful. */
-                    message: string;
-                };
-            };
-        };
-        /** @description Resource created successfully */
-        Created: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Resource created successfully. */
-                    message: string;
-                };
-            };
-        };
-        /** @description Bad request */
-        BadRequest: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Invalid request. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Unauthorized access */
-        Unauthorized: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Authentication is required. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Resource not found */
-        NotFound: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Resource not found. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Resource already exists */
-        Conflict: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Resource already exists. */
-                    error: string;
-                };
-            };
-        };
-        /** @description Server cannot process request */
-        InternalServerError: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @example Server could not process. */
-                    error: string;
-                };
-            };
-        };
-    };
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+            content: string
+          }
+        }
+      }
+      responses: {
+        /** @description Successfully sent message */
+        201: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['ChatDetails'] & {
+              message: components['schemas']['Message']
+            }
+          }
+        }
+        400: components['responses']['BadRequest']
+        401: components['responses']['Unauthorized']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/authed/readThread/{threadId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Mark a specified thread as read */
+    patch: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          /** @description ID of the thread to be marked as read */
+          threadId: string
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        200: components['responses']['Ok']
+        400: components['responses']['BadRequest']
+        401: components['responses']['Unauthorized']
+        404: components['responses']['NotFound']
+        500: components['responses']['InternalServerError']
+      }
+    }
+    trace?: never
+  }
 }
-export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export type webhooks = Record<string, never>
+export interface components {
+  schemas: {
+    Avatar: {
+      /** @example avatar-1 */
+      name: string
+      /** @example www.avatar-1.com */
+      url: string
+    }
+    /** @example [
+     *       1,
+     *       2
+     *     ] */
+    ChatMembers: number[]
+    UserDetails: {
+      /** @example 1 */
+      userId: number
+      /** @example mike11 */
+      username: string
+      avatar: components['schemas']['Avatar']
+    }
+    UserHead: components['schemas']['UserDetails'] & {
+      /** @example 1 */
+      threadId?: number
+    }
+    Message: {
+      /** @example 1 */
+      messageId: number
+      /** @example 1 */
+      fromUserId: number
+      /** @example 2024-03-15T10:01:00Z */
+      createdAt: string
+      /** @example lorem ipsum */
+      content: string
+    }
+    ChatDetails: {
+      /** @example 1 */
+      conversationId: number
+      /** @example 1 */
+      threadId: number
+      members: components['schemas']['ChatMembers']
+      /** @example 1 */
+      unseenMessageId?: number
+    }
+    Chat: components['schemas']['ChatDetails'] & {
+      messages: components['schemas']['Message'][]
+    }
+  }
+  responses: {
+    /** @description Successful response */
+    Ok: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Request was successful. */
+          message: string
+        }
+      }
+    }
+    /** @description Resource created successfully */
+    Created: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Resource created successfully. */
+          message: string
+        }
+      }
+    }
+    /** @description Bad request */
+    BadRequest: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Invalid request. */
+          error: string
+        }
+      }
+    }
+    /** @description Unauthorized access */
+    Unauthorized: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Authentication is required. */
+          error: string
+        }
+      }
+    }
+    /** @description Resource not found */
+    NotFound: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Resource not found. */
+          error: string
+        }
+      }
+    }
+    /** @description Resource already exists */
+    Conflict: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Resource already exists. */
+          error: string
+        }
+      }
+    }
+    /** @description Server cannot process request */
+    InternalServerError: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          /** @example Server could not process. */
+          error: string
+        }
+      }
+    }
+  }
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
+}
+export type $defs = Record<string, never>
+export type operations = Record<string, never>

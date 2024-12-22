@@ -1,6 +1,6 @@
 import express from 'express'
-import { PathMethodResponse } from '../../../openapi/expressApiTypes'
 import { StatusCodes } from 'http-status-codes'
+import { PathMethodResponse } from '../../../openapi/expressApiTypes'
 
 const router = express.Router()
 

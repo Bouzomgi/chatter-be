@@ -1,7 +1,7 @@
+import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import env from '../config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { Request, Response, NextFunction } from 'express'
+import env from '../config'
 
 interface AuthedRequest extends Request {
   userId: number

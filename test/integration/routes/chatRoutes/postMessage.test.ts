@@ -116,6 +116,21 @@ describe('Chat User Details', () => {
     expect(res.status).toBe(StatusCodes.BAD_REQUEST)
   })
 
+  it('should fail with a malformed request', async () => {
+    const authToken = generateAuthToken(1)
+
+    const incompleteMessageBody = {
+      content: 'test message'
+    }
+
+    const res = await request(server)
+      .post('/api/authed/message')
+      .set('Cookie', [`auth-token=${authToken}`])
+      .send(incompleteMessageBody)
+
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+  })
+
   it('should fail if user is not logged in', async () => {
     const res = await request(server).get('/api/authed/chatUsersDetails').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)

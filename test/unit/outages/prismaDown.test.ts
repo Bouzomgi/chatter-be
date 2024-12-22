@@ -5,7 +5,14 @@ import request from 'supertest'
 import { StatusCodes } from 'http-status-codes'
 import server from '@src/app'
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
-import generateAuthToken from '@src/utils/generateAuthToken'
+import AuthedRequest from '@src/middlewares/authedRequest'
+
+jest.mock('@src/middlewares/tokenVerification', () => ({
+  verifyToken: jest.fn((req, _, next) => {
+    ;(req as AuthedRequest<'/api/authed/chats', 'get'>).userId = 1
+    return next()
+  })
+}))
 
 jest.mock('@src/database', () => ({
   __esModule: true,
@@ -14,15 +21,9 @@ jest.mock('@src/database', () => ({
 
 const prismaMock = prisma as unknown as DeepMockProxy<PrismaClient>
 
-beforeEach(() => {
-  jest.resetAllMocks()
-})
-
-const authToken = generateAuthToken(1)
-
 describe('When prisma is down', () => {
   // Auth routes
-  it('post /login should fail with 500', async () => {
+  it('post /login should fail with a 500', async () => {
     prismaMock.profile.findUnique.mockRejectedValue(
       new Error('Cannot connect to database')
     )
@@ -35,7 +36,7 @@ describe('When prisma is down', () => {
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
-  it('post /register should fail with 500', async () => {
+  it('post /register should fail with a 500', async () => {
     prismaMock.user.findFirst.mockRejectedValue(
       new Error('Cannot connect to database')
     )
@@ -50,55 +51,43 @@ describe('When prisma is down', () => {
   })
 
   // Chat routes
-  it('get /chats should fail with 500', async () => {
+  it('get /chats should fail with a 500', async () => {
     prismaMock.message.findMany.mockRejectedValue(
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server)
-      .get('/api/authed/chats')
-      .set('Cookie', [`auth-token=${authToken}`])
-      .send()
+    const res = await await request(server).get('/api/authed/chats').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
-  it('get /chatUserDetails should fail with 500', async () => {
+  it('get /chatUserDetails should fail with a 500', async () => {
     prismaMock.$queryRaw.mockRejectedValue(
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server)
-      .get('/api/authed/chatUsersDetails')
-      .set('Cookie', [`auth-token=${authToken}`])
-      .send()
+    const res = await request(server).get('/api/authed/chatUsersDetails').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
-  it('get /userHeads should fail with 500', async () => {
+  it('get /userHeads should fail with a 500', async () => {
     prismaMock.profile.findMany.mockRejectedValue(
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server)
-      .get('/api/authed/userHeads')
-      .set('Cookie', [`auth-token=${authToken}`])
-      .send()
+    const res = await request(server).get('/api/authed/userHeads').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
-  it('patch /readThread should fail with 500', async () => {
+  it('patch /readThread should fail with a 500', async () => {
     prismaMock.thread.findUnique.mockRejectedValue(
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server)
-      .patch('/api/authed/readThread/1')
-      .set('Cookie', [`auth-token=${authToken}`])
-      .send()
+    const res = await request(server).patch('/api/authed/readThread/1').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
-  it('post /message should fail with 500', async () => {
+  it('post /message should fail with a 500', async () => {
     prismaMock.thread.findUnique.mockRejectedValue(
       new Error('Cannot connect to database')
     )
@@ -110,14 +99,13 @@ describe('When prisma is down', () => {
 
     const res = await request(server)
       .post('/api/authed/message')
-      .set('Cookie', [`auth-token=${authToken}`])
       .send(messageBody)
 
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
   // Settings routes
-  it('post /setSettings should fail with 500', async () => {
+  it('post /setSettings should fail with a 500', async () => {
     prismaMock.profile.update.mockRejectedValue(
       new Error('Cannot connect to database')
     )
@@ -131,7 +119,6 @@ describe('When prisma is down', () => {
 
     const res = await request(server)
       .post('/api/authed/setSettings')
-      .set('Cookie', [`auth-token=${authToken}`])
       .send(setSettingsBody)
 
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)

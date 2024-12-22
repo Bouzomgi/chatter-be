@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { Query } from 'express-serve-static-core'
-import {
-  ExtractRouteParameters,
-  ExtractPathRequestBody,
-  ExtractPathResponseBodies
-} from './typeExtractors'
 import { paths } from './schema'
+import {
+  ExtractPathRequestBody,
+  ExtractPathResponseBodies,
+  ExtractRouteParameters
+} from './typeExtractors'
 
 export type PathMethodRequest<
   Path extends keyof paths,

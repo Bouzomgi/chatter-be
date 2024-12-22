@@ -1,6 +1,6 @@
+import { IncomingMessage } from 'http'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import env from '../config'
-import { IncomingMessage } from 'http'
 
 const verifyTokenWebSocket = async (
   req: IncomingMessage

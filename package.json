@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "Chatter Backend",
   "main": "index.js",
+  "author": "Brian Ouzomgi",
+  "license": "ISC",
   "scripts": {
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
-    "test": "npx jest --setupFiles dotenv/config --detectOpenHandles",
+    "test": "npx jest --selectProjects unit integration --setupFiles dotenv/config --detectOpenHandles",
     "test:unit": "npx jest --selectProjects unit --setupFiles dotenv/config --detectOpenHandles",
     "test:integration": "npx jest --selectProjects integration --setupFiles dotenv/config --detectOpenHandles",
+    "test:acceptance": "npx jest --selectProjects acceptance --setupFiles dotenv/config --detectOpenHandles",
     "clean": "npx tsc --build --clean",
     "lint": "npx eslint --fix --ext .ts src/ test/ && npx prettier --write src/ test/ && npx prisma format",
     "check-lint": "npx eslint --ext .ts src/ test/ && npx prettier --check src/ test/",
@@ -16,10 +19,8 @@
     "reset-and-seed": "npx prisma migrate reset --force",
     "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
   },
-  "author": "",
-  "license": "ISC",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed/index.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -38,6 +39,7 @@
     "@types/ws": "^8.5.12",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "axios": "^1.7.9",
+    "axios-cookiejar-support": "^5.0.5",
     "babel-jest": "^29.7.0",
     "concurrently": "^8.2.2",
     "cookie": "^1.0.2",
@@ -53,9 +55,10 @@
     "nodemon": "^3.1.0",
     "openapi-typescript": "^7.0.0-rc.0",
     "prettier": "^3.2.5",
-    "prisma": "^6.0.1",
+    "prisma": "^6.1.0",
     "supertest": "^6.3.4",
     "supertest-session": "^5.0.1",
+    "tough-cookie": "^5.0.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^7.2.0",
@@ -64,7 +67,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",
     "@aws-sdk/s3-request-presigner": "^3.590.0",
-    "@prisma/client": "^6.0.1",
+    "@prisma/client": "^6.1.0",
     "aws-sdk": "^2.1628.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",

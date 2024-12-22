@@ -1,12 +1,12 @@
 import express from 'express'
+import { checkSchema, validationResult } from 'express-validator'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
 import prisma from '../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
-import { checkSchema, validationResult } from 'express-validator'
 
 const router = express.Router()
 

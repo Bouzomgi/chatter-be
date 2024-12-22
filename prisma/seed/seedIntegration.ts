@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
-import prisma from '../src/database'
+import prisma from '../../src/database'
 
-async function main() {
+async function seedIntegration() {
   // Seed data for User model
   const users: Prisma.UserUncheckedCreateInput[] = [
     {
@@ -234,11 +234,4 @@ const correctAutoIncrement = (tableName: string, start: number) => {
   )
 }
 
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+export default seedIntegration

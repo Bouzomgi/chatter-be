@@ -1,11 +1,11 @@
 import { Request } from 'express'
 import { Query } from 'express-serve-static-core'
-import {
-  ExtractRouteParameters,
-  ExtractPathRequestBody,
-  ExtractPathResponseBodies
-} from '../../openapi/typeExtractors'
 import { paths } from '../../openapi/schema'
+import {
+  ExtractPathRequestBody,
+  ExtractPathResponseBodies,
+  ExtractRouteParameters
+} from '../../openapi/typeExtractors'
 
 export default interface AuthedRequest<
   Path extends keyof paths,

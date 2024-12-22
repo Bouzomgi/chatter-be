@@ -1,14 +1,14 @@
+import bcrypt from 'bcryptjs'
 import express from 'express'
+import { checkSchema, validationResult } from 'express-validator'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
-import prisma from './../../database'
-import bcrypt from 'bcryptjs'
-import { checkSchema, validationResult } from 'express-validator'
 import { getAvatar } from '../../storage/s3Accessors'
 import generateAuthToken from '../../utils/generateAuthToken'
+import prisma from './../../database'
 
 const router = express.Router()
 

@@ -2,7 +2,7 @@ import { spawn } from 'child_process'
 
 /*
   To cut down on testing time, we will only reseed the database between test files
-  We need to be cognizant that test file's I/O do not collide
+  We need to be cognizant that test files' I/O do not collide
 */
 beforeAll((done) => {
   const childProcess = spawn('npm', ['run', 'reset-and-seed'])

@@ -1,13 +1,13 @@
+import hashPassword from '@src/utils/hashPassword'
 import express from 'express'
+import { checkSchema, validationResult } from 'express-validator'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
-import prisma from './../../database'
-import bcrypt from 'bcryptjs'
 import { getDefaultAvatars } from '../../storage/s3Accessors'
-import { checkSchema, validationResult } from 'express-validator'
+import prisma from './../../database'
 
 const router = express.Router()
 
@@ -70,8 +70,7 @@ router.post(
       }
 
       // HASH PASSWORD
-      const salt = await bcrypt.genSalt(10)
-      const hashedPassword = await bcrypt.hash(req.body.password, salt)
+      const hashedPassword = await hashPassword(req.body.password)
 
       const defaultAvatars = await getDefaultAvatars()
 

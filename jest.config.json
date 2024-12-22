@@ -23,14 +23,11 @@
       "transform": { "^.+\\.ts?$": "ts-jest" },
       "testMatch": ["<rootDir>/test/unit/**/*.test.ts"],
       "setupFilesAfterEnv": [
-        "<rootDir>/test/commonSetup.ts"
+        "<rootDir>/test/setup/commonSetup.ts"
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",
-        "<rootDir>/src/middlewares/*",
-        "<rootDir>/src/queries/*",
-        "<rootDir>/src/routes",
-        "<rootDir>/src/storage/*"
+        "<rootDir>/test/*"
       ]
     },
     {
@@ -43,13 +40,29 @@
       "transform": { "^.+\\.ts?$": "ts-jest" },
       "testMatch": ["<rootDir>/test/integration/**/*.test.ts"],
       "setupFilesAfterEnv": [
-        "<rootDir>/test/commonSetup.ts",
-        "<rootDir>/test/integration/setup/reseed.ts"
+        "<rootDir>/test/setup/commonSetup.ts",
+        "<rootDir>/test/setup/reseed.ts"
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",
-        "<rootDir>/test/*",
-        "<rootDir>/src/websocket/validate.ts"
+        "<rootDir>/test/*"
+      ]
+    },
+    {
+      "displayName": "acceptance",
+      "moduleNameMapper": {
+        "^@src/(.*)": "<rootDir>/src/$1",
+        "^@test/(.*)": "<rootDir>/test/$1",
+        "^@openapi/(.*)": "<rootDir>/openapi/$1"
+      },
+      "transform": { "^.+\\.ts?$": "ts-jest" },
+      "testMatch": ["<rootDir>/test/acceptance/**/*.test.ts"],
+      "setupFilesAfterEnv": [
+        "<rootDir>/test/setup/commonSetup.ts",
+        "<rootDir>/test/setup/reseed.ts"
+      ],
+      "coveragePathIgnorePatterns": [
+        "<rootDir>/*"
       ]
     }
   ]

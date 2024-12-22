@@ -1,10 +1,10 @@
-import env from '../config'
 import {
-  S3Client,
+  GetObjectCommand,
   ListObjectsV2Command,
-  GetObjectCommand
+  S3Client
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import env from '../config'
 
 const clientOptions = env.AWS_S3_ENDPOINT
   ? {

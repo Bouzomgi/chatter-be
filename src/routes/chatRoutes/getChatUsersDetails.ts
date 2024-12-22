@@ -1,12 +1,12 @@
 import express from 'express'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
 import AuthedRequest from '../../middlewares/authedRequest'
-import { getAvatar } from '../../storage/s3Accessors'
 import { pullChatUsersDetails } from '../../queries/pullChatUsersDetails'
+import { getAvatar } from '../../storage/s3Accessors'
 
 const router = express.Router()
 

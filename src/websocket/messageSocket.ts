@@ -1,7 +1,7 @@
-import { WebSocketServer, WebSocket } from 'ws'
 import { Server } from 'http'
-import verifyTokenWebSocket from './validate'
+import { WebSocket, WebSocketServer } from 'ws'
 import MessageNotificationPayload from './MessageNotificationPayload'
+import verifyTokenWebSocket from './validate'
 
 interface UserSocket extends WebSocket {
   userId: number
@@ -70,4 +70,4 @@ const notifyUser = (
   }
 }
 
-export { setupWebSocketServer, notifyUser }
+export { notifyUser, setupWebSocketServer }

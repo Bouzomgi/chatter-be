@@ -68,3 +68,8 @@ TESTING TODOS:
 * targets for extensions 
   * adding auth token for supertests
   * custom prisma queries
+
+
+* right now the seeding is also gonna reset, this is bad for prod
+* clean up imports file headers
+* clean up package.json imports

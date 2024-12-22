@@ -1,9 +1,9 @@
 import express from 'express'
+import { StatusCodes } from 'http-status-codes'
 import {
   PathMethodRequest,
   PathMethodResponse
 } from '../../../openapi/expressApiTypes'
-import { StatusCodes } from 'http-status-codes'
 import prisma from '../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
 import { pullChatDetails } from '../../queries/pullChatDetails'

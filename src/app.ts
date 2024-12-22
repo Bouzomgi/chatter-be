@@ -1,13 +1,13 @@
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import express from 'express'
+import http from 'http'
+import { StatusCodes } from 'http-status-codes'
+import swaggerDocs from './api/api-doc'
 import { verifyToken } from './middlewares/tokenVerification'
 import authRoutes from './routes/authRoutes'
-import settingsRoutes from './routes/settingsRoutes'
 import chatRoutes from './routes/chatRoutes'
-import { StatusCodes } from 'http-status-codes'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import http from 'http'
-import swaggerDocs from './api/api-doc'
+import settingsRoutes from './routes/settingsRoutes'
 
 const app = express()
 
