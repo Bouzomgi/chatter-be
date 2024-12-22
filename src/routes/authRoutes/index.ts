@@ -1,8 +1,8 @@
 import express from 'express'
 
+import { default as postLogoutRouter } from '@src/routes/authRoutes/postLogout'
 import { default as postLoginRouter } from './postLogin'
 import { default as postRegisterRouter } from './postRegister'
-import { default as postLogoutRouter } from '../authRoutes/postLogout'
 
 const router = express.Router()
 

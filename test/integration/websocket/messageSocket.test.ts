@@ -1,10 +1,10 @@
-import { Server } from 'http'
-import WebSocket from 'ws'
-import { setupWebSocketServer, notifyUser } from '@src/websocket/messageSocket'
-import express from 'express'
+import env from '@src/config'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import MessageNotificationPayload from '@src/websocket/MessageNotificationPayload'
-import env from '@src/config'
+import { notifyUser, setupWebSocketServer } from '@src/websocket/messageSocket'
+import express from 'express'
+import { Server } from 'http'
+import WebSocket from 'ws'
 
 const app = express()
 let server: Server

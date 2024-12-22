@@ -1,13 +1,10 @@
+import { PathMethodRequest, PathMethodResponse } from '@openapi/expressApiTypes'
 import { components } from '@openapi/schema'
+import prisma from '@src/database'
+import AuthedRequest from '@src/middlewares/authedRequest'
+import { getAvatar } from '@src/storage/s3Accessors'
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import {
-  PathMethodRequest,
-  PathMethodResponse
-} from '../../../openapi/expressApiTypes'
-import prisma from '../../database'
-import AuthedRequest from '../../middlewares/authedRequest'
-import { getAvatar } from '../../storage/s3Accessors'
 
 type Userhead = components['schemas']['UserDetails']
 

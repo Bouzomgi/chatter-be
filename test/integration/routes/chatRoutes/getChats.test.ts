@@ -1,7 +1,7 @@
-import request from 'supertest'
 import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
 import generateAuthToken from '@src/utils/generateAuthToken'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 describe('Chats', () => {
   it('should successfully get chats', async () => {

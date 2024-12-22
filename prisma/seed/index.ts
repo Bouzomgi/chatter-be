@@ -1,5 +1,5 @@
-import env from '../../src/config'
-import prisma from '../../src/database'
+import env from '@src/config'
+import prisma from '@src/database'
 import seedIntegration from './seedIntegration'
 import seedProd from './seedProd'
 

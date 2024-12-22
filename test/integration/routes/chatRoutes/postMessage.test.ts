@@ -1,16 +1,16 @@
-import request from 'supertest'
-import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
-import generateAuthToken from '@src/utils/generateAuthToken'
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
+import server from '@src/app'
+import env from '@src/config'
+import generateAuthToken from '@src/utils/generateAuthToken'
+import { setupWebSocketServer } from '@src/websocket/messageSocket'
 import {
   doesConversationExist,
   getConversation
 } from '@test/testHelpers/checkDatabase/conversationChecks'
-import { doesUserExist } from '@test/testHelpers/checkDatabase/userChecks'
 import { getThreads } from '@test/testHelpers/checkDatabase/threadQueries'
-import { setupWebSocketServer } from '@src/websocket/messageSocket'
-import env from '@src/config'
+import { doesUserExist } from '@test/testHelpers/checkDatabase/userChecks'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 import WebSocket from 'ws'
 
 describe('Chat User Details', () => {

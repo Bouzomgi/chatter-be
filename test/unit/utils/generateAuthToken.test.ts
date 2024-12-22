@@ -1,6 +1,6 @@
+import env from '@src/config'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import jwt from 'jsonwebtoken'
-import env from '@src/config'
 
 describe('generateAuthToken', () => {
   const userId = 1

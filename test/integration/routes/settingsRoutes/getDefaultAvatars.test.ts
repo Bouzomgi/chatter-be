@@ -1,10 +1,10 @@
-import request from 'supertest'
-import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
-import generateAuthToken from '@src/utils/generateAuthToken'
-import normalizeAvatar from '@test/testHelpers/normalizeAvatar'
-import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
 import { components } from '@openapi/schema'
+import server from '@src/app'
+import generateAuthToken from '@src/utils/generateAuthToken'
+import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
+import normalizeAvatar from '@test/testHelpers/normalizeAvatar'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 type Avatar = components['schemas']['Avatar']
 

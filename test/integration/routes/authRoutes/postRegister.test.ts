@@ -1,8 +1,8 @@
-import server from '@src/app'
-import request from 'supertest'
-import { StatusCodes } from 'http-status-codes'
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
+import server from '@src/app'
 import prisma from '@src/database'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 describe('Register', () => {
   it('should successfully register a new account', async () => {

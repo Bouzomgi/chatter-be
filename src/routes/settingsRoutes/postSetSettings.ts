@@ -1,3 +1,4 @@
+import { getDefaultAvatars } from '@src/storage/s3Accessors'
 import express from 'express'
 import { checkSchema, validationResult } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
@@ -7,7 +8,6 @@ import {
 } from '../../../openapi/expressApiTypes'
 import prisma from '../../database'
 import AuthedRequest from '../../middlewares/authedRequest'
-import { getDefaultAvatars } from '../../storage/s3Accessors'
 
 const router = express.Router()
 

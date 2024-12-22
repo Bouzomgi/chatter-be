@@ -1,5 +1,5 @@
 import { getAvatar, getDefaultAvatars } from '@src/storage/s3Accessors'
-import isS3SignedUrlValid from '../../testHelpers/checkSignedUrl'
+import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
 
 describe('Get avatar', () => {
   it('can get a URL to an avatar', async () => {

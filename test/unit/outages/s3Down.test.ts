@@ -1,8 +1,8 @@
-import request from 'supertest'
-import { StatusCodes } from 'http-status-codes'
 import server from '@src/app'
 import AuthedRequest from '@src/middlewares/authedRequest'
 import { getAvatar, getDefaultAvatars } from '@src/storage/s3Accessors'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('@src/middlewares/tokenVerification', () => ({

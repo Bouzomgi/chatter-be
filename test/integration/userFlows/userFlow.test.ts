@@ -1,11 +1,11 @@
-import request from 'supertest'
-import { StatusCodes } from 'http-status-codes'
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
 import server from '@src/app'
-import getCookie from '../../testHelpers/getCookie'
-import isJwtValid from '../../testHelpers/checkJwt'
-import { isUsernameRegistered } from '@test/testHelpers/checkDatabase/userChecks'
 import { doesConversationExist } from '@test/testHelpers/checkDatabase/conversationChecks'
+import { isUsernameRegistered } from '@test/testHelpers/checkDatabase/userChecks'
+import isJwtValid from '@test/testHelpers/checkJwt'
+import getCookie from '@test/testHelpers/getCookie'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 /*
   Describes a sample user work flow

@@ -1,6 +1,6 @@
+import generateAuthToken from '@src/utils/generateAuthToken'
 import verifyTokenWebSocket from '@src/websocket/validate'
 import { IncomingMessage } from 'http'
-import generateAuthToken from '@src/utils/generateAuthToken'
 
 describe('verifyTokenWebSocket', () => {
   const userId = 1

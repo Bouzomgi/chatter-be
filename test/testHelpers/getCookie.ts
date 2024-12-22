@@ -1,5 +1,5 @@
-import { Response } from 'supertest'
 import { parse } from 'cookie'
+import { Response } from 'supertest'
 
 const getCookieValue = (response: Response, cookieName: string) => {
   const allCookies = response.headers['set-cookie']

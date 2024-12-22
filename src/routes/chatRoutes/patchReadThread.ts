@@ -1,12 +1,9 @@
+import { PathMethodRequest, PathMethodResponse } from '@openapi/expressApiTypes'
+import prisma from '@src/database'
+import AuthedRequest from '@src/middlewares/authedRequest'
 import express from 'express'
 import { checkSchema, validationResult } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import {
-  PathMethodRequest,
-  PathMethodResponse
-} from '../../../openapi/expressApiTypes'
-import prisma from '../../database'
-import AuthedRequest from '../../middlewares/authedRequest'
 
 const router = express.Router()
 

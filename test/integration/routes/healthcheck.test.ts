@@ -1,5 +1,5 @@
-import request from 'supertest'
 import server from '@src/app'
+import request from 'supertest'
 
 describe('Healthcheck', () => {
   it('should successfully respond to a healthcheck', async () => {

@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
 import env from '@src/config'
+import jwt from 'jsonwebtoken'
 
 async function isJwtValid(token: string) {
   try {

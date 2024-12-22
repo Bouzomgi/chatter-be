@@ -1,8 +1,8 @@
-import request from 'supertest'
 import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import { isThreadRead } from '@test/testHelpers/checkDatabase/threadChecks'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 describe('Read Thread', () => {
   it('should successfully read an unseen thread', async () => {

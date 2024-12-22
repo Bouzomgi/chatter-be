@@ -1,9 +1,9 @@
-import request from 'supertest'
+import { components } from '@openapi/schema'
 import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import normalizeAvatar from '@test/testHelpers/normalizeAvatar'
-import { components } from '@openapi/schema'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 type ChatDetails = components['schemas']['UserDetails']
 

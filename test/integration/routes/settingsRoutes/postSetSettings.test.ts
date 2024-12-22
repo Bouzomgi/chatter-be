@@ -1,9 +1,9 @@
-import request from 'supertest'
-import server from '@src/app'
-import { StatusCodes } from 'http-status-codes'
-import generateAuthToken from '@src/utils/generateAuthToken'
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
+import server from '@src/app'
+import generateAuthToken from '@src/utils/generateAuthToken'
 import { getAvatar } from '@test/testHelpers/checkDatabase/userChecks'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 describe('Set Settings', () => {
   it('should successfully set an avatar', async () => {

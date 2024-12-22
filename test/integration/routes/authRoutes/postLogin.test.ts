@@ -1,10 +1,10 @@
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
 import server from '@src/app'
+import isJwtValid from '@test/testHelpers/checkJwt'
+import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
+import getCookie from '@test/testHelpers/getCookie'
 import { StatusCodes } from 'http-status-codes'
 import request from 'supertest'
-import isJwtValid from '../../../testHelpers/checkJwt'
-import isS3SignedUrlValid from '../../../testHelpers/checkSignedUrl'
-import getCookie from '../../../testHelpers/getCookie'
 
 describe('Login', () => {
   it('should login to an existing account', async () => {

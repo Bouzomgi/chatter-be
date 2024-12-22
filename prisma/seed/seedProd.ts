@@ -1,6 +1,6 @@
-import env from '../../src/config'
-import prisma from '../../src/database'
-import hashPassword from '../../src/utils/hashPassword'
+import env from '@src/config'
+import prisma from '@src/database'
+import hashPassword from '@src/utils/hashPassword'
 
 async function seedProd() {
   // Seed data for User model

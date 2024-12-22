@@ -1,8 +1,8 @@
-import request from 'supertest'
 import app from '@src/app'
-import getCookieValue from '../../../testHelpers/getCookie'
-import { StatusCodes } from 'http-status-codes'
 import generateAuthToken from '@src/utils/generateAuthToken'
+import getCookieValue from '@test/testHelpers/getCookie'
+import { StatusCodes } from 'http-status-codes'
+import request from 'supertest'
 
 describe('Logout', () => {
   it('should successfully logout when logged in', async () => {

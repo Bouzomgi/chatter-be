@@ -1,12 +1,9 @@
+import { PathMethodRequest, PathMethodResponse } from '@openapi/expressApiTypes'
+import AuthedRequest from '@src/middlewares/authedRequest'
+import { pullChatUsersDetails } from '@src/queries/pullChatUsersDetails'
+import { getAvatar } from '@src/storage/s3Accessors'
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import {
-  PathMethodRequest,
-  PathMethodResponse
-} from '../../../openapi/expressApiTypes'
-import AuthedRequest from '../../middlewares/authedRequest'
-import { pullChatUsersDetails } from '../../queries/pullChatUsersDetails'
-import { getAvatar } from '../../storage/s3Accessors'
 
 const router = express.Router()
 

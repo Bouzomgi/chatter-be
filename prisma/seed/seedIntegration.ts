@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import prisma from '../../src/database'
+import prisma from '@src/database'
 
 async function seedIntegration() {
   // Seed data for User model
