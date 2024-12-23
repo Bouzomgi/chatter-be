@@ -1,10 +1,8 @@
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
-import { PrismaClient } from '@prisma/client'
 import server from '@src/app'
-import prisma from '@src/database'
 import AuthedRequest from '@src/middlewares/authedRequest'
+import { prismaMock } from '@test/setup/prismaMock'
 import { StatusCodes } from 'http-status-codes'
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended'
 import request from 'supertest'
 
 jest.mock('@src/middlewares/tokenVerification', () => ({
@@ -13,13 +11,6 @@ jest.mock('@src/middlewares/tokenVerification', () => ({
     return next()
   })
 }))
-
-jest.mock('@src/database', () => ({
-  __esModule: true,
-  default: mockDeep<PrismaClient>()
-}))
-
-const prismaMock = prisma as unknown as DeepMockProxy<PrismaClient>
 
 describe('When prisma is down', () => {
   // Auth routes

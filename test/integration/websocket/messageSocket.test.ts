@@ -1,31 +1,41 @@
-import env from '@src/config'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import MessageNotificationPayload from '@src/websocket/MessageNotificationPayload'
 import { notifyUser, setupWebSocketServer } from '@src/websocket/messageSocket'
 import express from 'express'
 import { Server } from 'http'
+import { AddressInfo } from 'net'
 import WebSocket from 'ws'
 
 const app = express()
 let server: Server
 let wss: WebSocket.Server
+let port: number | undefined = undefined
 
 beforeEach(() => {
-  server = app.listen(env.PORT)
+  server = app.listen(0)
   wss = setupWebSocketServer(server)
+
+  const addressInfo = server.address() as AddressInfo
+  port = addressInfo.port
 })
 
 afterEach(() => {
   wss.close()
   server.close()
+  port = undefined
 })
 
-const createWebSocket = (token: string) =>
-  new WebSocket(`ws://localhost:${env.PORT}/`, {
+const createWebSocket = (token: string) => {
+  if (!port) {
+    throw new Error('Port of server is undefined')
+  }
+
+  return new WebSocket(`ws://localhost:${port}/`, {
     headers: {
       Cookie: `auth-token=${token}`
     }
   })
+}
 
 describe('WebSocket Server', () => {
   it('should successfully connect an authorized client', (done) => {

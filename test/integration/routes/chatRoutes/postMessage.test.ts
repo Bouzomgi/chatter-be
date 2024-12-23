@@ -1,6 +1,5 @@
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
 import server from '@src/app'
-import env from '@src/config'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import { setupWebSocketServer } from '@src/websocket/messageSocket'
 import {
@@ -10,6 +9,7 @@ import {
 import { getThreads } from '@test/testHelpers/checkDatabase/threadQueries'
 import { doesUserExist } from '@test/testHelpers/checkDatabase/userChecks'
 import { StatusCodes } from 'http-status-codes'
+import { AddressInfo } from 'net'
 import request from 'supertest'
 import WebSocket from 'ws'
 
@@ -142,14 +142,16 @@ describe('Chat User Details', () => {
   */
   it('should correctly send a message to WebSocket server', (done) => {
     const wss = setupWebSocketServer(server)
-    server.listen(env.PORT)
+    server.listen(0)
+    const addressInfo = server.address() as AddressInfo
+    const port = addressInfo.port
 
     // eslint-disable-next-line prefer-const
     let timeoutHandle: NodeJS.Timeout
     let complete = false
 
     const user2AuthToken = generateAuthToken(2)
-    const ws = new WebSocket(`ws://localhost:${env.PORT}/`, {
+    const ws = new WebSocket(`ws://localhost:${port}/`, {
       headers: {
         Cookie: `auth-token=${user2AuthToken}`
       }

@@ -23,7 +23,8 @@
       "transform": { "^.+\\.ts?$": "ts-jest" },
       "testMatch": ["<rootDir>/test/unit/**/*.test.ts"],
       "setupFilesAfterEnv": [
-        "<rootDir>/test/setup/commonSetup.ts"
+        "<rootDir>/test/setup/commonSetup.ts",
+        "<rootDir>/test/setup/prismaMock.ts"
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",

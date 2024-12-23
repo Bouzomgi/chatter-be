@@ -5,7 +5,7 @@ import {
   setCookies
 } from '@test/testHelpers/axiosCookieInterceptors'
 import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import WebSocket from 'ws'
 
@@ -20,12 +20,42 @@ describe('Basic flow', () => {
   const httpUrl = `${env.TESTING_HTTP_ENDPOINT}:${env.TESTING_PORT}`
   const wsUrl = `${env.TESTING_WS_ENDPOINT}:${env.TESTING_PORT}`
 
-  it('should block an unauthorized /authed route request', async () => {
-    const res = await apiClient
-      .get(`${httpUrl}/api/authed/chats`)
-      .catch((err) => err.response)
+  it('should respond to a health check', async () => {
+    try {
+      const res = await apiClient.get(`${httpUrl}/api/health`)
+      expect(res.status).toBe(StatusCodes.OK)
+    } catch (error) {
+      const axiosError = error as AxiosError
 
-    expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      } else {
+        throw new Error(
+          'Request should have succeeded. Expected OK status (200).'
+        )
+      }
+    }
+  })
+
+  it('should block an unauthorized /authed route request', async () => {
+    try {
+      await apiClient.get(`${httpUrl}/api/authed/chats`)
+      throw new Error(
+        'Request should not have succeeded. Expected Unauthorized error (401).'
+      )
+    } catch (error) {
+      const axiosError = error as AxiosError
+
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+
+      expect(axiosError.response?.status).toBe(StatusCodes.UNAUTHORIZED)
+    }
   })
 
   it('should block an unauthorized WebSocket request', (done) => {
@@ -33,36 +63,78 @@ describe('Basic flow', () => {
   })
 
   it('should login to service account', async () => {
-    const req = {
-      username: env.SERVICE_ACCOUNT_USERNAME,
-      password: env.SERVICE_ACCOUNT_PASSWORD
-    }
-    const res = await apiClient
-      .post(`${httpUrl}/api/login`, req)
-      .catch((err) => err.response)
+    try {
+      const req = {
+        username: env.SERVICE_ACCOUNT_USERNAME,
+        password: env.SERVICE_ACCOUNT_PASSWORD
+      }
 
-    expect(res.status).toBe(StatusCodes.OK)
+      const res = await apiClient.post(`${httpUrl}/api/login`, req)
+
+      expect(res.status).toBe(StatusCodes.OK)
+    } catch (error) {
+      const axiosError = error as AxiosError
+
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+
+      throw new Error(
+        'Request should have succeeded. Expected OK status (200).'
+      )
+    }
   })
 
   it('should allow fetching of chats', async () => {
-    const res = await apiClient
-      .get(`${httpUrl}/api/authed/chats`)
-      .catch((err) => err.response)
+    try {
+      const res = await apiClient.get(`${httpUrl}/api/authed/chats`)
 
-    expect(res.status).toBe(StatusCodes.OK)
+      expect(res.status).toBe(StatusCodes.OK)
+    } catch (error) {
+      const axiosError = error as AxiosError
+
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+
+      throw new Error(
+        'Request should have succeeded. Expected OK status (200).'
+      )
+    }
   })
 
-  it('should be able to fetch avatar', async () => {
-    const res = await apiClient
-      .get(`${httpUrl}/api/authed/avatar`)
-      .catch((err) => err.response)
+  it('should be able to fetch default avatars', async () => {
+    try {
+      const res = await apiClient.get(`${httpUrl}/api/authed/defaultAvatars`)
 
-    expect(res.status).toBe(StatusCodes.OK)
-    expect(res.data).toHaveProperty('avatar')
-    expect(res.data).toHaveProperty('url')
+      expect(res.status).toBe(StatusCodes.OK)
 
-    const { url } = res.data
-    expect(isS3SignedUrlValid(url)).toBe(true)
+      expect(Array.isArray(res.data)).toBe(true)
+      expect(res.data.length).toBeGreaterThan(0)
+
+      const firstAvatar = res.data[0]
+      expect(firstAvatar).toHaveProperty('name')
+      expect(firstAvatar).toHaveProperty('url')
+
+      const { url } = firstAvatar
+      expect(await isS3SignedUrlValid(url)).toBe(true)
+    } catch (error) {
+      const axiosError = error as AxiosError
+
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+
+      throw new Error(
+        'Request should have succeeded. Expected OK status (200).'
+      )
+    }
   })
 
   it('should allow an authorized websocket request', (done) => {
@@ -74,17 +146,55 @@ describe('Basic flow', () => {
       done()
     }
 
-    socket.onerror = () => {
-      done(new Error('WebSocket connection failed to open'))
+    socket.onerror = (error) => {
+      if (error.error.code.includes('ECONNREFUSED')) {
+        // This error happens if the WebSocket URL does not exist or the server is not available
+        done(
+          new Error(
+            'Connection error: The WebSocket server is down or unreachable.'
+          )
+        )
+      } else {
+        done(new Error('WebSocket connection failed to open'))
+      }
     }
   })
 
   it('should properly logout', async () => {
-    const res = await apiClient
-      .post(`${httpUrl}/api/logout`)
-      .catch((err) => err.response)
+    try {
+      const res = await apiClient.post(`${httpUrl}/api/logout`)
+      expect(res.status).toBe(StatusCodes.OK)
+    } catch (error) {
+      const axiosError = error as AxiosError
 
-    expect(res.status).toBe(StatusCodes.OK)
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+      throw new Error(
+        'Request should have succeeded. Expected OK status (200).'
+      )
+    }
+  })
+
+  it('should block an unauthorized /authed route request', async () => {
+    try {
+      await apiClient.get(`${httpUrl}/api/authed/chats`)
+      throw new Error(
+        'Request should not have succeeded. Expected Unauthorized error (401).'
+      )
+    } catch (error) {
+      const axiosError = error as AxiosError
+
+      if (axiosError.code === 'ECONNREFUSED') {
+        throw new Error(
+          'The server is not running. Please start the server before running the tests'
+        )
+      }
+
+      expect(axiosError.response?.status).toBe(StatusCodes.UNAUTHORIZED)
+    }
   })
 
   it('should block an unauthorized WebSocket request', (done) => {
@@ -106,6 +216,7 @@ describe('Basic flow', () => {
     return socket
   }
 
+  // need to make sure the failure is from a 401 and not a "could not connect"
   const testUnauthorizedWebSocket = (done: jest.DoneCallback) => {
     const socket = createWebSocket()
 
@@ -114,10 +225,19 @@ describe('Basic flow', () => {
       done(new Error('WebSocket connection should not have been opened'))
     }
 
-    socket.onerror = (err) => {
+    socket.onerror = (error) => {
       socket.close()
-      expect(err).toBeDefined()
-      done()
+      if (error?.error?.code?.includes('ECONNREFUSED')) {
+        // This error happens if the WebSocket URL does not exist or the server is not available
+        done(
+          new Error(
+            'Connection error: The WebSocket server is down or unreachable.'
+          )
+        )
+      } else {
+        expect(error).toBeDefined()
+        done()
+      }
     }
   }
 })

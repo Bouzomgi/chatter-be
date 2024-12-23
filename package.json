@@ -6,7 +6,7 @@
   "author": "Brian Ouzomgi",
   "license": "ISC",
   "scripts": {
-    "start": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config dist/src/index.js\"",
+    "start": "concurrently \"npx tsc --watch\" \"ts-node-dev -r dotenv/config -r tsconfig-paths/register src/index.ts\"",
     "test": "npx jest --selectProjects unit integration --setupFiles dotenv/config --detectOpenHandles",
     "test:unit": "npx jest --selectProjects unit --setupFiles dotenv/config --detectOpenHandles",
     "test:integration": "npx jest --selectProjects integration --setupFiles dotenv/config --detectOpenHandles",
@@ -20,7 +20,7 @@
     "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed/index.ts"
+    "seed": "ts-node -r tsconfig-paths/register prisma/seed/index.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -48,6 +48,7 @@
     "eslint-plugin-jest": "^27.9.0",
     "jest": "^29.7.0",
     "jest-mock-extended": "^3.0.5",
+    "lodash": "^4.17.21",
     "node-ts": "^6.1.3",
     "nodemon": "^3.1.0",
     "openapi-typescript": "^7.0.0-rc.0",
@@ -56,6 +57,8 @@
     "supertest": "^6.3.4",
     "supertest-session": "^5.0.1",
     "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^7.2.0"
   },
@@ -63,6 +66,7 @@
     "@aws-sdk/client-s3": "^3.537.0",
     "@aws-sdk/s3-request-presigner": "^3.590.0",
     "@prisma/client": "^6.1.0",
+    "@types/lodash": "^4.17.13",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

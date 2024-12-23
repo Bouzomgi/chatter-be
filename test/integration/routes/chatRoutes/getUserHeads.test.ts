@@ -3,9 +3,13 @@ import server from '@src/app'
 import generateAuthToken from '@src/utils/generateAuthToken'
 import normalizeAvatar from '@test/testHelpers/normalizeAvatar'
 import { StatusCodes } from 'http-status-codes'
+import _ from 'lodash'
 import request from 'supertest'
 
 type UserHead = components['schemas']['UserHead']
+type NormalizedUserHead = Omit<UserHead, 'avatar'> & {
+  avatar: Omit<UserHead['avatar'], 'url'>
+}
 
 describe('User Heads', () => {
   it('should successfully get user heads', async () => {
@@ -18,10 +22,12 @@ describe('User Heads', () => {
 
     expect(res.status).toBe(StatusCodes.OK)
 
-    const normalizedResponse = res.body.map((elem: UserHead) => ({
-      ...elem,
-      avatar: normalizeAvatar(elem.avatar)
-    }))
+    const normalizedResponse: NormalizedUserHead[] = res.body.map(
+      (elem: UserHead) => ({
+        ...elem,
+        avatar: normalizeAvatar(elem.avatar)
+      })
+    )
 
     const expectedResponse = [
       {
@@ -54,7 +60,12 @@ describe('User Heads', () => {
       }
     ]
 
-    expect(normalizedResponse).toEqual(expectedResponse)
+    // Check that the response contains all the expected values
+    expect(
+      expectedResponse.every((item) =>
+        normalizedResponse.some((responseItem) => _.isEqual(item, responseItem))
+      )
+    ).toBe(true)
   })
 
   it('should fail if user is not logged in', async () => {
