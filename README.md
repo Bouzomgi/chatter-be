@@ -3,6 +3,10 @@ Chatter Backend
 Spin up docker:
 > `docker compose --env-file .env up`
 
+Run chatter-be image locally
+> `docker build -t chatter-be .`
+> `docker run -p 80:80 --env-file .env chatter-be`
+
 Prisma Notes
 
 - Look into validation

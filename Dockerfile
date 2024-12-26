@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies and build the TypeScript files
-RUN npm ci && npm run build && npx prisma generate
+RUN npm ci && npm run build
 
 # Production Stage
 FROM node:20-slim AS production
