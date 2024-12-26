@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import server from './app'
 import env from './config'
 import { setupWebSocketServer } from './websocket/messageSocket'

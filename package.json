@@ -17,7 +17,13 @@
     "gen-db-schema": "npx prisma generate",
     "gen-openapi-ts": "npx openapi-typescript ./openapi/schema.yaml -o ./openapi/schema.ts",
     "reset-and-seed": "npx prisma migrate reset --force",
-    "build": "npm run clean && npx tsc -p tsconfig-build.json && npx prisma generate"
+    "build": "npm run clean && npx tsc -p tsconfig-build.json && tsc-alias -p tsconfig.json && npx prisma generate"
+  },
+  "_moduleAliases": {
+    "@src": "dist/src",
+    "@test": "dist/test",
+    "@openapi": "dist/openapi",
+    "@prisma": "dist/prisma"
   },
   "prisma": {
     "seed": "ts-node -r tsconfig-paths/register prisma/seed/index.ts"
@@ -77,9 +83,12 @@
     "i": "^0.3.7",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "npm": "^10.8.0",
     "swagger-ui-express": "^5.0.0",
+    "ts-alias": "^0.0.7",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "ws": "^8.18.0"
   }
 }
