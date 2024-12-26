@@ -1,10 +1,10 @@
-import env from '@src/config'
+import prismaEnv from '@prisma/config'
 import prisma from '@src/database'
 import seedIntegration from './seedIntegration'
 import seedProd from './seedProd'
 
 async function main() {
-  switch (env.NODE_ENV) {
+  switch (prismaEnv.NODE_ENV) {
     case 'development':
       await seedIntegration()
       await seedProd()
