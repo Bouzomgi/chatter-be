@@ -1,15 +1,15 @@
-import env from '@src/config'
 import prisma from '@src/database'
 import hashPassword from '@src/utils/hashPassword'
+import testEnv from '@test/config'
 
 async function seedProd() {
   // Seed data for User model
 
-  const serviceAccountEmail = `${env.SERVICE_ACCOUNT_USERNAME}@example.com`
+  const serviceAccountEmail = `${testEnv.SERVICE_ACCOUNT_USERNAME}@example.com`
   const serviceAccountAvatar = './avatars/default/avatar4.svg'
-  const hashedPassword = await hashPassword(env.SERVICE_ACCOUNT_PASSWORD)
+  const hashedPassword = await hashPassword(testEnv.SERVICE_ACCOUNT_PASSWORD)
 
-  console.log('PASSY', env.SERVICE_ACCOUNT_PASSWORD, hashedPassword)
+  console.log('PASSY', testEnv.SERVICE_ACCOUNT_PASSWORD, hashedPassword)
 
   await prisma.user.upsert({
     where: { email: serviceAccountEmail },
@@ -17,7 +17,7 @@ async function seedProd() {
       password: hashedPassword,
       profile: {
         update: {
-          username: env.SERVICE_ACCOUNT_USERNAME,
+          username: testEnv.SERVICE_ACCOUNT_USERNAME,
           avatar: serviceAccountAvatar
         }
       }
@@ -27,7 +27,7 @@ async function seedProd() {
       password: hashedPassword,
       profile: {
         create: {
-          username: env.SERVICE_ACCOUNT_USERNAME,
+          username: testEnv.SERVICE_ACCOUNT_USERNAME,
           avatar: serviceAccountAvatar
         }
       }

@@ -1,4 +1,5 @@
 import env from '@src/config'
+import testEnv from '@test/config'
 import {
   extractCookies,
   getAuthToken,
@@ -17,8 +18,8 @@ apiClient.interceptors.response.use(extractCookies)
   A basic non-disruptive user flow intended to test the server as it is serving requests
 */
 describe('Basic flow', () => {
-  const httpUrl = `${env.TESTING_HTTP_ENDPOINT}:${env.TESTING_PORT}`
-  const wsUrl = `${env.TESTING_WS_ENDPOINT}:${env.TESTING_PORT}`
+  const httpUrl = `${testEnv.TESTING_HTTP_ENDPOINT}:${env.PORT}`
+  const wsUrl = `${testEnv.TESTING_WS_ENDPOINT}:${env.PORT}`
 
   it('should respond to a health check', async () => {
     try {
@@ -65,8 +66,8 @@ describe('Basic flow', () => {
   it('should login to service account', async () => {
     try {
       const req = {
-        username: env.SERVICE_ACCOUNT_USERNAME,
-        password: env.SERVICE_ACCOUNT_PASSWORD
+        username: testEnv.SERVICE_ACCOUNT_USERNAME,
+        password: testEnv.SERVICE_ACCOUNT_PASSWORD
       }
 
       const res = await apiClient.post(`${httpUrl}/api/login`, req)

@@ -10,14 +10,7 @@ const env = cleanEnv(process.env, {
   AWS_S3_ENDPOINT: str({ default: '' }),
   AWS_DEFAULT_REGION: str(),
 
-  TOKEN_SECRET: str(),
-
-  // Acceptance tests
-  TESTING_PORT: num(),
-  TESTING_HTTP_ENDPOINT: str(),
-  TESTING_WS_ENDPOINT: str(),
-  SERVICE_ACCOUNT_USERNAME: str(),
-  SERVICE_ACCOUNT_PASSWORD: str()
+  TOKEN_SECRET: str()
 })
 
 export default env
