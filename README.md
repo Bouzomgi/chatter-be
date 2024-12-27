@@ -1,7 +1,11 @@
 Chatter Backend
 
-Spin up docker:
-> `docker compose --env-file .env up`
+Spin up surrounds:
+> `docker compose -f docker-compose.surrounds.yaml up`
+
+Spin up server and surrounds:
+> `docker compose -f docker-compose.surrounds.yaml -f docker-compose.yaml up`
+
 
 Run chatter-be image locally
 > `docker build -t chatter-be .`
@@ -77,3 +81,12 @@ TESTING TODOS:
 
 * how do acceptance tests in CICD?
 * right now the seeding is also gonna reset, this is bad for prod
+
+
+Plan forward:
+- make sure i can seed from local to aws
+- make sure i can call acceptance tests from local to aws
+- fix the stupid GHA
+  - acceptance tests
+  - unit tests
+  - integration tests (w/ docker)
