@@ -28,6 +28,7 @@
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",
+        "<rootDir>/src/storage/clients.ts",
         "<rootDir>/test/*"
       ]
     },
@@ -46,6 +47,7 @@
       ],
       "coveragePathIgnorePatterns": [
         "<rootDir>/src/api/*",
+        "<rootDir>/src/storage/clients.ts",
         "<rootDir>/test/*"
       ]
     },

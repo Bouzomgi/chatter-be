@@ -28,7 +28,7 @@ services:
   localstack:
     image: localstack/localstack
     ports:
-      - '127.0.0.1:4566:4566'
+      - '4566:4566'
     environment:
       - SERVICES=s3
       - DEBUG=1
@@ -37,6 +37,21 @@ services:
       - ./localstack/content:/content
       - ./volume:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - chatter-network
+
+  seed-database:
+    build:
+      context: .
+      dockerfile: Dockerfile.seed
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - SERVICE_ACCOUNT_USERNAME=${SERVICE_ACCOUNT_USERNAME}
+      - SERVICE_ACCOUNT_PASSWORD=${SERVICE_ACCOUNT_PASSWORD}
     networks:
       - chatter-network
 

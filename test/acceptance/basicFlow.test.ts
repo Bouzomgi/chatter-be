@@ -6,7 +6,7 @@ import {
   setCookies
 } from '@test/testHelpers/axiosCookieInterceptors'
 import isS3SignedUrlValid from '@test/testHelpers/checkSignedUrl'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import WebSocket from 'ws'
 
@@ -27,15 +27,12 @@ describe('Basic flow', () => {
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
       const axiosError = error as AxiosError
-
       if (axiosError.code === 'ECONNREFUSED') {
         throw new Error(
           'The server is not running. Please start the server before running the tests'
         )
       } else {
-        throw new Error(
-          'Request should have succeeded. Expected OK status (200).'
-        )
+        expect(axiosError.response?.status).toBe(StatusCodes.OK)
       }
     }
   })
@@ -71,7 +68,6 @@ describe('Basic flow', () => {
       }
 
       const res = await apiClient.post(`${httpUrl}/api/login`, req)
-
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
       const axiosError = error as AxiosError
@@ -82,9 +78,7 @@ describe('Basic flow', () => {
         )
       }
 
-      throw new Error(
-        'Request should have succeeded. Expected OK status (200).'
-      )
+      expect(axiosError.response?.status).toBe(StatusCodes.OK)
     }
   })
 
@@ -102,27 +96,15 @@ describe('Basic flow', () => {
         )
       }
 
-      throw new Error(
-        'Request should have succeeded. Expected OK status (200).'
-      )
+      expect(axiosError.response?.status).toBe(StatusCodes.OK)
     }
   })
 
   it('should be able to fetch default avatars', async () => {
+    let res: AxiosResponse
+
     try {
-      const res = await apiClient.get(`${httpUrl}/api/authed/defaultAvatars`)
-
-      expect(res.status).toBe(StatusCodes.OK)
-
-      expect(Array.isArray(res.data)).toBe(true)
-      expect(res.data.length).toBeGreaterThan(0)
-
-      const firstAvatar = res.data[0]
-      expect(firstAvatar).toHaveProperty('name')
-      expect(firstAvatar).toHaveProperty('url')
-
-      const { url } = firstAvatar
-      expect(await isS3SignedUrlValid(url)).toBe(true)
+      res = await apiClient.get(`${httpUrl}/api/authed/defaultAvatars`)
     } catch (error) {
       const axiosError = error as AxiosError
 
@@ -132,10 +114,21 @@ describe('Basic flow', () => {
         )
       }
 
-      throw new Error(
-        'Request should have succeeded. Expected OK status (200).'
-      )
+      expect(axiosError.response?.status).toBe(StatusCodes.OK)
+      fail()
     }
+
+    expect(res.status).toBe(StatusCodes.OK)
+
+    expect(Array.isArray(res.data)).toBe(true)
+    expect(res.data.length).toBeGreaterThan(0)
+
+    const firstAvatar = res.data[0]
+    expect(firstAvatar).toHaveProperty('name')
+    expect(firstAvatar).toHaveProperty('url')
+
+    const { url } = firstAvatar
+    expect(await isS3SignedUrlValid(url)).toBe(true)
   })
 
   it('should allow an authorized websocket request', (done) => {
@@ -173,9 +166,7 @@ describe('Basic flow', () => {
           'The server is not running. Please start the server before running the tests'
         )
       }
-      throw new Error(
-        'Request should have succeeded. Expected OK status (200).'
-      )
+      expect(axiosError.response?.status).toBe(StatusCodes.OK)
     }
   })
 

@@ -1,12 +1,12 @@
 Chatter Backend
 
 Spin up surrounds:
-> `docker compose -f docker-compose.surrounds.yaml up`
+> `docker compose -f docker-compose.surrounds.yaml --env-file .env.docker up`
 
 Spin up server and surrounds:
-> `docker compose -f docker-compose.surrounds.yaml -f docker-compose.yaml up`
+> `docker compose -f docker-compose.surrounds.yaml -f docker-compose.yaml --env-file .env.docker up`
 
-
+# FIX
 Run chatter-be image locally
 > `docker build -t chatter-be .`
 > `docker run -p 80:80 --env-file .env chatter-be`
