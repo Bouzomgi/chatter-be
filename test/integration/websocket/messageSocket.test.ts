@@ -1,6 +1,7 @@
 import generateAuthToken from '@src/utils/generateAuthToken'
 import MessageNotificationPayload from '@src/websocket/MessageNotificationPayload'
-import { notifyUser, setupWebSocketServer } from '@src/websocket/messageSocket'
+import notifyUser from '@src/websocket/notifyUser'
+import setupWebSocketServer from '@src/websocket/setupWebSocketServer'
 import express from 'express'
 import { Server } from 'http'
 import { AddressInfo } from 'net'
@@ -30,7 +31,7 @@ const createWebSocket = (token: string) => {
     throw new Error('Port of server is undefined')
   }
 
-  return new WebSocket(`ws://localhost:${port}/`, {
+  return new WebSocket(`ws://localhost:${port}/api/authed`, {
     headers: {
       Cookie: `auth-token=${token}`
     }

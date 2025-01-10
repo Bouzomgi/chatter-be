@@ -90,3 +90,7 @@ Plan forward:
   - acceptance tests
   - unit tests
   - integration tests (w/ docker)
+
+
+LEARNINGS: 
+When you use aliases, it can make imports load multiple times. aka if i import the same file into two different files, the original file should load once. but if i use aliases and refer to that file differently with those aliases, it make load twice. 

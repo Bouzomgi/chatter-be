@@ -195,15 +195,16 @@ describe('Basic flow', () => {
 
   // Helpers
   const createWebSocket = () => {
+    const wsAuthedEndpoint = `${wsUrl}/api/authed/`
     const authToken = getAuthToken()
 
     const socket = authToken
-      ? new WebSocket(wsUrl, {
+      ? new WebSocket(wsAuthedEndpoint, {
           headers: {
             Cookie: `auth-token=${authToken}`
           }
         })
-      : new WebSocket(wsUrl)
+      : new WebSocket(wsAuthedEndpoint)
 
     return socket
   }

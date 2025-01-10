@@ -1,7 +1,7 @@
 import { ExtractPathRequestBody } from '@openapi/typeExtractors'
 import server from '@src/app'
 import generateAuthToken from '@src/utils/generateAuthToken'
-import { setupWebSocketServer } from '@src/websocket/messageSocket'
+import setupWebSocketServer from '@src/websocket/setupWebSocketServer'
 import {
   doesConversationExist,
   getConversation
@@ -151,7 +151,7 @@ describe('Chat User Details', () => {
     let complete = false
 
     const user2AuthToken = generateAuthToken(2)
-    const ws = new WebSocket(`ws://localhost:${port}/`, {
+    const ws = new WebSocket(`ws://localhost:${port}/api/authed`, {
       headers: {
         Cookie: `auth-token=${user2AuthToken}`
       }

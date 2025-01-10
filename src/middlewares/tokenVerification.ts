@@ -14,7 +14,6 @@ export const verifyToken = async (
 ) => {
   try {
     const token = req.cookies['auth-token']
-
     const decoded = await jwt.verify(token, env.TOKEN_SECRET)
     ;(req as AuthedRequest).userId = (decoded as JwtPayload).userId
     return next()

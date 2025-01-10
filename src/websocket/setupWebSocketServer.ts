@@ -1,29 +1,31 @@
 import { Server } from 'http'
 import { WebSocket, WebSocketServer } from 'ws'
-import MessageNotificationPayload from './MessageNotificationPayload'
+import userIdToSocketMap from './userIdToSocketMap'
 import verifyTokenWebSocket from './validate'
 
 interface UserSocket extends WebSocket {
   userId: number
 }
 
-const userIdToSocketMap = new Map<number, Set<WebSocket>>()
-
 const setupWebSocketServer = (server: Server) => {
   const wss = new WebSocketServer({ noServer: true })
 
   server.on('upgrade', async (request, socket, head) => {
     console.debug('Upgrading connection to WebSocket')
+    if (request.url !== '/api/authed') {
+      socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
+      socket.destroy()
+      return
+    }
     socket.on('error', (err) => console.error(err))
-
     // Validate the token during the handshake
     const userId = await verifyTokenWebSocket(request)
     if (!userId) {
+      console.debug('Unauthorized connection attempt')
       socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
       socket.destroy()
       return
     }
-
     // Proceed with WebSocket connection
     wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
       ;(ws as UserSocket).userId = userId
@@ -33,41 +35,21 @@ const setupWebSocketServer = (server: Server) => {
   })
 
   wss.on('connection', (ws: UserSocket) => {
-    console.debug('Client has been added')
+    console.debug(`WS client ${ws.userId} has been added`)
     const existingSocketSet = userIdToSocketMap.get(ws.userId)
-
     if (existingSocketSet != undefined) {
       existingSocketSet.add(ws)
     } else {
       userIdToSocketMap.set(ws.userId, new Set([ws as WebSocket]))
     }
-
     ws.on('close', () => {
+      console.debug(`Closing ws connection from ${ws.userId}`)
       userIdToSocketMap.get(ws.userId)?.delete(ws)
     })
-
     ws.on('error', (err) => console.error(err))
   })
 
   return wss
 }
 
-const notifyUser = (
-  userId: number,
-  notificationPayload: MessageNotificationPayload
-) => {
-  console.debug('Notifying user', userId)
-  const socketMap = userIdToSocketMap.get(userId)
-  const clients: WebSocket[] =
-    socketMap != undefined ? Array.from(socketMap) : []
-
-  for (const client of clients) {
-    const jsonString = JSON.stringify(notificationPayload)
-    const buffer = Buffer.from(jsonString)
-    const text = buffer.toString('utf-8')
-    client.send(text)
-    console.debug("Sent message to user's client")
-  }
-}
-
-export { notifyUser, setupWebSocketServer }
+export default setupWebSocketServer

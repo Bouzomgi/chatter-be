@@ -4,6 +4,7 @@ import express from 'express'
 import http from 'http'
 import { StatusCodes } from 'http-status-codes'
 import swaggerDocs from './api/api-doc'
+import env from './config'
 import { verifyToken } from './middlewares/tokenVerification'
 import authRoutes from './routes/authRoutes'
 import chatRoutes from './routes/chatRoutes'
@@ -12,7 +13,7 @@ import settingsRoutes from './routes/settingsRoutes'
 const app = express()
 
 // MIDDLEWARES
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+app.use(cors({ origin: env.FRONTEND_ENDPOINT, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 
