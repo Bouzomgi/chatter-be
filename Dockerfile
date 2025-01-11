@@ -16,7 +16,7 @@ FROM node:20-slim AS production
 WORKDIR /app
 
 # Install OpenSSL
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update -y && apt-get install -y openssl curl
 
 # Copy built files and the full node_modules from the builder
 COPY --from=builder /app/dist ./dist
