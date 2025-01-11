@@ -35,6 +35,7 @@ services:
       - EXTRA_CORS_ALLOWED_ORIGINS=${FRONTEND_ENDPOINT}
     volumes:
       - ./localstack/scripts/ready:/etc/localstack/init/ready.d
+      - ./localstack/scripts/init-scripts:/etc/localstack/init-scripts
       - ./localstack/content:/content
       - ./volume:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
