@@ -41,9 +41,7 @@ services:
       - chatter-network
 
   seed-database:
-    build:
-      context: .
-      dockerfile: Dockerfile.seed
+    image: bouzomgi/chatter-seed
     depends_on:
       database:
         condition: service_healthy

@@ -1,8 +1,6 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: bouzomgi/chatter-be
     environment:
       - PORT=${PORT}
       - DATABASE_URL=${DATABASE_URL}
