@@ -32,6 +32,8 @@ services:
     environment:
       - SERVICES=s3
       - DEBUG=1
+      - CORS_ENABLED=true
+      - CORS_ORIGIN=${FRONTEND_ENDPOINT}
     volumes:
       - ./localstack/scripts/ready:/etc/localstack/init/ready.d
       - ./localstack/content:/content
