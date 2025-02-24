@@ -140,3 +140,5 @@ volume/
 
 # Mac DS Store
 .DS_Store
+
+/private
