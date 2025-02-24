@@ -36,7 +36,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t bouzomgi/chatter-be:latest .
+          docker buildx create --use
+          docker buildx build --platform linux/arm64/v8 -t bouzomgi/chatter-be:latest .
 
       - name: Push Docker image
         run: |
