@@ -11,7 +11,13 @@ const clientOptions = env.AWS_S3_ENDPOINT
       },
       forcePathStyle: true
     }
-  : { region: env.AWS_DEFAULT_REGION }
+  : {
+      region: env.AWS_DEFAULT_REGION,
+      credentials: {
+        accessKeyId: env.AWS_USERNAME,
+        secretAccessKey: env.AWS_PASSWORD
+      }
+    }
 
 // https://github.com/localstack/localstack/issues/6301#issuecomment-1560171249
 const signedUrlClientOptions = env.AWS_S3_URL_SIGNER_ENDPOINT

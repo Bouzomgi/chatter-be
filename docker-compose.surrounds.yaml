@@ -3,8 +3,8 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: chatter
     ports:
       - 5432:5432
@@ -50,8 +50,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - DATABASE_URL=${DATABASE_URL}
-      - SERVICE_ACCOUNT_USERNAME=${SERVICE_ACCOUNT_USERNAME}
-      - SERVICE_ACCOUNT_PASSWORD=${SERVICE_ACCOUNT_PASSWORD}
+      - SERVICE_ACCOUNT_USERNAME=${DB_USERNAME}
+      - SERVICE_ACCOUNT_PASSWORD=${DB_PASSWORD}
     networks:
       - chatter-network
 

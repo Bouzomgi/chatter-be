@@ -9,6 +9,8 @@ const env = cleanEnv(process.env, {
   AWS_S3_ENDPOINT: str({ default: '' }),
   AWS_S3_URL_SIGNER_ENDPOINT: str({ default: '' }),
 
+  AWS_USERNAME: str(),
+  AWS_PASSWORD: str(),
   AWS_DEFAULT_REGION: str(),
 
   TOKEN_SECRET: str()
