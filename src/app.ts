@@ -14,7 +14,6 @@ const app = express()
 
 // MIDDLEWARES
 app.use(cors({ origin: env.FRONTEND_ENDPOINT, credentials: true }))
-
 app.use(express.json())
 app.use(cookieParser())
 
@@ -26,7 +25,6 @@ swaggerDocs(app, 'api/docs')
 
 // ROUTES
 app.get('/api/health', (_, res) => {
-  console.log('Health check request received')
   res.status(StatusCodes.OK).send('Up and running!\n')
 })
 

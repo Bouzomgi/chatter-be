@@ -12,9 +12,11 @@ services:
       - FRONTEND_ENDPOINT=${FRONTEND_ENDPOINT}
     ports:
       - "4000:4000"
+    volumes:
+      - ./private/cert:/private/cert:ro
     networks:
       - chatter-network
 
 networks:
   chatter-network:
-    driver: bridge
+    external: true

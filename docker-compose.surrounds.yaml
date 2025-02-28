@@ -32,6 +32,7 @@ services:
     environment:
       - SERVICES=s3
       - DEBUG=1
+      - USE_SSL=1
     volumes:
       - ./localstack/scripts/ready:/etc/localstack/init/ready.d
       - ./localstack/scripts/init-scripts:/etc/localstack/init-scripts
@@ -56,4 +57,4 @@ services:
 
 networks:
   chatter-network:
-    driver: bridge
+    external: true

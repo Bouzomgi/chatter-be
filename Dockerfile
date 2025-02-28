@@ -16,8 +16,7 @@ FROM node:20-slim AS production
 WORKDIR /app
 
 # Install OpenSSL
-# RUN apt-get update -y && apt-get install -ys apt-transport-https ca-certificates curl openssl
-RUN apt-get update -y && apt-get install -y openssl curl
+RUN apt-get update -y && apt-get install -y openssl wget
 
 # Copy built files and the full node_modules from the builder
 COPY --from=builder /app/dist ./dist
@@ -36,7 +35,7 @@ ENV PORT=4000
 EXPOSE $PORT
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:$PORT/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD wget -q --spider http://localhost:$PORT/api/health || exit 1
 
 # Start the app
 CMD ["node", "dist/src/index.js"]
