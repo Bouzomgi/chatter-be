@@ -5,9 +5,10 @@ import { s3Client, signedUrlClient } from './clients'
 
 // Takes in an avatar name
 export async function getAvatar(avatar: string) {
+  const trimmedAvatar = avatar.startsWith('./') ? avatar.slice(2) : avatar
   const getObjectParams = {
     Bucket: env.STORAGE_BUCKET_NAME,
-    Key: avatar
+    Key: trimmedAvatar
   }
 
   try {
@@ -15,7 +16,7 @@ export async function getAvatar(avatar: string) {
     const url = await getSignedUrl(signedUrlClient, bucketObject, {
       expiresIn: 60
     })
-    return { name: avatar, url }
+    return { name: trimmedAvatar, url }
   } catch (error) {
     console.error('failed to generate avatar url')
     throw error
@@ -32,7 +33,9 @@ export async function getDefaultAvatars() {
   try {
     const command = new ListObjectsV2Command(input)
     const listOutput = await s3Client.send(command)
-    const avatarNameList = listOutput.Contents!.map((elem) => elem.Key!)
+    const avatarNameList = listOutput
+      .Contents!.filter((elem) => !elem.Key!.endsWith('/')) // Exclude folder objects
+      .map((elem) => elem.Key!)
     const avatarList = avatarNameList.map((avatar) => getAvatar(avatar))
     return await Promise.all(avatarList)
   } catch (error) {

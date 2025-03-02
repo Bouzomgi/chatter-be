@@ -125,6 +125,7 @@ dist
 # Dotenv environment variables file
 .env
 .env.test
+.env.prod
 
 # Database files
 db

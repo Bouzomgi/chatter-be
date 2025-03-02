@@ -1,0 +1,43 @@
+services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: chatter
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d chatter"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+    networks:
+      - chatter-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - chatter-network
+
+  seed-database:
+    image: bouzomgi/chatter-seed
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - SERVICE_ACCOUNT_USERNAME=${DB_USERNAME}
+      - SERVICE_ACCOUNT_PASSWORD=${DB_PASSWORD}
+    networks:
+      - chatter-network
+
+networks:
+  chatter-network:
+    external: true

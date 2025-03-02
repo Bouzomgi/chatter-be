@@ -14,8 +14,8 @@ const clientOptions = env.AWS_S3_ENDPOINT
   : {
       region: env.AWS_DEFAULT_REGION,
       credentials: {
-        accessKeyId: env.AWS_USERNAME,
-        secretAccessKey: env.AWS_PASSWORD
+        accessKeyId: env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: env.AWS_SECRET_ACCESS_KEY
       }
     }
 
