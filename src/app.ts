@@ -13,7 +13,21 @@ import express from 'express'
 const app = express()
 
 // MIDDLEWARES
-app.use(cors({ origin: env.FRONTEND_ENDPOINT, credentials: true }))
+const allowedOrigins = env.FRONTEND_ENDPOINTS.split(',')
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    credentials: true
+  })
+)
+
 app.use(express.json())
 app.use(cookieParser())
 
