@@ -15,21 +15,23 @@ const app = express()
 // MIDDLEWARES
 const allowedOrigins = env.FRONTEND_ENDPOINTS.split(',')
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        console.error(
-          `${origin} is not specified within ${allowedOrigins}, blocked by CORS`
-        )
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
-    credentials: true
-  })
-)
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true)
+//       } else {
+//         console.error(
+//           `${origin} is not specified within ${allowedOrigins}, blocked by CORS`
+//         )
+//         callback(new Error('Not allowed by CORS'))
+//       }
+//     },
+//     credentials: true
+//   })
+// )
+
+app.use(cors({ origin: '*', credentials: true }))
 
 app.use(express.json())
 app.use(cookieParser())
