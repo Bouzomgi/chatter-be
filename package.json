@@ -30,6 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
+    "@bouzomgi/eslint-configs": "^1.0.22",
     "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",

@@ -1,5 +1,5 @@
 services:
-  api:
+  backend:
     image: bouzomgi/chatter-be
     environment:
       - PORT=${PORT}
