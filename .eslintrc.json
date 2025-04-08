@@ -5,7 +5,7 @@
     "jest/globals": true
   },
   "extends": [
-    "@bouzomgi/s/backend"
+    "@bouzomgi/base/backend"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
