@@ -10,13 +10,13 @@ describe('Register', () => {
     expect(await isUsernameRegistered('fred')).toBe(false)
     expect(await isEmailRegistered('fred@example.com')).toBe(false)
 
-    const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'fred@example.com',
       username: 'fred',
       password: 'abcde'
     }
     const registerRes = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CREATED)
 
@@ -27,13 +27,13 @@ describe('Register', () => {
     expect(await isUsernameRegistered('adam')).toBe(true)
     expect(await isEmailRegistered('brand_new@example.com')).toBe(false)
 
-    const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'brand_new@example.com',
       username: 'adam',
       password: 'abcde'
     }
     const registerRes = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CONFLICT)
 
@@ -44,13 +44,13 @@ describe('Register', () => {
     expect(await isUsernameRegistered('emily')).toBe(false)
     expect(await isEmailRegistered('adam@example.com')).toBe(true)
 
-    const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'adam@example.com',
       username: 'emily',
       password: 'abcde'
     }
     const registerRes = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CONFLICT)
 
@@ -59,46 +59,46 @@ describe('Register', () => {
 
   it('should fail registration if request is bad', async () => {
     // Bad email
-    const registerBody1: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody1: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'not_an_email',
       username: 'moe',
       password: 'abcde'
     }
     const registerRes1 = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody1)
     expect(registerRes1.status).toBe(StatusCodes.BAD_REQUEST)
 
     // Username has an invalid character
-    const registerBody2: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody2: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'moe@example.com',
       username: 'm@e',
       password: 'a'
     }
     const registerRes2 = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody2)
     expect(registerRes2.status).toBe(StatusCodes.BAD_REQUEST)
 
     // No username
-    const registerBody3: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody3: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'moe@example.com',
       username: '',
       password: 'abcde'
     }
     const registerRes3 = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody3)
     expect(registerRes3.status).toBe(StatusCodes.BAD_REQUEST)
 
     // Password is too short
-    const registerBody4: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody4: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'moe@example.com',
       username: 'moe',
       password: 'a'
     }
     const registerRes4 = await request(server)
-      .post('/api/register')
+      .post('/register')
       .send(registerBody4)
     expect(registerRes4.status).toBe(StatusCodes.BAD_REQUEST)
   })

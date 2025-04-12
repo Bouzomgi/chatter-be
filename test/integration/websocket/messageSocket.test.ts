@@ -31,7 +31,7 @@ const createWebSocket = (token: string) => {
     throw new Error('Port of server is undefined')
   }
 
-  return new WebSocket(`ws://localhost:${port}/api/authed`, {
+  return new WebSocket(`ws://localhost:${port}/authed`, {
     headers: {
       Cookie: `auth-token=${token}`
     }

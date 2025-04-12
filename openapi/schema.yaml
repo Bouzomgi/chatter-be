@@ -9,7 +9,7 @@ tags:
   - name: settings
   - name: chat
 paths:
-  /api/health:
+  /health:
     get:
       tags: 
         - general
@@ -18,7 +18,7 @@ paths:
         "200":
           $ref: '#/components/responses/Ok'
 
-  /api/register:
+  /register:
     post:
       tags: 
         - authentication
@@ -57,7 +57,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-  /api/login:
+  /login:
     post:
       tags: 
         - authentication
@@ -95,7 +95,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
           
-  /api/logout:
+  /logout:
     post:
       tags:
         - authentication
@@ -106,7 +106,7 @@ paths:
         "200":
           $ref: '#/components/responses/Ok'
 
-  /api/authed/defaultAvatars:
+  /authed/defaultAvatars:
     get:
       tags: 
         - settings
@@ -129,7 +129,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-  /api/authed/setSettings:
+  /authed/setSettings:
     post:
       tags: 
         - settings
@@ -162,7 +162,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
   
-  /api/authed/userHeads:
+  /authed/userHeads:
     get:
       tags: 
         - chat
@@ -188,7 +188,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
           
-  /api/authed/chats:
+  /authed/chats:
     get:
       tags: 
         - chat
@@ -211,7 +211,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-  /api/authed/chatUsersDetails:
+  /authed/chatUsersDetails:
     get:
       tags: 
         - chat
@@ -234,7 +234,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-  /api/authed/message:
+  /authed/message:
     post:
       tags: 
         - chat
@@ -281,7 +281,7 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
-  /api/authed/readThread/{threadId}:
+  /authed/readThread/{threadId}:
     patch:
       tags: 
         - chat

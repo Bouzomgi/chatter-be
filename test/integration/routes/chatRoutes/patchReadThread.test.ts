@@ -10,7 +10,7 @@ describe('Read Thread', () => {
 
     const authToken = generateAuthToken(1)
     const res = await request(server)
-      .patch('/api/authed/readThread/1')
+      .patch('/authed/readThread/1')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -23,7 +23,7 @@ describe('Read Thread', () => {
 
     const authToken = generateAuthToken(1)
     const res = await request(server)
-      .patch('/api/authed/readThread/1')
+      .patch('/authed/readThread/1')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -36,7 +36,7 @@ describe('Read Thread', () => {
 
     const authToken = generateAuthToken(1)
     const res = await request(server)
-      .patch('/api/authed/readThread/100')
+      .patch('/authed/readThread/100')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -49,7 +49,7 @@ describe('Read Thread', () => {
 
     const authToken = generateAuthToken(3)
     const res = await request(server)
-      .patch('/api/authed/readThread/6')
+      .patch('/authed/readThread/6')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -59,7 +59,7 @@ describe('Read Thread', () => {
   it('should fail with a malformed request', async () => {
     const authToken = generateAuthToken(1)
     const res = await request(server)
-      .patch('/api/authed/readThread/abc')
+      .patch('/authed/readThread/abc')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -67,7 +67,7 @@ describe('Read Thread', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/userHeads').send()
+    const res = await request(server).get('/authed/userHeads').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

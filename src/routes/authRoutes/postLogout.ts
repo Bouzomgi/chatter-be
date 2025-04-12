@@ -10,8 +10,8 @@ const router = express.Router()
 router.post(
   '/logout',
   async (
-    req: PathMethodRequest<'/api/logout', 'post'>,
-    res: PathMethodResponse<'/api/logout'>
+    req: PathMethodRequest<'/logout', 'post'>,
+    res: PathMethodResponse<'/logout'>
   ) => {
     const token = req?.cookies['auth-token']
 

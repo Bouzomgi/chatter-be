@@ -7,7 +7,7 @@ import request from 'supertest'
 // Mocking the verifyToken middleware to call next immediately
 jest.mock('@src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/api/authed/defaultAvatars', 'get'>).userId = 1
+    ;(req as AuthedRequest<'/authed/defaultAvatars', 'get'>).userId = 1
     return next()
   })
 }))
@@ -33,7 +33,7 @@ describe('When S3 is down', () => {
 
   // Settings routes
   it('get /defaultAvatars should fail with 500', async () => {
-    const res = await request(server).get('/api/authed/defaultAvatars').send()
+    const res = await request(server).get('/authed/defaultAvatars').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 })

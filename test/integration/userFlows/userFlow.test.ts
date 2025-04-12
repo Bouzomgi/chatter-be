@@ -20,22 +20,22 @@ describe('User flow', () => {
     expect(await isUsernameRegistered('new_user')).toBe(false)
 
     // Register
-    const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'new_user@example.com',
       username: 'new_user',
       password: 'abcde'
     }
-    const registerRes = await agent.post('/api/register').send(registerBody)
+    const registerRes = await agent.post('/register').send(registerBody)
     expect(registerRes.status).toBe(StatusCodes.CREATED)
 
     expect(await isUsernameRegistered('new_user')).toBe(true)
 
     // Login
-    const loginBody: ExtractPathRequestBody<'/api/login', 'post'> = {
+    const loginBody: ExtractPathRequestBody<'/login', 'post'> = {
       username: 'new_user',
       password: 'abcde'
     }
-    const loginRes = await agent.post('/api/login').send(loginBody)
+    const loginRes = await agent.post('/login').send(loginBody)
     expect(loginRes.status).toBe(StatusCodes.OK)
 
     const cookie = getCookie(loginRes, 'auth-token')
@@ -47,31 +47,28 @@ describe('User flow', () => {
 
     // Send message
     const userId = loginRes.body.userId
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, userId],
       content: 'message in a new thread'
     }
-    const messageRes = await agent.post('/api/authed/message').send(messageBody)
+    const messageRes = await agent.post('/authed/message').send(messageBody)
     expect(messageRes.status).toBe(StatusCodes.CREATED)
 
     expect(await doesConversationExist([1, userId])).toBe(true)
 
     // Logout
-    const logoutRes = await agent.post('/api/logout').send()
+    const logoutRes = await agent.post('/logout').send()
     expect(logoutRes.status).toBe(StatusCodes.OK)
 
     const cookieAfterLogout = getCookie(logoutRes, 'auth-token')
     expect(cookieAfterLogout).toBeFalsy()
 
     // Attempt to send another message
-    const messageBody2: ExtractPathRequestBody<'/api/authed/message', 'post'> =
-      {
-        members: [1, userId],
-        content: 'another message'
-      }
-    const messageRes2 = await agent
-      .post('/api/authed/message')
-      .send(messageBody2)
+    const messageBody2: ExtractPathRequestBody<'/authed/message', 'post'> = {
+      members: [1, userId],
+      content: 'another message'
+    }
+    const messageRes2 = await agent.post('/authed/message').send(messageBody2)
     expect(messageRes2.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

@@ -1,4 +1,3 @@
-import env from '@src/config'
 import testEnv from '@test/config'
 import {
   extractCookies,
@@ -18,12 +17,13 @@ apiClient.interceptors.response.use(extractCookies)
   A basic non-disruptive user flow intended to test the server as it is serving requests
 */
 describe('Basic flow', () => {
-  const httpUrl = `${testEnv.TESTING_HTTP_ENDPOINT}:${env.PORT}`
-  const wsUrl = `${testEnv.TESTING_WS_ENDPOINT}:${env.PORT}`
+  const httpUrl = testEnv.TESTING_HTTP_ENDPOINT
+  const wsUrl = testEnv.TESTING_WS_ENDPOINT
 
   it('should respond to a health check', async () => {
     try {
-      const res = await apiClient.get(`${httpUrl}/api/health`)
+      console.log(httpUrl)
+      const res = await apiClient.get(`${httpUrl}/health`)
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
       const axiosError = error as AxiosError
@@ -39,7 +39,7 @@ describe('Basic flow', () => {
 
   it('should block an unauthorized /authed route request', async () => {
     try {
-      await apiClient.get(`${httpUrl}/api/authed/chats`)
+      await apiClient.get(`${httpUrl}/authed/chats`)
       throw new Error(
         'Request should not have succeeded. Expected Unauthorized error (401).'
       )
@@ -67,7 +67,7 @@ describe('Basic flow', () => {
         password: testEnv.SERVICE_ACCOUNT_PASSWORD
       }
 
-      const res = await apiClient.post(`${httpUrl}/api/login`, req)
+      const res = await apiClient.post(`${httpUrl}/login`, req)
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
       const axiosError = error as AxiosError
@@ -84,7 +84,7 @@ describe('Basic flow', () => {
 
   it('should allow fetching of chats', async () => {
     try {
-      const res = await apiClient.get(`${httpUrl}/api/authed/chats`)
+      const res = await apiClient.get(`${httpUrl}/authed/chats`)
 
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
@@ -104,7 +104,7 @@ describe('Basic flow', () => {
     let res: AxiosResponse
 
     try {
-      res = await apiClient.get(`${httpUrl}/api/authed/defaultAvatars`)
+      res = await apiClient.get(`${httpUrl}/authed/defaultAvatars`)
     } catch (error) {
       const axiosError = error as AxiosError
 
@@ -156,7 +156,7 @@ describe('Basic flow', () => {
 
   it('should properly logout', async () => {
     try {
-      const res = await apiClient.post(`${httpUrl}/api/logout`)
+      const res = await apiClient.post(`${httpUrl}/logout`)
       expect(res.status).toBe(StatusCodes.OK)
     } catch (error) {
       const axiosError = error as AxiosError
@@ -172,7 +172,7 @@ describe('Basic flow', () => {
 
   it('should block an unauthorized /authed route request', async () => {
     try {
-      await apiClient.get(`${httpUrl}/api/authed/chats`)
+      await apiClient.get(`${httpUrl}/authed/chats`)
       throw new Error(
         'Request should not have succeeded. Expected Unauthorized error (401).'
       )
@@ -195,7 +195,7 @@ describe('Basic flow', () => {
 
   // Helpers
   const createWebSocket = () => {
-    const wsAuthedEndpoint = `${wsUrl}/api/authed/`
+    const wsAuthedEndpoint = `${wsUrl}/authed/`
     const authToken = getAuthToken()
 
     const socket = authToken

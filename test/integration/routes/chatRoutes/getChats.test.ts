@@ -8,7 +8,7 @@ describe('Chats', () => {
     const authToken = generateAuthToken(1)
 
     const res = await request(server)
-      .get('/api/authed/chats')
+      .get('/authed/chats')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -111,7 +111,7 @@ describe('Chats', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/chats').send()
+    const res = await request(server).get('/authed/chats').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

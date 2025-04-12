@@ -12,7 +12,7 @@ describe('Chat User Details', () => {
     const authToken = generateAuthToken(1)
 
     const res = await request(server)
-      .get('/api/authed/chatUsersDetails')
+      .get('/authed/chatUsersDetails')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -51,7 +51,7 @@ describe('Chat User Details', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/chatUsersDetails').send()
+    const res = await request(server).get('/authed/chatUsersDetails').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

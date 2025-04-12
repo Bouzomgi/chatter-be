@@ -7,7 +7,7 @@ import request from 'supertest'
 
 jest.mock('@src/middlewares/tokenVerification', () => ({
   verifyToken: jest.fn((req, _, next) => {
-    ;(req as AuthedRequest<'/api/authed/chats', 'get'>).userId = 1
+    ;(req as AuthedRequest<'/authed/chats', 'get'>).userId = 1
     return next()
   })
 }))
@@ -19,11 +19,11 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const loginBody: ExtractPathRequestBody<'/api/login', 'post'> = {
+    const loginBody: ExtractPathRequestBody<'/login', 'post'> = {
       username: 'adam',
       password: 'a'
     }
-    const res = await request(server).post('/api/login').send(loginBody)
+    const res = await request(server).post('/login').send(loginBody)
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -32,12 +32,12 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const registerBody: ExtractPathRequestBody<'/api/register', 'post'> = {
+    const registerBody: ExtractPathRequestBody<'/register', 'post'> = {
       email: 'fred@example.com',
       username: 'fred',
       password: 'abcde'
     }
-    const res = await request(server).post('/api/register').send(registerBody)
+    const res = await request(server).post('/register').send(registerBody)
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -47,7 +47,7 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const res = await await request(server).get('/api/authed/chats').send()
+    const res = await await request(server).get('/authed/chats').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -56,7 +56,7 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server).get('/api/authed/chatUsersDetails').send()
+    const res = await request(server).get('/authed/chatUsersDetails').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -65,7 +65,7 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server).get('/api/authed/userHeads').send()
+    const res = await request(server).get('/authed/userHeads').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -74,7 +74,7 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const res = await request(server).patch('/api/authed/readThread/1').send()
+    const res = await request(server).patch('/authed/readThread/1').send()
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
 
@@ -83,14 +83,12 @@ describe('When prisma is down', () => {
       new Error('Cannot connect to database')
     )
 
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, 2],
       content: 'my message'
     }
 
-    const res = await request(server)
-      .post('/api/authed/message')
-      .send(messageBody)
+    const res = await request(server).post('/authed/message').send(messageBody)
 
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
   })
@@ -102,14 +100,14 @@ describe('When prisma is down', () => {
     )
 
     const setSettingsBody: ExtractPathRequestBody<
-      '/api/authed/setSettings',
+      '/authed/setSettings',
       'post'
     > = {
       avatar: './avatars/default/avatar7.svg'
     }
 
     const res = await request(server)
-      .post('/api/authed/setSettings')
+      .post('/authed/setSettings')
       .send(setSettingsBody)
 
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)

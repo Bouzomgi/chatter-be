@@ -24,8 +24,8 @@ router.post(
     'content': { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/api/authed/message', 'post'>,
-    res: PathMethodResponse<'/api/authed/message'>
+    req: PathMethodRequest<'/authed/message', 'post'>,
+    res: PathMethodResponse<'/authed/message'>
   ) => {
     try {
       const errors = validationResult(req)
@@ -36,7 +36,7 @@ router.post(
           .json({ error: 'Could not send message' })
       }
 
-      const authedReq = req as AuthedRequest<'/api/authed/message', 'post'>
+      const authedReq = req as AuthedRequest<'/authed/message', 'post'>
       const members: Array<number> = authedReq.body.members
 
       // Check if the user is in the members list

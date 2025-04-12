@@ -1,4 +1,4 @@
-import { cleanEnv, str } from 'envalid'
+import { cleanEnv, str, num } from 'envalid'
 
 const testEnv = cleanEnv(process.env, {
   // Acceptance tests

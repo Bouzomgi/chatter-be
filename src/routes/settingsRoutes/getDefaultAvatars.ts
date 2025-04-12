@@ -8,8 +8,8 @@ const router = express.Router()
 router.get(
   '/defaultAvatars',
   async (
-    req: PathMethodRequest<'/api/authed/defaultAvatars', 'get'>,
-    res: PathMethodResponse<'/api/authed/defaultAvatars'>
+    req: PathMethodRequest<'/authed/defaultAvatars', 'get'>,
+    res: PathMethodResponse<'/authed/defaultAvatars'>
   ) => {
     try {
       const defaultAvatars = await getDefaultAvatars()

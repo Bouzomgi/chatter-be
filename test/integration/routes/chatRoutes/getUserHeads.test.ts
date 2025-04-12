@@ -16,7 +16,7 @@ describe('User Heads', () => {
     const authToken = generateAuthToken(1)
 
     const res = await request(server)
-      .get('/api/authed/userHeads')
+      .get('/authed/userHeads')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
 
@@ -69,7 +69,7 @@ describe('User Heads', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/userHeads').send()
+    const res = await request(server).get('/authed/userHeads').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })

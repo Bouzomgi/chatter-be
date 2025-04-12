@@ -17,7 +17,7 @@ describe('Chat User Details', () => {
   it('should successfully create post in a new conversation and thread if there is no existing thread', async () => {
     expect(await doesConversationExist([2, 3])).toBe(false)
 
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [2, 3],
       content: 'message in a new thread'
     }
@@ -25,7 +25,7 @@ describe('Chat User Details', () => {
     const senderUserId = 2
     const authToken = generateAuthToken(senderUserId)
     const res = await request(server)
-      .post('/api/authed/message')
+      .post('/authed/message')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(messageBody)
 
@@ -56,7 +56,7 @@ describe('Chat User Details', () => {
   it('should successfully create post in an existing thread', async () => {
     expect(await doesConversationExist([1, 2])).toBe(true)
 
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, 2],
       content: 'message in an existing thread'
     }
@@ -64,7 +64,7 @@ describe('Chat User Details', () => {
     const senderUserId = 1
     const authToken = generateAuthToken(senderUserId)
     const res = await request(server)
-      .post('/api/authed/message')
+      .post('/authed/message')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(messageBody)
 
@@ -87,13 +87,13 @@ describe('Chat User Details', () => {
   it('should fail if a member does not exist', async () => {
     expect(await doesUserExist(100)).toBe(false)
 
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, 100],
       content: 'test message'
     }
     const authToken = generateAuthToken(1)
     const res = await request(server)
-      .post('/api/authed/message')
+      .post('/authed/message')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(messageBody)
 
@@ -103,13 +103,13 @@ describe('Chat User Details', () => {
   it("should fail if requesting user is not part of the request's member list", async () => {
     expect(await doesConversationExist([1, 2])).toBe(true)
 
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, 2],
       content: 'test message'
     }
     const authToken = generateAuthToken(3)
     const res = await request(server)
-      .post('/api/authed/message')
+      .post('/authed/message')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(messageBody)
 
@@ -124,7 +124,7 @@ describe('Chat User Details', () => {
     }
 
     const res = await request(server)
-      .post('/api/authed/message')
+      .post('/authed/message')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(incompleteMessageBody)
 
@@ -132,7 +132,7 @@ describe('Chat User Details', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/chatUsersDetails').send()
+    const res = await request(server).get('/authed/chatUsersDetails').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 
@@ -151,14 +151,14 @@ describe('Chat User Details', () => {
     let complete = false
 
     const user2AuthToken = generateAuthToken(2)
-    const ws = new WebSocket(`ws://localhost:${port}/api/authed`, {
+    const ws = new WebSocket(`ws://localhost:${port}/authed`, {
       headers: {
         Cookie: `auth-token=${user2AuthToken}`
       }
     })
 
     const messageContent = 'my websocket message'
-    const messageBody: ExtractPathRequestBody<'/api/authed/message', 'post'> = {
+    const messageBody: ExtractPathRequestBody<'/authed/message', 'post'> = {
       members: [1, 2],
       content: messageContent
     }
@@ -183,7 +183,7 @@ describe('Chat User Details', () => {
     const user1AuthToken = generateAuthToken(1)
     wss.on('connection', () => {
       request(server)
-        .post('/api/authed/message')
+        .post('/authed/message')
         .set('Cookie', [`auth-token=${user1AuthToken}`])
         .send(messageBody)
         .end((err, res) => {

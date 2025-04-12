@@ -36,14 +36,14 @@ app.use(cors({ origin: '*', credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api', authRoutes)
+app.use(authRoutes)
 
-app.use('/api/authed', verifyToken, [settingsRoutes, chatRoutes])
+app.use('/authed', verifyToken, [settingsRoutes, chatRoutes])
 
 swaggerDocs(app, 'api/docs')
 
 // ROUTES
-app.get('/api/health', (_, res) => {
+app.get('/health', (_, res) => {
   res.status(StatusCodes.OK).send('Up and running!\n')
 })
 

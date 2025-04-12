@@ -13,11 +13,11 @@ const router = express.Router()
 router.get(
   '/userHeads',
   async (
-    req: PathMethodRequest<'/api/authed/userHeads', 'get'>,
-    res: PathMethodResponse<'/api/authed/userHeads'>
+    req: PathMethodRequest<'/authed/userHeads', 'get'>,
+    res: PathMethodResponse<'/authed/userHeads'>
   ) => {
     try {
-      const authedReq = req as AuthedRequest<'/api/authed/userHeads', 'get'>
+      const authedReq = req as AuthedRequest<'/authed/userHeads', 'get'>
 
       const profiles = await prisma.profile.findMany({
         where: {

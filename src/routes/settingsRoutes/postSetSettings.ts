@@ -17,8 +17,8 @@ router.post(
     avatar: { in: ['body'], notEmpty: true }
   }),
   async (
-    req: PathMethodRequest<'/api/authed/setSettings', 'post'>,
-    res: PathMethodResponse<'/api/authed/setSettings'>
+    req: PathMethodRequest<'/authed/setSettings', 'post'>,
+    res: PathMethodResponse<'/authed/setSettings'>
   ) => {
     try {
       const errors = validationResult(req)
@@ -29,7 +29,7 @@ router.post(
           .json({ error: 'Could not set settings' })
       }
 
-      const authedReq = req as AuthedRequest<'/api/authed/setSettings', 'post'>
+      const authedReq = req as AuthedRequest<'/authed/setSettings', 'post'>
 
       if (req.body.avatar) {
         const defaultAvatarNames = (await getDefaultAvatars()).map(

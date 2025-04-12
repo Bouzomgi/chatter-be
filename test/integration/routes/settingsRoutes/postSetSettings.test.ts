@@ -11,13 +11,13 @@ describe('Set Settings', () => {
 
     const authToken = generateAuthToken(1)
     const setSettingsBody: ExtractPathRequestBody<
-      '/api/authed/setSettings',
+      '/authed/setSettings',
       'post'
     > = {
       avatar: './avatars/default/avatar7.svg'
     }
     const res = await request(server)
-      .post('/api/authed/setSettings')
+      .post('/authed/setSettings')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(setSettingsBody)
 
@@ -26,20 +26,20 @@ describe('Set Settings', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).post('/api/authed/setSettings').send()
+    const res = await request(server).post('/authed/setSettings').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 
   it('should fail if non-existent avatar is selected', async () => {
     const authToken = generateAuthToken(1)
     const setSettingsBody: ExtractPathRequestBody<
-      '/api/authed/setSettings',
+      '/authed/setSettings',
       'post'
     > = {
       avatar: 'fake-avatar'
     }
     const res = await request(server)
-      .post('/api/authed/setSettings')
+      .post('/authed/setSettings')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(setSettingsBody)
 
@@ -50,13 +50,13 @@ describe('Set Settings', () => {
     // avatar is empty
     const authToken = generateAuthToken(1)
     const setSettingsBody: ExtractPathRequestBody<
-      '/api/authed/setSettings',
+      '/authed/setSettings',
       'post'
     > = {
       avatar: ''
     }
     const res = await request(server)
-      .post('/api/authed/setSettings')
+      .post('/authed/setSettings')
       .set('Cookie', [`auth-token=${authToken}`])
       .send(setSettingsBody)
 

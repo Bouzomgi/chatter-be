@@ -9,7 +9,7 @@ describe('Logout', () => {
     const authToken = generateAuthToken(1)
 
     const res = await request(app)
-      .post('/api/logout')
+      .post('/logout')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
     expect(res.status).toBe(StatusCodes.OK)

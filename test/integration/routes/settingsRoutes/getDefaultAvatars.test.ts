@@ -13,7 +13,7 @@ describe('Get Default Avatars', () => {
     const authToken = generateAuthToken(1)
 
     const res = await request(server)
-      .get('/api/authed/defaultAvatars')
+      .get('/authed/defaultAvatars')
       .set('Cookie', [`auth-token=${authToken}`])
       .send()
     expect(res.status).toBe(StatusCodes.OK)
@@ -41,7 +41,7 @@ describe('Get Default Avatars', () => {
   })
 
   it('should fail if user is not logged in', async () => {
-    const res = await request(server).get('/api/authed/defaultAvatars').send()
+    const res = await request(server).get('/authed/defaultAvatars').send()
     expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
   })
 })
