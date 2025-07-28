@@ -40,7 +40,7 @@ app.use(authRoutes)
 
 app.use('/authed', verifyToken, [settingsRoutes, chatRoutes])
 
-swaggerDocs(app, 'api/docs')
+swaggerDocs(app, '/docs')
 
 // ROUTES
 app.get('/health', (_, res) => {

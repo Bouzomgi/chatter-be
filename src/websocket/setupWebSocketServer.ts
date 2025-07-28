@@ -13,6 +13,7 @@ const setupWebSocketServer = (server: Server) => {
   server.on('upgrade', async (request, socket, head) => {
     console.debug('Upgrading connection to WebSocket')
     if (request.url !== '/authed') {
+      console.debug(`Invalid connection route: ${request.url}`)
       socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
       socket.destroy()
       return

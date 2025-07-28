@@ -1,5 +1,5 @@
 import WebSocket from 'ws'
-import MessageNotificationPayload from './MessageNotificationPayload'
+import { MessageNotificationPayload } from './MessageNotificationPayload'
 import userIdToSocketMap from './userIdToSocketMap'
 
 const notifyUser = (

@@ -1,5 +1,5 @@
 import generateAuthToken from '@src/utils/generateAuthToken'
-import MessageNotificationPayload from '@src/websocket/MessageNotificationPayload'
+import { MessageNotificationPayload } from '@src/websocket/MessageNotificationPayload'
 import notifyUser from '@src/websocket/notifyUser'
 import setupWebSocketServer from '@src/websocket/setupWebSocketServer'
 import express from 'express'
