@@ -15,7 +15,6 @@ router.get(
   ) => {
     try {
       const authedReq = req as AuthedRequest<'/authed/chats', 'get'>
-
       const chatDetails = await pullChatDetails(authedReq.userId)
 
       const promisedChats = chatDetails.map(async (chat) => {
