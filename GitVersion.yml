@@ -1,0 +1,14 @@
+mode: ContinuousDeployment
+branches:
+  main:
+    regex: ^main$
+    tag: ""
+    increment: patch
+    is-mainline: true
+    source-branches: []
+  feature:
+    regex: ^.*$
+    tag: useBranchName
+    increment: minor
+ignore:
+  sha: []

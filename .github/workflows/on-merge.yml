@@ -21,6 +21,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+
+      - name: Determine version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+
+      - name: Print version
+        run: |
+          echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
+          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -34,7 +50,20 @@ jobs:
           username: bouzomgi
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and push Docker image
+        id: docker_build
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/arm64/v8 -t bouzomgi/chatter-be:latest --push .
+          docker buildx build \
+            --platform linux/arm64/v8 \
+            -t bouzomgi/chatter-be:latest \
+            -t bouzomgi/chatter-be:${{ steps.gitversion.outputs.MajorMinorPatch }} \
+            --push .
+
+      - name: Tag commit if Docker image built
+        if: success() # only runs if the previous step succeeded
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag v${{ steps.gitversion.outputs.MajorMinorPatch }} $GITHUB_SHA
+          git push origin v${{ steps.gitversion.outputs.MajorMinorPatch }}
