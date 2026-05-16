@@ -81,5 +81,8 @@ jobs:
       - name: Initialize database
         run: npx prisma migrate deploy
 
+      - name: Verify reseed
+        run: npm run reset-and-seed
+
       - name: Run Tests and Code Coverage
         run: npm test
