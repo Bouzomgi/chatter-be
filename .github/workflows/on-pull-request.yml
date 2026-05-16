@@ -22,6 +22,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: test
       TOKEN_SECRET: +B*8nUZLkhdI7cBK+wt.St>3UF=k|5uo5{P@Q=&=VVmnTYCl;A(vwh/)h}!.J8pP
       FRONTEND_ENDPOINTS: http://localhost:5173
+      NODE_ENV: test
+      SERVICE_ACCOUNT_USERNAME: service
+      SERVICE_ACCOUNT_PASSWORD: service-password
 
     runs-on: 'ubuntu-latest'
     permissions:
