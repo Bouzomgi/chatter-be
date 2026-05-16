@@ -28,21 +28,21 @@ describe('Chat User Details', () => {
         userId: 2,
         username: 'britta',
         avatar: {
-          name: './avatars/default/avatar2.svg'
+          name: 'avatars/default/avatar2.svg'
         }
       },
       {
         userId: 3,
         username: 'carl',
         avatar: {
-          name: './avatars/default/avatar4.svg'
+          name: 'avatars/default/avatar4.svg'
         }
       },
       {
         userId: 4,
         username: 'dana',
         avatar: {
-          name: './avatars/default/avatar1.svg'
+          name: 'avatars/default/avatar1.svg'
         }
       }
     ]
