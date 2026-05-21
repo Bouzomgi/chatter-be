@@ -81,10 +81,7 @@ jobs:
       - name: Generate TS Types from OpenAPI Schema
         run: npm run gen-openapi-ts
 
-      - name: Initialize database
-        run: npx prisma migrate deploy
-
-      - name: Verify reseed
+      - name: Seed database
         run: npm run reset-and-seed
 
       - name: Run Tests and Code Coverage
