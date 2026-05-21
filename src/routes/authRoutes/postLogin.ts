@@ -75,7 +75,7 @@ router.post(
         .status(StatusCodes.OK)
         .cookie('auth-token', token, {
           httpOnly: true,
-          secure: true, // switch
+          secure: process.env.NODE_ENV !== 'test',
           sameSite: 'none' // Allows the cookie to be sent from a different origin (cross-origin requests)
         })
         .json({

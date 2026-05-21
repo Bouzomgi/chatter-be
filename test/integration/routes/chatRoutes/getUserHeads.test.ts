@@ -34,28 +34,28 @@ describe('User Heads', () => {
         userId: 2,
         username: 'britta',
         avatar: {
-          name: './avatars/default/avatar2.svg'
+          name: 'avatars/default/avatar2.svg'
         }
       },
       {
         userId: 3,
         username: 'carl',
         avatar: {
-          name: './avatars/default/avatar4.svg'
+          name: 'avatars/default/avatar4.svg'
         }
       },
       {
         userId: 4,
         username: 'dana',
         avatar: {
-          name: './avatars/default/avatar1.svg'
+          name: 'avatars/default/avatar1.svg'
         }
       },
       {
         userId: 5,
         username: 'edward',
         avatar: {
-          name: './avatars/default/avatar5.svg'
+          name: 'avatars/default/avatar5.svg'
         }
       }
     ]

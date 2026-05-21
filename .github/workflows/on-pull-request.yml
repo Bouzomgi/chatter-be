@@ -16,14 +16,47 @@ jobs:
       PORT: 4000
       DATABASE_URL: postgresql://admin:pass@localhost:5432/chatter?schema=public
       STORAGE_BUCKET_NAME: local-chatter-storage
-      AWS_S3_ENDPOINT: http://0.0.0.0:4566
+      AWS_S3_ENDPOINT: http://localhost:4566
       AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
       TOKEN_SECRET: +B*8nUZLkhdI7cBK+wt.St>3UF=k|5uo5{P@Q=&=VVmnTYCl;A(vwh/)h}!.J8pP
+      FRONTEND_ENDPOINTS: http://localhost:5173
+      NODE_ENV: test
+      SERVICE_ACCOUNT_USERNAME: service
+      SERVICE_ACCOUNT_PASSWORD: service-password
 
     runs-on: 'ubuntu-latest'
     permissions:
       contents: read
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: chatter
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      localstack:
+        image: localstack/localstack:3
+        ports:
+          - 4566:4566
+        env:
+          SERVICES: s3
+        options: >-
+          --health-cmd "curl -f http://localhost:4566/_localstack/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,11 +70,22 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Seed S3 bucket
+        run: |
+          aws --endpoint-url=http://localhost:4566 s3 mb s3://local-chatter-storage
+          aws --endpoint-url=http://localhost:4566 s3 sync ./localstack/content s3://local-chatter-storage/
+
       - name: Check Lint
         run: npm run check-lint
 
       - name: Generate TS Types from OpenAPI Schema
         run: npm run gen-openapi-ts
+
+      - name: Initialize database
+        run: npx prisma migrate deploy
+
+      - name: Verify reseed
+        run: npm run reset-and-seed
 
       - name: Run Tests and Code Coverage
         run: npm test
